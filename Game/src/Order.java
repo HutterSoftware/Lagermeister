@@ -69,6 +69,10 @@ public class Order {
         return attribute2;
     }
 
+    public int getCash() {
+        return cash;
+    }
+
     @Override
     public String toString() {
         String orderTypeString;
