@@ -30,6 +30,7 @@ public class Storage {
 
     public Order removeTopElement() {
         Order order = (Order)this.storage.peek();
+        Start.absoluteCash += order.getCash();
         this.storage.pop();
         return order;
     }
