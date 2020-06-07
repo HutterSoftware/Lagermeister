@@ -16,5 +16,7 @@ public class Start {
 
         // Initialize StorageHouse
         storageHouse = new StorageHouse();
+
+        View view = new View("Lagermeister");
     }
 }
