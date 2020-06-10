@@ -1,9 +1,13 @@
+import javax.swing.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class StorageHouse {
 
     protected Storage[] storageFields;
+    private int usedStorage = 0;
+    private static int maxStorage = 27;
+    private boolean storageHouseFull = false;
 
     /*
 
@@ -71,13 +75,51 @@ public class StorageHouse {
 
     public SearchResult[] findProduct(Order orderObject) {
         ArrayList<SearchResult> resultList = new ArrayList<>();
-        for (int i = 0; i < this.storageFields.length; i++) {
+        /*for (int i = 0; i < this.storageFields.length; i++) {
             if (this.storageFields[i].containsProduct(orderObject)) {
                 resultList.add(new SearchResult(
                         true, this.storageFields[i].isOrderAtTop(orderObject),i%3,i/3));
             }
+        }*/
+
+        for (int i = 0; i < this.storageFields.length; i++) {
+            System.out.println(this.storageFields[i].toString());
         }
 
         return resultList.toArray(new SearchResult[0]);
+    }
+
+    public void storeOrder(int storageId) {
+        Order order = Start.activeOrderList.get(Start.selectedOrder);
+        if (storageFields[storageId].addOrder(order)) {
+            Start.view.addMoney(order.getCash());
+            incrementUsedSpace();
+        } else {
+            JOptionPane.showMessageDialog(null, Messages.STORAGE_FIELD_FULL_MESSAGE);
+        }
+    }
+
+    public void deliverOrder(int storageId) {
+        Order order = Start.activeOrderList.get(Start.selectedOrder);
+        if (this.storageFields[storageId].isOrderAtTop(order)) {
+            Start.view.addMoney(order.getCash());
+            deincrementUsedSpace();
+        }
+    }
+
+    public void incrementUsedSpace() {
+        if (usedStorage < maxStorage) {
+            usedStorage++;
+            storageHouseFull = false;
+        } else {
+            storageHouseFull = true;
+        }
+    }
+
+    public void deincrementUsedSpace() {
+        if (usedStorage > 0) {
+            usedStorage--;
+            storageHouseFull = false;
+        }
     }
 }

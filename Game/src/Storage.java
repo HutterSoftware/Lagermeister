@@ -22,6 +22,8 @@ public class Storage {
     public boolean addOrder(Order order) {
         if (this.storage.size() < 3) {
             this.storage.push(order);
+            Start.absoluteCash += order.getCash();
+            Start.orderCounter--;
             return true;
         } else{
             return false;
@@ -31,12 +33,35 @@ public class Storage {
     public Order removeTopElement() {
         Order order = (Order)this.storage.peek();
         Start.absoluteCash += order.getCash();
+        Start.orderCounter--;
         this.storage.pop();
         return order;
     }
 
+    private boolean equal(Order order) {
+        boolean result = false;
+        Stack btStack = new Stack<>();
+        while (!this.storage.empty()) {
+            Order btOrder = (Order) this.storage.peek();
+            if (btOrder.getProductName() == order.getProductName()
+                    && btOrder.getAttribute1() == order.getAttribute1()
+                    && btOrder.getAttribute2() == order.getAttribute2()) {
+                result = true;
+            }
+            btStack.push(this.storage.peek());
+            this.storage.pop();
+        }
+
+        while(!btStack.empty()) {
+            this.storage.push(btStack.peek());
+            btStack.pop();
+        }
+        return result;
+    }
+
     public boolean containsProduct(Order order) {
-        if (this.storage.search(order) >= 0) {
+
+        if (equal(order)) {
             return true;
         } else {
             return false;
@@ -44,7 +69,11 @@ public class Storage {
     }
 
     public boolean isOrderAtTop(Order order) {
-        if (this.storage.peek() == order) {
+        Order peekOrder = (Order)this.storage.peek();
+        if  (peekOrder.getProductName().equals(order.getProductName())
+                && peekOrder.getAttribute1().equals(order.getAttribute1())
+                && peekOrder.getAttribute2().equals(order.getAttribute2())) {
+
             return true;
         } else {
             return false;
@@ -57,5 +86,14 @@ public class Storage {
 
     public int getFieldPositionX() {
         return fieldPositionX;
+    }
+
+    @Override
+    public String toString() {
+        String t = "";
+        for (int i = 0; i < storage.size(); i++) {
+            t += storage.get(i).toString() + "\t";
+        }
+        return t;
     }
 }
