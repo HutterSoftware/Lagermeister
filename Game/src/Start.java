@@ -3,9 +3,10 @@ import java.util.LinkedList;
 public class Start {
     public static Order[] orderList;
     public static StorageHouse storageHouse;
-    public static int orderIndex = 0;
+    public static int orderIndex = 0, orderCounter = 0, selectedOrder = 0;
     public static LinkedList<Order> activeOrderList;
-    public static int absoluteCash;
+    public static int absoluteCash = 0;
+    public static View view;
 
     public static void main(String[] args) {
         // Create a list of orders to manage the game main task
@@ -17,6 +18,6 @@ public class Start {
         // Initialize StorageHouse
         storageHouse = new StorageHouse();
 
-        View view = new View("Lagermeister");
+        view = new View("Lagermeister");
     }
 }
