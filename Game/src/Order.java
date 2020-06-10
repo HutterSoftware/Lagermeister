@@ -11,8 +11,8 @@ public class Order {
     private int cash;
     private boolean outgoingOrder = false;
 
-    private static String OUTGOING_ORDER_STRING = "Auslagerung";
-    private static String INCOMING_ORDER_STRING = "Einlagerung";
+    public static String OUTGOING_ORDER_STRING = "Auslagerung";
+    public static String INCOMING_ORDER_STRING = "Einlagerung";
     private static String ORDER_PARAMETER_DELIMITER = ";";
 
     public Order(String productName, String attribute1, String attribute2, String orderType, String cash) {
@@ -71,6 +71,14 @@ public class Order {
 
     public int getCash() {
         return cash;
+    }
+
+    public String getOrderType() {
+        if (this.outgoingOrder == true) {
+            return Order.OUTGOING_ORDER_STRING;
+        } else {
+            return Order.INCOMING_ORDER_STRING;
+        }
     }
 
     @Override
