@@ -23,7 +23,11 @@ public class Order {
             this.outgoingOrder = true;
         }
 
-        this.cash = Integer.parseInt(cash);
+        try {
+            this.cash = Integer.parseInt(cash);
+        } catch(Exception ex) {
+            this.cash = 0;
+        }
     }
 
     public static Order[] createOrderListFromFile(String fileName) {
