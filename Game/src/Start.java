@@ -1,23 +1,28 @@
 import java.util.LinkedList;
 
 public class Start {
-    public static Order[] orderList;
+    public static OrderManager orderManager;
     public static StorageHouse storageHouse;
-    public static int orderIndex = 0, orderCounter = 0, selectedOrder = 0;
-    public static LinkedList<Order> activeOrderList;
-    public static int absoluteCash = 0;
+    public static AccountManager accountManager;
     public static View view;
 
     public static void main(String[] args) {
         // Create a list of orders to manage the game main task
-        orderList = Order.createOrderListFromFile(args[0]);
+        Order[]orderList = Order.createOrderListFromFile(args[0]);
 
-        // Initialize activeOrderList
-        activeOrderList = new LinkedList<>();
+        // Initialize orderManager
+        orderManager = new OrderManager(orderList);
+
+        // Initialize accountManager
+        accountManager = new AccountManager(orderManager);
 
         // Initialize StorageHouse
         storageHouse = new StorageHouse();
 
-        view = new View("Lagermeister");
+        view = new View("Lagermeister", orderManager, accountManager, storageHouse);
+    }
+
+    public static void resetGame() {
+
     }
 }
