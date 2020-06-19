@@ -22,20 +22,19 @@ public class Storage {
     public boolean addOrder(Order order) {
         if (this.storage.size() < 3) {
             this.storage.push(order);
-            Start.absoluteCash += order.getCash();
-            Start.orderCounter--;
             return true;
         } else{
             return false;
         }
     }
 
-    public Order removeTopElement() {
-        Order order = (Order)this.storage.peek();
-        Start.absoluteCash += order.getCash();
-        Start.orderCounter--;
-        this.storage.pop();
-        return order;
+    public boolean removeTopElement() {
+        if (!this.storage.empty()) {
+            this.storage.pop();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private boolean equal(Order order) {
@@ -60,7 +59,6 @@ public class Storage {
     }
 
     public boolean containsProduct(Order order) {
-
         if (equal(order)) {
             return true;
         } else {
@@ -69,7 +67,12 @@ public class Storage {
     }
 
     public boolean isOrderAtTop(Order order) {
+        if (this.storage.isEmpty()) {
+            return false;
+        }
+
         Order peekOrder = (Order)this.storage.peek();
+
         if  (peekOrder.getProductName().equals(order.getProductName())
                 && peekOrder.getAttribute1().equals(order.getAttribute1())
                 && peekOrder.getAttribute2().equals(order.getAttribute2())) {
@@ -86,6 +89,10 @@ public class Storage {
 
     public int getFieldPositionX() {
         return fieldPositionX;
+    }
+
+    public int getStorageSize() {
+        return this.storage.size();
     }
 
     @Override
