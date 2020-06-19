@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -8,6 +9,37 @@ public class StorageHouse {
     private int usedStorage = 0;
     private static int maxStorage = 27;
     private boolean storageHouseFull = false;
+
+    public static Color FIELD_EMPTY = Color.white;
+    public static Color FIELD_ONE = Color.green;
+    public static Color FIELD_TWO = Color.yellow;
+    public static Color FIELD_THREE = Color.red;
+
+
+    public Color[] getStorageStatus() {
+        Color[] status = new Color[9];
+
+        for (int i = 0; i < 9; i++) {
+            switch (storageFields[i].getStorageSize()) {
+                case 0:
+                    status[i] = FIELD_EMPTY;
+                    break;
+
+                case 1:
+                    status[i] = FIELD_ONE;
+                    break;
+
+                case 2:
+                    status[i] = FIELD_TWO;
+                    break;
+
+                case 3:
+                    status[i] = FIELD_THREE;
+            }
+        }
+
+        return status;
+    }
 
     /*
 
@@ -83,26 +115,24 @@ public class StorageHouse {
         }*/
 
         for (int i = 0; i < this.storageFields.length; i++) {
-            System.out.println(this.storageFields[i].toString());
+            //System.out.println(this.storageFields[i].toString());
         }
 
         return resultList.toArray(new SearchResult[0]);
     }
 
-    public void storeOrder(int storageId) {
-        Order order = Start.activeOrderList.get(Start.selectedOrder);
+    public boolean storeOrder(int storageId, Order order) {
         if (storageFields[storageId].addOrder(order)) {
-            Start.view.addMoney(order.getCash());
             incrementUsedSpace();
+            return true;
         } else {
             JOptionPane.showMessageDialog(null, Messages.STORAGE_FIELD_FULL_MESSAGE);
+            return false;
         }
     }
 
-    public void deliverOrder(int storageId) {
-        Order order = Start.activeOrderList.get(Start.selectedOrder);
+    public void deliverOrder(int storageId, Order order) {
         if (this.storageFields[storageId].isOrderAtTop(order)) {
-            Start.view.addMoney(order.getCash());
             deincrementUsedSpace();
         }
     }
