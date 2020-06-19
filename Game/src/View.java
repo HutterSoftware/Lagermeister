@@ -36,9 +36,21 @@ public class View extends JFrame{
     private static int storage7Id = 7;
     private static int storage8Id = 8;
 
-    private JPanel[] storagePanelCollection;
+    public static int PREVIOUS_ORDER = -1;
+    public static int CURRENT_ORDER = 0;
+    public static int NEXT_ORDER = 1;
 
-    public View(String title) {
+    private JPanel[] storagePanelCollection;
+    private OrderManager orderManager;
+    private AccountManager accountManager;
+    private StorageHouse storageHouse;
+
+    public View(String title, OrderManager orderManager, AccountManager accountManager, StorageHouse storageHouse) {
+
+        this.orderManager = orderManager;
+        this.accountManager = accountManager;
+        this.storageHouse = storageHouse;
+
         this.setTitle(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(panel1);
@@ -49,42 +61,32 @@ public class View extends JFrame{
         newOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                loadNewOrder();
+                orderManager.loadNewOrder();
                 updateOrderView();
             }
         });
         orderRightView.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Start.selectedOrder < Start.orderCounter) {
-                    if (++Start.selectedOrder < Start.orderCounter) {
-                        updateOrderView();
-                    }
-                }
-                setEnableControlOfViewButtons();
+                orderViewButtonAction(View.NEXT_ORDER);
             }
         });
         orderLeftView.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Start.selectedOrder > 0) {
-                    if (--Start.selectedOrder < Start.orderCounter) {
-                        updateOrderView();
-                    }
-                }
-                setEnableControlOfViewButtons();
+                orderViewButtonAction(View.PREVIOUS_ORDER);
             }
         });
 
-        storage0.addMouseListener(new StorageHandler(storage0Id));
-        storage1.addMouseListener(new StorageHandler(storage1Id));
-        storage2.addMouseListener(new StorageHandler(storage2Id));
-        storage3.addMouseListener(new StorageHandler(storage3Id));
-        storage4.addMouseListener(new StorageHandler(storage4Id));
-        storage5.addMouseListener(new StorageHandler(storage5Id));
-        storage6.addMouseListener(new StorageHandler(storage6Id));
-        storage7.addMouseListener(new StorageHandler(storage7Id));
-        storage8.addMouseListener(new StorageHandler(storage8Id));
+        storage0.addMouseListener(new StorageHandler(storage0Id, this.orderManager, this.accountManager,this));
+        storage1.addMouseListener(new StorageHandler(storage1Id, this.orderManager, this.accountManager,this));
+        storage2.addMouseListener(new StorageHandler(storage2Id, this.orderManager, this.accountManager,this));
+        storage3.addMouseListener(new StorageHandler(storage3Id, this.orderManager, this.accountManager,this));
+        storage4.addMouseListener(new StorageHandler(storage4Id, this.orderManager, this.accountManager,this));
+        storage5.addMouseListener(new StorageHandler(storage5Id, this.orderManager, this.accountManager,this));
+        storage6.addMouseListener(new StorageHandler(storage6Id, this.orderManager, this.accountManager,this));
+        storage7.addMouseListener(new StorageHandler(storage7Id, this.orderManager, this.accountManager,this));
+        storage8.addMouseListener(new StorageHandler(storage8Id, this.orderManager, this.accountManager,this));
 
         this.storagePanelCollection = new JPanel[9];
         this.storagePanelCollection[0] = storage0;
@@ -98,17 +100,49 @@ public class View extends JFrame{
         this.storagePanelCollection[8] = storage8;
     }
 
-    private void storageAction(int storageId) {
-        if (Start.activeOrderList.get(Start.selectedOrder).getOrderType() == Order.INCOMING_ORDER_STRING) {
-            Start.storageHouse.storeOrder(storage6Id);
+    public void orderViewButtonAction(int prev) {
+
+        if (prev == View.PREVIOUS_ORDER) {
+            orderManager.selectPrevOrder();
+        } else if (prev == View.NEXT_ORDER){
+            orderManager.selectNextOrder();
+        }
+        updateOrderView();
+        setEnableControlOfViewButtons();
+    }
+
+    private void updateOrderView() {
+        updateOrderViewItems();
+        setEnableControlOfViewButtons();
+    }
+
+    public void visualizeStorage() {
+        if (this.orderManager.getCurrentOrder().getOrderType() == Order.INCOMING_ORDER_STRING) {
+            Color[] storageStatus = this.storageHouse.getStorageStatus();
+            for (int i = 0; i < storageStatus.length; i++) {
+                storagePanelCollection[i].setBackground(storageStatus[i]);
+            }
         } else {
 
         }
     }
 
-    private void updateOrderView() {
-        if (Start.activeOrderList.size() > 0) {
-            Order order = Start.activeOrderList.get(Start.selectedOrder);
+    public void updateCash(int value) {
+        this.cashLabel.setText(Integer.toString(value));
+    }
+
+    private void storageAction(int storageId) {
+        if (orderManager.getCurrentOrder().getOrderType() == Order.INCOMING_ORDER_STRING) {
+            this.storageHouse.storeOrder(storageId, this.orderManager.getCurrentOrder());
+        } else {
+            this.storageHouse.deliverOrder(storageId, this.orderManager.getCurrentOrder());
+        }
+    }
+
+    private void updateOrderViewItems() {
+        if (this.orderManager.hasOrders()) {
+            Order order = orderManager.getCurrentOrder();
+
             this.product.setText(order.getProductName() + " " + order.getAttribute1() + " " + order.getAttribute2());
             this.orderType.setText(order.getOrderType());
             this.money.setText(Integer.toString(order.getCash()) + "€");
@@ -135,46 +169,19 @@ public class View extends JFrame{
     }
 
     private void setEnableControlOfViewButtons() {
-        if (Start.selectedOrder > 0 && Start.selectedOrder < Start.activeOrderList.size() - 1) {
-            orderLeftView.setEnabled(true);
+        if (this.orderManager.isSelectedOrderFirst()) {
+            orderLeftView.setEnabled(false);
             orderRightView.setEnabled(true);
-        } else if (Start.selectedOrder == Start.activeOrderList.size() - 1) {
+        } else if (this.orderManager.isSelectedOrderLast()) {
             orderLeftView.setEnabled(true);
             orderRightView.setEnabled(false);
         } else {
-            orderLeftView.setEnabled(false);
+            orderLeftView.setEnabled(true);
             orderRightView.setEnabled(true);
         }
-
     }
 
-    private void loadNewOrder() {
-        if (Start.orderCounter < 3) {
-            Start.activeOrderList.add(Start.orderList[Start.orderIndex]);
-            Start.orderCounter = ++Start.orderCounter;
-            Start.orderIndex++;
-            Start.selectedOrder = Start.activeOrderList.size() - 1;
-            updateOrderView();
-            setEnableControlOfViewButtons();
-        } else {
-            JOptionPane.showMessageDialog(null, Messages.CANNOT_GET_MORE_ORDER_MESSAGE);
-        }
-    }
-
-    public void addMoney(int value) {
-        String cashString = cashLabel.getText();
-        Start.absoluteCash += value;
-        int currentCash = Integer.parseInt(cashString.substring(0, cashString.length() - 1));
-        this.cashLabel.setText(
-                Integer.toString(
-                currentCash + value) + "€");
-        Start.activeOrderList.remove(Start.selectedOrder);
-        if (Start.selectedOrder > 0) {
-            Start.selectedOrder--;
-            Start.orderCounter--;
-        }
-
-        updateOrderView();
-        setEnableControlOfViewButtons();
+    public StorageHouse getStorageHouse() {
+        return this.storageHouse;
     }
 }
