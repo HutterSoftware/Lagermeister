@@ -1,12 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class View extends JFrame{
 
 
     private JPanel panel1;
-    private JButton destroyButton;
+    private JToggleButton destroyButton;
     private JButton moveStorageButton;
     private JButton newOrderButton;
     private JButton bilanzButton;
@@ -25,6 +27,7 @@ public class View extends JFrame{
     private JLabel product;
     private JLabel orderType;
     private JLabel money;
+    private JLabel todoLabel;
 
     private static int storage0Id = 0;
     private static int storage1Id = 1;
@@ -44,6 +47,7 @@ public class View extends JFrame{
     private OrderManager orderManager;
     private AccountManager accountManager;
     private StorageHouse storageHouse;
+    private BalanceSheet balanceSheet;
 
     public View(String title, OrderManager orderManager, AccountManager accountManager, StorageHouse storageHouse) {
 
@@ -62,7 +66,8 @@ public class View extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 orderManager.loadNewOrder();
-                updateOrderView();
+                updateAll();
+                visualizeStorage();
             }
         });
         orderRightView.addActionListener(new ActionListener() {
@@ -75,6 +80,16 @@ public class View extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 orderViewButtonAction(View.PREVIOUS_ORDER);
+            }
+        });
+        destroyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (destroyButton.isSelected()) {
+                    destroyButton.setText("Nicht Zerstören");
+                } else {
+                    destroyButton.setText("Zerstören");
+                }
             }
         });
 
@@ -98,6 +113,28 @@ public class View extends JFrame{
         this.storagePanelCollection[6] = storage6;
         this.storagePanelCollection[7] = storage7;
         this.storagePanelCollection[8] = storage8;
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                updateAll();
+            }
+        });
+        bilanzButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (balanceSheet == null) {
+                    balanceSheet = new BalanceSheet();
+                }
+                balanceSheet.showBalanceSheet();
+            }
+        });
+    }
+
+    public void updateAll() {
+        setEnableControlOfViewButtons();
+        updateCash(accountManager.getAccount());
+        orderViewButtonAction(View.CURRENT_ORDER);
+        visualizeStorage();
     }
 
     public void orderViewButtonAction(int prev) {
@@ -107,23 +144,37 @@ public class View extends JFrame{
         } else if (prev == View.NEXT_ORDER){
             orderManager.selectNextOrder();
         }
-        updateOrderView();
-        setEnableControlOfViewButtons();
-    }
-
-    private void updateOrderView() {
+        setEnableControlOfViewButtons();visualizeStorage();
         updateOrderViewItems();
-        setEnableControlOfViewButtons();
+        visualizeStorage();
     }
 
     public void visualizeStorage() {
-        if (this.orderManager.getCurrentOrder().getOrderType() == Order.INCOMING_ORDER_STRING) {
-            Color[] storageStatus = this.storageHouse.getStorageStatus();
-            for (int i = 0; i < storageStatus.length; i++) {
-                storagePanelCollection[i].setBackground(storageStatus[i]);
+        Order order = this.orderManager.getCurrentOrder();
+        Color[] storageStatus = this.storageHouse.getStorageStatus();
+        for (int i = 0; i < storageStatus.length; i++) {
+            storagePanelCollection[i].setBackground(storageStatus[i]);
+        }
+
+        if (order.getOrderType() == Order.OUTGOING_ORDER_STRING) {
+            int resultCounter = 0;
+            ArrayList<Integer> results = Start.storageHouse.findProduct(order);
+            for (int i = 0; i < this.storagePanelCollection.length; i++) {
+                if (resultCounter < results.size()) {
+                    if (results.get(resultCounter) == i) {
+                        storagePanelCollection[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+                        resultCounter++;
+                    } else {
+                        storagePanelCollection[i].setBorder(BorderFactory.createLineBorder(Color.RED));
+                    }
+                } else {
+                    storagePanelCollection[i].setBorder(BorderFactory.createEmptyBorder());
+                }
             }
         } else {
-
+            for (JPanel panel : storagePanelCollection) {
+                panel.setBorder(null);
+            }
         }
     }
 
@@ -147,19 +198,13 @@ public class View extends JFrame{
             this.orderType.setText(order.getOrderType());
             this.money.setText(Integer.toString(order.getCash()) + "€");
 
-            if (order.getOrderType() == Order.OUTGOING_ORDER_STRING) {
-                StorageHouse.SearchResult[] results = Start.storageHouse.findProduct(order);
-                for (int i = 0; i < results.length; i++) {
-                    JPanel storageField = this.storagePanelCollection[i];
-                    if (results[i].isInStorage() && results[i].isOrderOnTop()) {
-                        storageField.setBackground(Color.CYAN);
-                    } else if (results[i].isInStorage() && !results[i].isOrderOnTop()) {
-                        storageField.setBackground(Color.BLUE);
-                    } else {
-                        storageField.setBackground(Color.MAGENTA);
-                    }
-                }
+            if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
+                this.todoLabel.setText(Messages.SELECT_STORAGE_TO_STORE);
+            } else {
+                this.todoLabel.setText(Messages.SELECT_STORAGE_TO_DELIVER);
             }
+
+
         } else {
             this.product.setText("");
             this.orderType.setText("");
@@ -183,5 +228,17 @@ public class View extends JFrame{
 
     public StorageHouse getStorageHouse() {
         return this.storageHouse;
+    }
+
+    public BalanceSheet getBalanceSheet() {
+        return this.balanceSheet;
+    }
+
+    public boolean isDestroyButtonPressed() {
+        return this.destroyButton.isSelected();
+    }
+
+    public JPanel[] getStoragePanels() {
+        return this.storagePanelCollection;
     }
 }
