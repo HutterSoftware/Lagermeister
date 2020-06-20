@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -11,40 +11,76 @@ public class StorageHandler extends MouseAdapter {
     private AccountManager accountManager;
     private View view;
     private Object[] gameOverButtonCollection = new Object[]{"Neustarten", "Beenden"};
+    private Order destroyOrder;
 
     public StorageHandler(int storageId, OrderManager orderManager, AccountManager accountManager, View view) {
         this.storageId = storageId;
         this.orderManager = orderManager;
         this.accountManager = accountManager;
         this.view = view;
+        this.destroyOrder = new Order("Zerstörung", "", "",
+                Order.DESTROY_ORDER_STRING, "500");
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
+        Order currentOrder = this.orderManager.getCurrentOrder();
+
+        if (this.view.isDestroyButtonPressed()) {
+            destroyOrder(e);
+        } else {
+            storeAndDeliver(currentOrder);
+
+        }
 
         gameOverCheck();
 
-        Order currentOrder = this.orderManager.getCurrentOrder();
-        if (currentOrder == OrderManager.NULL_DUMMY) {
+    }
+
+    private void destroyOrder(MouseEvent e) {
+        JPanel storage = (JPanel) e.getSource();
+        int containsSource = 0;
+        JPanel[] list = this.view.getStoragePanels();
+        for (containsSource = 0; containsSource < list.length; containsSource++) {
+            if (list[containsSource] == storage) {
+                break;
+            }
+        }
+
+        Start.storageHouse.destroyOrder(
+                containsSource);
+
+        if (view.getBalanceSheet() != null) {
+            view.getBalanceSheet().addNewBill(destroyOrder);
+        }
+        this.view.updateAll();
+    }
+
+    private void storeAndDeliver(Order order) {
+        if (order == OrderManager.NULL_DUMMY) {
             return;
         }
 
         boolean successful = false;
-        if (currentOrder.getOrderType() == Order.INCOMING_ORDER_STRING) {
-            successful = Start.storageHouse.storeOrder(storageId, currentOrder);
+        if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
+            successful = Start.storageHouse.storeOrder(storageId, order);
         } else {
-            //successful = Start.storageHouse.deliverOrder(storageId, currentOrder);
+            successful = Start.storageHouse.deliverOrder(storageId, order);
         }
 
-        if (successful) {
-            this.accountManager.accountOrder(currentOrder);
-            this.orderManager.removeOrder(currentOrder);
-            this.orderManager.decreaseOrder();
-            this.view.updateCash(this.accountManager.getAccount());
-            this.view.orderViewButtonAction(View.CURRENT_ORDER);
-            this.view.visualizeStorage();
+        if (!successful) {
+            return;
         }
+        this.accountManager.accountOrder(order);
+        this.orderManager.removeOrder(order);
+        this.orderManager.decreaseOrder();
+
+        if (Start.view.getBalanceSheet() != null) {
+            Start.view.getBalanceSheet().addNewBill(order);
+        }
+
+        this.view.updateAll();
     }
 
     private boolean gameOverCheck() {
@@ -55,7 +91,15 @@ public class StorageHandler extends MouseAdapter {
             }
         }
 
-        if (this.orderManager.onlyStoreOrders() && fullStatusCounter == OrderManager.MAXIUMUM_STORAGE_SIZE) {
+        int orderFailCounter = 0;
+        for (Order order : Start.orderManager.getActiveOrders()) {
+            orderFailCounter += Start.storageHouse.findProduct(order).size();
+        }
+        // orderFailcounter == 0 means cannot deliver order
+
+        if (this.orderManager.onlyStoreOrders() && fullStatusCounter == OrderManager.MAXIMUM_STORAGE_SIZE &&
+                this.orderManager.hasOrders() && orderFailCounter == 0) {
+
             int answer = JOptionPane.showOptionDialog(null,
                     Messages.GAME_OVER_MESSAGE,
                     "GAME OVER",
