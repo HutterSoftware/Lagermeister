@@ -13,6 +13,8 @@ public class Order {
 
     public static String OUTGOING_ORDER_STRING = "Auslagerung";
     public static String INCOMING_ORDER_STRING = "Einlagerung";
+    public static String MOVING_ORDER_STRING = "Umlagerung";
+    public static String DESTROY_ORDER_STRING = "Objektzerstörung";
     private static String ORDER_PARAMETER_DELIMITER = ";";
 
     public Order(String productName, String attribute1, String attribute2, String orderType, String cash) {
@@ -96,5 +98,13 @@ public class Order {
 
         return orderTypeString + "\t" + this.productName + "\t" + this.attribute1 + "\t" + this.attribute2 + "\t" +
                 Integer.toString(this.cash);
+    }
+
+    public Object[] toArray() {
+
+        return new Object[]{ 0,
+                this.getOrderType(),
+                this.productName + ", " + this.attribute1 + ", " + this.attribute2,
+                this.cash};
     }
 }
