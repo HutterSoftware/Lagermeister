@@ -6,7 +6,7 @@ public class OrderManager {
     private ArrayList<Order> activeOrders;
     private int selectedOrderIndex = 0, activeOrderCounter = 0, allOrderIndex = 0;
     public static Order NULL_DUMMY = new Order("", "","","","");
-    public static int MAXIUMUM_STORAGE_SIZE = 9;
+    public static int MAXIMUM_STORAGE_SIZE = 9;
 
     public OrderManager(Order[] allOrders) {
         this.allOrders = allOrders;
@@ -61,7 +61,7 @@ public class OrderManager {
         if (this.activeOrderCounter == 0) {
             return NULL_DUMMY;
         } else {
-            if (this.activeOrders.size() > 0 && this.activeOrders.size() + 1 >= this.selectedOrderIndex) {
+            if (this.activeOrders.size() > 0 && this.selectedOrderIndex < this.activeOrders.size()) {
                 return this.activeOrders.get(this.selectedOrderIndex);
             } else {
                 return NULL_DUMMY;
@@ -79,10 +79,14 @@ public class OrderManager {
 
     public void loadNewOrder() {
         if (this.activeOrders.size() < 3) {
+            if (this.allOrderIndex >= this.allOrders.length) {
+                this.allOrderIndex = 0;
+            }
+
             this.activeOrders.add(this.allOrders[this.allOrderIndex]);
             this.activeOrderCounter++;
-            this.selectedOrderIndex = this.activeOrderCounter - 1;
             this.allOrderIndex++;
+            this.selectedOrderIndex = this.activeOrderCounter - 1;
         } else {
             JOptionPane.showMessageDialog(null, Messages.CANNOT_GET_MORE_ORDER_MESSAGE);
         }
@@ -116,5 +120,9 @@ public class OrderManager {
         } else {
             return false;
         }
+    }
+
+    public ArrayList<Order> getActiveOrders() {
+        return this.activeOrders;
     }
 }
