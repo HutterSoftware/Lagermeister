@@ -38,6 +38,8 @@ public class Storage {
     }
 
     private boolean equal(Order order) {
+        this.storage.contains(order);
+
         boolean result = false;
         Stack btStack = new Stack<>();
         while (!this.storage.empty()) {
@@ -93,6 +95,10 @@ public class Storage {
 
     public int getStorageSize() {
         return this.storage.size();
+    }
+
+    public void destroyTop() {
+        this.storage.pop();
     }
 
     @Override
