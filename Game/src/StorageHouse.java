@@ -105,20 +105,16 @@ public class StorageHouse {
         }
     }
 
-    public SearchResult[] findProduct(Order orderObject) {
-        ArrayList<SearchResult> resultList = new ArrayList<>();
-        /*for (int i = 0; i < this.storageFields.length; i++) {
-            if (this.storageFields[i].containsProduct(orderObject)) {
-                resultList.add(new SearchResult(
-                        true, this.storageFields[i].isOrderAtTop(orderObject),i%3,i/3));
-            }
-        }*/
+    public ArrayList<Integer> findProduct(Order orderObject) {
 
+        ArrayList<Integer> resultList = new ArrayList<>();
         for (int i = 0; i < this.storageFields.length; i++) {
-            //System.out.println(this.storageFields[i].toString());
+            if (this.storageFields[i].isOrderAtTop(orderObject)) {
+                resultList.add(i);
+            }
         }
 
-        return resultList.toArray(new SearchResult[0]);
+        return resultList;
     }
 
     public boolean storeOrder(int storageId, Order order) {
@@ -131,9 +127,19 @@ public class StorageHouse {
         }
     }
 
-    public void deliverOrder(int storageId, Order order) {
+    public boolean deliverOrder(int storageId, Order order) {
         if (this.storageFields[storageId].isOrderAtTop(order)) {
+            storageFields[storageId].removeTopElement();
             deincrementUsedSpace();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void destroyOrder(int storageId) {
+        if (storageId >= 0 && storageId < storageFields.length) {
+            storageFields[storageId].destroyTop();
         }
     }
 
