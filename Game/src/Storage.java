@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Stack;
 
 public class Storage {
@@ -107,7 +108,11 @@ public class Storage {
     }
 
     public void destroyTop() {
-        this.storage.pop();
+        if (!this.storage.empty()){
+            this.storage.pop();
+        } else {
+            JOptionPane.showMessageDialog(null, Messages.CANNOT_DESTROY_ITS_EMPTY);
+        }
     }
 
     @Override
