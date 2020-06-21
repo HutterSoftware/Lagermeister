@@ -11,7 +11,7 @@ public class BalanceSheet extends JFrame {
     private JLabel costLabel;
     private JLabel profitLabel;
     private int positionCounter = 0;
-    private String[] columnNames = new String[]{"Position", "Auftragstyp", "Beschreibung", "Betrag"};
+    final private String[] columnNames = new String[]{"Position", "Auftragstyp", "Beschreibung", "Betrag"};
 
     public BalanceSheet() {
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -61,5 +61,20 @@ public class BalanceSheet extends JFrame {
 
     public void showBalanceSheet() {
         this.setVisible(true);
+    }
+
+    private void updateCostLabel(int newCosts) {
+        int currentCost = Integer.parseInt(this.costLabel.getText());
+        this.costLabel.setText(Integer.toString(currentCost + Math.abs(newCosts)));
+    }
+
+    public void addNewMoveBill() {
+        addNewBill(Start.accountManager.getMoveOrder());
+        updateCostLabel(Start.accountManager.getMoveOrder().getCash());
+    }
+
+    public void addDestroyBill() {
+        addNewBill(Start.accountManager.getDestroyOrder());
+        updateCostLabel(Start.accountManager.getDestroyOrder().getCash());
     }
 }
