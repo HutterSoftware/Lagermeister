@@ -57,6 +57,21 @@ public class StorageHandler extends MouseAdapter {
         this.view.updateAll();
     }
 
+    private boolean getStorageValidation(Order order, Storage storage) {
+
+        if (order != null) {
+            if (order.getAttribute2().equals(OrderExceptionCheck.TIMBER_ATTRIBUTE_STRING)) {
+                return storage.getStorageSize() == 0;
+            }
+
+            if (order.getAttribute2().equals(OrderExceptionCheck.HEAVY_STONE_ATTRIBUTE_STRING)) {
+                return storageId < 3;
+            }
+        }
+
+        return true;
+    }
+
     private void storeAndDeliver(Order order) {
         if (order == OrderManager.NULL_DUMMY) {
             return;
@@ -64,7 +79,10 @@ public class StorageHandler extends MouseAdapter {
 
         boolean successful = false;
         if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
-            successful = Start.storageHouse.storeOrder(storageId, order);
+            Storage storage = Start.storageHouse.storageFields[storageId];
+            if (getStorageValidation(order, storage)) {
+                successful = Start.storageHouse.storeOrder(storageId, order);
+            }
         } else {
             successful = Start.storageHouse.deliverOrder(storageId, order);
         }
