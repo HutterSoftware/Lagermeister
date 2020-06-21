@@ -28,6 +28,7 @@ public class View extends JFrame{
     private JLabel orderType;
     private JLabel money;
     private JLabel todoLabel;
+    private JButton helpButton;
 
     private static int storage0Id = 0;
     private static int storage1Id = 1;
@@ -48,6 +49,7 @@ public class View extends JFrame{
     private AccountManager accountManager;
     private StorageHouse storageHouse;
     private BalanceSheet balanceSheet;
+    private HelpDesk helpDesk;
 
     public View(String title, OrderManager orderManager, AccountManager accountManager, StorageHouse storageHouse) {
 
@@ -126,6 +128,16 @@ public class View extends JFrame{
                     balanceSheet = new BalanceSheet();
                 }
                 balanceSheet.showBalanceSheet();
+            }
+        });
+        helpButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (helpDesk == null) {
+                    helpDesk = new HelpDesk();
+                } else {
+                    helpDesk.setVisible(true);
+                }
             }
         });
     }
