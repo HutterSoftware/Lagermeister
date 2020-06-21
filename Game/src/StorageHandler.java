@@ -11,15 +11,12 @@ public class StorageHandler extends MouseAdapter {
     private AccountManager accountManager;
     private View view;
     private Object[] gameOverButtonCollection = new Object[]{"Neustarten", "Beenden"};
-    private Order destroyOrder;
 
     public StorageHandler(int storageId, OrderManager orderManager, AccountManager accountManager, View view) {
         this.storageId = storageId;
         this.orderManager = orderManager;
         this.accountManager = accountManager;
         this.view = view;
-        this.destroyOrder = new Order("Zerstörung", "", "",
-                Order.DESTROY_ORDER_STRING, "500");
     }
 
     @Override
@@ -29,13 +26,37 @@ public class StorageHandler extends MouseAdapter {
 
         if (this.view.isDestroyButtonPressed()) {
             destroyOrder(e);
+        } else if (this.view.isMoveButtonToggled()) {
+            moveTask();
         } else {
             storeAndDeliver(currentOrder);
-
         }
 
         gameOverCheck();
 
+    }
+
+    private void moveTask() {
+        if (!Start.view.isMoveButtonToggled()){
+            return;
+        }
+
+        if (Start.view.getSelectedMoveId() == -1) {
+            Start.view.setSelectedMoveId(this.storageId);
+            Start.view.markAvailableMovingTargets();
+        } else {
+            Start.storageHouse.moveElement(Start.view.getSelectedMoveId(), this.storageId);
+            Start.view.resetSelectedMoveI();
+            Start.view.disselectMoveToggleButton();
+            Start.view.visualizeStorage();
+            Start.accountManager.accountMoveOrder();
+            if (Start.view.getBalanceSheet() != null) {
+                Start.view.getBalanceSheet().addNewMoveBill();
+            }
+
+            view.updateCash(Start.accountManager.getMoveOrder().getCash());
+            this.view.updateAll();
+        }
     }
 
     private void destroyOrder(MouseEvent e) {
@@ -52,8 +73,10 @@ public class StorageHandler extends MouseAdapter {
                 containsSource);
 
         if (view.getBalanceSheet() != null) {
-            view.getBalanceSheet().addNewBill(destroyOrder);
+            view.getBalanceSheet().addDestroyBill();
         }
+        view.updateCash(Start.accountManager.getDestroyOrder().getCash());
+        Start.accountManager.accountDestroyOrder();
         this.view.updateAll();
     }
 
