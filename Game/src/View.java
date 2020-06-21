@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class View extends JFrame{
 
     private JPanel panel1;
     private JToggleButton destroyButton;
-    private JButton moveStorageButton;
+    private JToggleButton moveStorageButton;
     private JButton newOrderButton;
     private JButton bilanzButton;
     private JButton orderLeftView;
@@ -44,12 +45,14 @@ public class View extends JFrame{
     public static int CURRENT_ORDER = 0;
     public static int NEXT_ORDER = 1;
 
+    private int borderThicness = 15;
     private JPanel[] storagePanelCollection;
     private OrderManager orderManager;
     private AccountManager accountManager;
     private StorageHouse storageHouse;
     private BalanceSheet balanceSheet;
     private HelpDesk helpDesk;
+    private int selectedMoveId = -1;
 
     public View(String title, OrderManager orderManager, AccountManager accountManager, StorageHouse storageHouse) {
 
@@ -140,6 +143,60 @@ public class View extends JFrame{
                 }
             }
         });
+
+        visualizeStorage();
+        moveStorageButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                todoLabel.setText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
+                if (moveStorageButton.isSelected()) {
+                    markSelectableElements();
+                }
+            }
+        });
+    }
+
+    private void markSelectableElements() {
+        Color[] status = Start.storageHouse.getStorageStatus();
+        for (int i = 0; i < status.length; i++) {
+            if (status[i] == StorageHouse.FIELD_TWO || status[i] == StorageHouse.FIELD_ONE ||
+                status[i] == StorageHouse.FIELD_THREE) {
+                storagePanelCollection[i].setBorder(getStandardBorder(Color.MAGENTA));
+            } else {
+                storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE));
+            }
+        }
+    }
+
+    public void markAvailableMovingTargets() {
+        Color[] status = Start.storageHouse.getStorageStatus();
+        for (int i = 0; i < status.length; i++) {
+            if (status[i] != StorageHouse.FIELD_THREE) {
+                storagePanelCollection[i].setBorder(getStandardBorder(Color.CYAN));
+            } else {
+                storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE));
+            }
+        }
+    }
+
+    public boolean isMoveButtonToggled() {
+        return this.moveStorageButton.isSelected();
+    }
+
+    public int getSelectedMoveId() {
+        return this.selectedMoveId;
+    }
+
+    public void setSelectedMoveId(int id) {
+        this.selectedMoveId = id;
+    }
+
+    public void resetSelectedMoveI() {
+        this.selectedMoveId = -1;
+    }
+
+    public void disselectMoveToggleButton() {
+        this.moveStorageButton.setSelected(false);
     }
 
     public void updateAll() {
@@ -161,31 +218,37 @@ public class View extends JFrame{
         visualizeStorage();
     }
 
+    private Border getStandardBorder(Color color) {
+        return BorderFactory.createLineBorder(color, borderThicness);
+    }
+
     public void visualizeStorage() {
         Order order = this.orderManager.getCurrentOrder();
         Color[] storageStatus = this.storageHouse.getStorageStatus();
-        for (int i = 0; i < storageStatus.length; i++) {
-            storagePanelCollection[i].setBackground(storageStatus[i]);
-        }
 
-        if (order.getOrderType() == Order.OUTGOING_ORDER_STRING) {
+        if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
+            for (int i = 0; i < storageStatus.length; i++) {
+                storagePanelCollection[i].setBorder(getStandardBorder(storageStatus[i]));
+            }
+
+        } else if (order.getOrderType() == Order.OUTGOING_ORDER_STRING) {
             int resultCounter = 0;
             ArrayList<Integer> results = Start.storageHouse.findProduct(order);
             for (int i = 0; i < this.storagePanelCollection.length; i++) {
                 if (resultCounter < results.size()) {
                     if (results.get(resultCounter) == i) {
-                        storagePanelCollection[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+                        storagePanelCollection[i].setBorder(getStandardBorder(Color.BLUE));
                         resultCounter++;
                     } else {
-                        storagePanelCollection[i].setBorder(BorderFactory.createLineBorder(Color.RED));
+                        storagePanelCollection[i].setBorder(getStandardBorder(Color.RED));
                     }
                 } else {
-                    storagePanelCollection[i].setBorder(BorderFactory.createEmptyBorder());
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.RED));
                 }
             }
         } else {
             for (JPanel panel : storagePanelCollection) {
-                panel.setBorder(null);
+                panel.setBorder(getStandardBorder(Color.WHITE));
             }
         }
     }
