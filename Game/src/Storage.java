@@ -94,7 +94,16 @@ public class Storage {
     }
 
     public int getStorageSize() {
-        return this.storage.size();
+        if (this.storage.empty()) {
+            return 0;
+        }
+
+        Order topOrder = (Order) this.storage.peek();
+        if (topOrder.getAttribute2().equals(OrderExceptionCheck.TIMBER_ATTRIBUTE_STRING)) {
+            return 3;
+        } else {
+            return this.storage.size();
+        }
     }
 
     public void destroyTop() {
