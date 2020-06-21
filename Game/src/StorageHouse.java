@@ -143,6 +143,13 @@ public class StorageHouse {
         }
     }
 
+    public void moveElement(int from, int to) {
+        Order moveOrder = this.storageFields[from].viewTopOrder();
+        this.storageFields[from].removeTopElement();
+
+        this.storageFields[to].addOrder(moveOrder);
+    }
+
     public void incrementUsedSpace() {
         if (usedStorage < maxStorage) {
             usedStorage++;
