@@ -33,7 +33,7 @@ public class StorageHandler extends MouseAdapter {
         }
 
         gameOverCheck();
-
+        this.view.repaintImg();
     }
 
     private void moveTask() {
