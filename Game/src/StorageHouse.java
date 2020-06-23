@@ -137,6 +137,14 @@ public class StorageHouse {
         }
     }
 
+    public Order[] getAllTopOrders() {
+        Order[] orderList = new Order[9];
+        for (int i = 0; i < this.storageFields.length; i++) {
+            orderList[i] = this.storageFields[i].viewTopOrder();
+        }
+        return orderList;
+    }
+
     public void destroyOrder(int storageId) {
         if (storageId >= 0 && storageId < storageFields.length) {
             storageFields[storageId].destroyTop();
