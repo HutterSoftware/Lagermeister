@@ -1,13 +1,19 @@
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class View extends JFrame{
 
 
+    private final String storagePicturePath = "./img/order-pic.png";
     private JPanel panel1;
     private JToggleButton destroyButton;
     private JToggleButton moveStorageButton;
@@ -65,8 +71,7 @@ public class View extends JFrame{
         this.setContentPane(panel1);
         this.pack();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
-        this.setVisible(true);
+
         newOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,12 +123,7 @@ public class View extends JFrame{
         this.storagePanelCollection[6] = storage6;
         this.storagePanelCollection[7] = storage7;
         this.storagePanelCollection[8] = storage8;
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                updateAll();
-            }
-        });
+
         bilanzButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -154,6 +154,57 @@ public class View extends JFrame{
                 }
             }
         });
+
+        repaintImg();
+
+        this.setVisible(true);
+    }
+
+    public void repaintImg() {
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                printStoragePictures();
+                printPanelString();
+            }
+        };
+        th.start();
+    }
+
+    private void printStoragePictures() {
+        BufferedImage bufferedImage = null;
+        try {
+            bufferedImage = ImageIO.read(new File(storagePicturePath));
+            Image storageIcon = (Image) bufferedImage;
+
+            for (JPanel panel : storagePanelCollection) {
+                Thread graphicThread = new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        panel.getGraphics().drawImage(storageIcon, 15, 15, 390, 180, new ImageObserver() {
+                            @Override
+                            public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+                                return false;
+                            }
+                        });
+                    }
+                };
+                graphicThread.run();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void printPanelString() {
+        Order[] allTopOrders = storageHouse.getAllTopOrders();
+        for (int i = 0; i < allTopOrders.length; i++) {
+            if (allTopOrders[i] != null){
+                JPanel panel = storagePanelCollection[i];
+                panel.getGraphics().drawString(allTopOrders[i].toString(), 105,110);
+            }
+        }
     }
 
     private void markSelectableElements() {
@@ -226,6 +277,7 @@ public class View extends JFrame{
         Order order = this.orderManager.getCurrentOrder();
         Color[] storageStatus = this.storageHouse.getStorageStatus();
 
+
         if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
             for (int i = 0; i < storageStatus.length; i++) {
                 storagePanelCollection[i].setBorder(getStandardBorder(storageStatus[i]));
@@ -251,6 +303,8 @@ public class View extends JFrame{
                 panel.setBorder(getStandardBorder(Color.WHITE));
             }
         }
+
+        repaintImg();
     }
 
     public void updateCash(int value) {
