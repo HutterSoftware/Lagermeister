@@ -132,7 +132,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -150,7 +150,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -168,7 +168,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -198,7 +198,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -210,7 +210,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -222,7 +222,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -264,7 +264,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -276,7 +276,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
@@ -288,7 +288,7 @@
                 <margin top="60" left="60" bottom="0" right="0"/>
                 <constraints>
                   <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
                 </constraints>
                 <properties>
                   <background color="-8619473"/>
