@@ -100,6 +100,9 @@ public class Storage {
         }
 
         Order topOrder = (Order) this.storage.peek();
+        if (topOrder == null) {
+            return 0;
+        }
         if (topOrder.getAttribute2().equals(OrderExceptionCheck.TIMBER_ATTRIBUTE_STRING)) {
             return 3;
         } else {
