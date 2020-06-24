@@ -128,54 +128,18 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="ec33a" binding="storage6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
               <hspacer id="3ea74">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0" ipadx="10"/>
                 </constraints>
               </hspacer>
-              <grid id="6eaa4" binding="storage7" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
               <hspacer id="91095">
                 <constraints>
                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0" ipadx="10"/>
                 </constraints>
               </hspacer>
-              <grid id="e1216" binding="storage8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
               <vspacer id="312c">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -194,42 +158,6 @@
                   <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
                 </constraints>
               </vspacer>
-              <grid id="796f7" binding="storage3" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
-              <grid id="327c" binding="storage4" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
-              <grid id="f2d1" binding="storage5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
               <vspacer id="37ca1">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -260,43 +188,6 @@
                   <gridbag weightx="0.0" weighty="0.0" ipadx="10"/>
                 </constraints>
               </hspacer>
-              <grid id="f1dc5" binding="storage0" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
-              <grid id="1e870" binding="storage1" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
-              <grid id="2310d" binding="storage2" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="60" left="60" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="100.0" weighty="100.0"/>
-                </constraints>
-                <properties>
-                  <background color="-8619473"/>
-                  <enabled value="true"/>
-                </properties>
-                <border type="none"/>
-                <children/>
-              </grid>
               <hspacer id="b8f92">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -309,6 +200,97 @@
                   <gridbag weightx="0.0" weighty="0.0" ipadx="10"/>
                 </constraints>
               </hspacer>
+              <component id="76bca" class="javax.swing.JLabel" binding="storage6">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="6e482" class="javax.swing.JLabel" binding="storage7">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="101c5" class="javax.swing.JLabel" binding="storage8">
+                <constraints>
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="7cf38" class="javax.swing.JLabel" binding="storage3">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="979fb" class="javax.swing.JLabel" binding="storage4">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="17bf1" class="javax.swing.JLabel" binding="storage5">
+                <constraints>
+                  <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="e1bfd" class="javax.swing.JLabel" binding="storage0">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="54b9d" class="javax.swing.JLabel" binding="storage1">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="53fce" class="javax.swing.JLabel" binding="storage2">
+                <constraints>
+                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="100.0" weighty="100.0"/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="10"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>

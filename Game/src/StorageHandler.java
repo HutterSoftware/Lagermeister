@@ -33,7 +33,7 @@ public class StorageHandler extends MouseAdapter {
         }
 
         gameOverCheck();
-        this.view.repaintImg();
+        this.view.printPanelString();
     }
 
     private void moveTask() {
@@ -60,9 +60,9 @@ public class StorageHandler extends MouseAdapter {
     }
 
     private void destroyOrder(MouseEvent e) {
-        JPanel storage = (JPanel) e.getSource();
+        JLabel storage = (JLabel) e.getSource();
         int containsSource = 0;
-        JPanel[] list = this.view.getStoragePanels();
+        JLabel[] list = this.view.getStoragePanels();
         for (containsSource = 0; containsSource < list.length; containsSource++) {
             if (list[containsSource] == storage) {
                 break;

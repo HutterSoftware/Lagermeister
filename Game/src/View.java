@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class View extends JFrame{
 
 
-    private final String storagePicturePath = "./img/order-pic.png";
+    private final String storagePicturePath = "../img/order-pic.png";
     private JPanel panel1;
     private JToggleButton destroyButton;
     private JToggleButton moveStorageButton;
@@ -22,15 +22,17 @@ public class View extends JFrame{
     private JButton orderLeftView;
     private JButton orderRightView;
     private JLabel cashLabel;
-    private JPanel storage6;
-    private JPanel storage7;
-    private JPanel storage3;
-    private JPanel storage4;
-    private JPanel storage5;
-    private JPanel storage0;
-    private JPanel storage1;
-    private JPanel storage2;
-    private JPanel storage8;
+
+    private JLabel storage6;
+    private JLabel storage7;
+    private JLabel storage3;
+    private JLabel storage4;
+    private JLabel storage5;
+    private JLabel storage0;
+    private JLabel storage1;
+    private JLabel storage2;
+    private JLabel storage8;
+
     private JLabel product;
     private JLabel orderType;
     private JLabel money;
@@ -52,7 +54,7 @@ public class View extends JFrame{
     public static int NEXT_ORDER = 1;
 
     private int borderThicness = 15;
-    private JPanel[] storagePanelCollection;
+    private JLabel[] storagePanelCollection;
     private OrderManager orderManager;
     private AccountManager accountManager;
     private StorageHouse storageHouse;
@@ -113,7 +115,7 @@ public class View extends JFrame{
         storage7.addMouseListener(new StorageHandler(storage7Id, this.orderManager, this.accountManager,this));
         storage8.addMouseListener(new StorageHandler(storage8Id, this.orderManager, this.accountManager,this));
 
-        this.storagePanelCollection = new JPanel[9];
+        this.storagePanelCollection = new JLabel[9];
         this.storagePanelCollection[0] = storage0;
         this.storagePanelCollection[1] = storage1;
         this.storagePanelCollection[2] = storage2;
@@ -155,39 +157,27 @@ public class View extends JFrame{
             }
         });
 
-        repaintImg();
+        printStoragePictures();
 
         this.setVisible(true);
     }
 
-    public void repaintImg() {
-        Thread th = new Thread() {
-            @Override
-            public void run() {
-                printStoragePictures();
-                printPanelString();
-            }
-        };
-        th.start();
-    }
 
     private void printStoragePictures() {
         BufferedImage bufferedImage = null;
         try {
             bufferedImage = ImageIO.read(new File(storagePicturePath));
             Image storageIcon = (Image) bufferedImage;
+            ImageIcon icon = new ImageIcon(storageIcon);
 
-            for (JPanel panel : storagePanelCollection) {
+            for (JLabel panel : storagePanelCollection) {
                 Thread graphicThread = new Thread() {
                     @Override
                     public void run() {
                         super.run();
-                        panel.getGraphics().drawImage(storageIcon, 15, 15, 390, 180, new ImageObserver() {
-                            @Override
-                            public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-                                return false;
-                            }
-                        });
+                        panel.setLayout(null);
+                        panel.setSize(500,500);
+                        panel.setIcon(icon);
                     }
                 };
                 graphicThread.run();
@@ -197,12 +187,14 @@ public class View extends JFrame{
         }
     }
 
-    private void printPanelString() {
+    public void printPanelString() {
         Order[] allTopOrders = storageHouse.getAllTopOrders();
         for (int i = 0; i < allTopOrders.length; i++) {
+            JLabel panel = storagePanelCollection[i];
             if (allTopOrders[i] != null){
-                JPanel panel = storagePanelCollection[i];
-                panel.getGraphics().drawString(allTopOrders[i].toString(), 105,110);
+                panel.setText(allTopOrders[i].toString());
+            } else {
+                panel.setText("leer");
             }
         }
     }
@@ -299,12 +291,12 @@ public class View extends JFrame{
                 }
             }
         } else {
-            for (JPanel panel : storagePanelCollection) {
+            for (JLabel panel : storagePanelCollection) {
                 panel.setBorder(getStandardBorder(Color.WHITE));
             }
         }
 
-        repaintImg();
+        printPanelString();
     }
 
     public void updateCash(int value) {
@@ -367,7 +359,7 @@ public class View extends JFrame{
         return this.destroyButton.isSelected();
     }
 
-    public JPanel[] getStoragePanels() {
+    public JLabel[] getStoragePanels() {
         return this.storagePanelCollection;
     }
 }
