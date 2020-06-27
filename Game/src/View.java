@@ -27,10 +27,12 @@ import java.util.ArrayList;
 public class View extends JFrame{
 
 
-    private static final int STORAGE_FONT_SIZE = 14;
-    private final String storagePicturePath = "../img/order-pic.png";
-    private final String menuPanelPicturePath = "../img/menu_panel_background.png";
-    private final String infoPanelPicturePath = "../img/info_panel_background.png";
+    private static final int STORAGE_FONT_SIZE = 12;
+    private final String storagePicturePath = "img/order-pic.png";
+    private final String menuPanelPicturePath = "img/menu_panel_background.png";
+    private final String infoPanelPicturePath = "img/info_panel_background.png";
+    private final String leftArrowPicturePath = "img/left-arrow.png";
+    private final String rightArrowPicturePath = "img/right-arrow.png";
     private final int[] menuPanelPictureSettings = {0,0,132,516};
     private final int[] infoPanelPictureSettings = {0,0,900,62};
 
@@ -41,10 +43,10 @@ public class View extends JFrame{
             "JToggleButton"
     };
     private final int[] zLayerLevel = {
+            2,
             1,
-            0,
-            1,
-            1
+            2,
+            2
     };
 
     private JPanel panel1;
@@ -113,37 +115,7 @@ public class View extends JFrame{
         this.setSize(900,600);
         this.setResizable(false);
 
-
-        newOrderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                orderManager.loadNewOrder();
-                updateAll();
-                visualizeStorage();
-            }
-        });
-        orderRightView.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                orderViewButtonAction(View.NEXT_ORDER);
-            }
-        });
-        orderLeftView.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                orderViewButtonAction(View.PREVIOUS_ORDER);
-            }
-        });
-        destroyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (destroyButton.isSelected()) {
-                    destroyButton.setText("Nicht Zerstören");
-                } else {
-                    destroyButton.setText("Zerstören");
-                }
-            }
-        });
+        setActionListener();
 
         storage0.addMouseListener(new StorageHandler(storage0Id, this.orderManager, this.accountManager,this));
         storage1.addMouseListener(new StorageHandler(storage1Id, this.orderManager, this.accountManager,this));
@@ -170,6 +142,49 @@ public class View extends JFrame{
             storageLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, STORAGE_FONT_SIZE));
         }
 
+        visualizeStorage();
+        printStoragePictures();
+        orderLeftView.setIcon(getImage(this.leftArrowPicturePath));
+        orderRightView.setIcon(getImage(this.rightArrowPicturePath));
+
+        this.setVisible(true);
+        loadGamePictures();
+    }
+
+    private void setActionListener() {
+        newOrderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                orderManager.loadNewOrder();
+                updateAll();
+                visualizeStorage();
+            }
+        });
+        orderRightView.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                orderViewButtonAction(View.NEXT_ORDER);
+            }
+        });
+        orderLeftView.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                orderViewButtonAction(View.PREVIOUS_ORDER);
+            }
+        });
+
+        destroyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (destroyButton.isSelected()) {
+                    destroyButton.setText("Nicht Zerstören");
+                } else {
+                    destroyButton.setText("Zerstören");
+                }
+
+            }
+        });
+
         bilanzButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -190,22 +205,22 @@ public class View extends JFrame{
             }
         });
 
-        visualizeStorage();
         moveStorageButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 todoLabel.setText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
                 if (moveStorageButton.isSelected()) {
                     markSelectableElements();
+                } else {
+                    resetSelectedMoveI();
+                    visualizeStorage();
                 }
             }
         });
+    }
 
-        printStoragePictures();
-
-        this.setVisible(true);
-
-        Timer timer = new Timer(1, new ActionListener() {
+    private void paintPictures() {
+        Timer timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadGamePictures();
@@ -215,52 +230,35 @@ public class View extends JFrame{
         timer.start();
     }
 
-    private void setZLayer(Component component) {
-        if (component != null) {
-            if (component.getClass().toString().equals(this.zLayerType[0])) {
-                this.setComponentZOrder(component, this.zLayerLevel[0]);
-            } else if (component.getClass().toString().equals(this.zLayerType[1])) {
-                this.setComponentZOrder(component, this.zLayerLevel[1]);
-            } else if (component.getClass().toString().equals(this.zLayerType[2])) {
-                this.setComponentZOrder(component, this.zLayerLevel[2]);
-            } else if (component.getClass().toString().equals(this.zLayerType[3])) {
-                this.setComponentZOrder(component, this.zLayerLevel[3]);
-            } else {
-                if (component.getClass().toString().equals("View")) {
-                    System.out.println();
-                }
-                if (!component.getClass().toString().equals("class View")) {
-                    this.setComponentZOrder(component, 0);
-                }
-            }
-
-            if (component.getClass().equals("JPanel")) {
-                for (Component nextComponent : ((JPanel)component).getComponents()) {
-                    setZLayer((JComponent) nextComponent);
-                }
-            }
-        }
-    }
-
     private void loadGamePictures() {
-        setZLayer((Component)this);
+        this.menuItemGrid.setOpaque(false);
+        this.informationGrid.setOpaque(false);
 
         drawImage(this.menuItemGrid.getGraphics(), this.menuPanelPicturePath, this.menuPanelPictureSettings);
         drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
+
+        Timer timer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (Component component : menuItemGrid.getComponents()) {
+                    component.requestFocus();
+                }
+
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     private void drawImage(Graphics graphic, String imagePath, int[] settings) {
         Image menuPanelBackground = getImage(imagePath).getImage();
+        paintComponents(graphic);
         graphic.drawImage(menuPanelBackground, settings[0],
                 settings[1],
                 settings[2],
                 settings[3],
-                new ImageObserver() {
-                    @Override
-                    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-                        return false;
-                    }
-                });
+                null);
+        graphic.dispose();
     }
 
     private ImageIcon getImage(String path) {
