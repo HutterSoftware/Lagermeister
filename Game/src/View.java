@@ -1,9 +1,23 @@
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.Timer;
 import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
@@ -13,7 +27,26 @@ import java.util.ArrayList;
 public class View extends JFrame{
 
 
+    private static final int STORAGE_FONT_SIZE = 14;
     private final String storagePicturePath = "../img/order-pic.png";
+    private final String menuPanelPicturePath = "../img/menu_panel_background.png";
+    private final String infoPanelPicturePath = "../img/info_panel_background.png";
+    private final int[] menuPanelPictureSettings = {0,0,132,516};
+    private final int[] infoPanelPictureSettings = {0,0,900,62};
+
+    private final String[] zLayerType = {
+            "JButton",
+            "JPanel",
+            "JLabel",
+            "JToggleButton"
+    };
+    private final int[] zLayerLevel = {
+            1,
+            0,
+            1,
+            1
+    };
+
     private JPanel panel1;
     private JToggleButton destroyButton;
     private JToggleButton moveStorageButton;
@@ -38,6 +71,10 @@ public class View extends JFrame{
     private JLabel money;
     private JLabel todoLabel;
     private JButton helpButton;
+    private JPanel menuItemGrid;
+    private JPanel informationGrid;
+    private JPanel storageRootPanel;
+    private JPanel orderInformationRootPanel;
 
     private static int storage0Id = 0;
     private static int storage1Id = 1;
@@ -72,7 +109,10 @@ public class View extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(panel1);
         this.pack();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        this.setSize(900,600);
+        this.setResizable(false);
+
 
         newOrderButton.addActionListener(new ActionListener() {
             @Override
@@ -126,6 +166,10 @@ public class View extends JFrame{
         this.storagePanelCollection[7] = storage7;
         this.storagePanelCollection[8] = storage8;
 
+        for (JLabel storageLabel : storagePanelCollection) {
+            storageLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, STORAGE_FONT_SIZE));
+        }
+
         bilanzButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -160,8 +204,74 @@ public class View extends JFrame{
         printStoragePictures();
 
         this.setVisible(true);
+
+        Timer timer = new Timer(1, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadGamePictures();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
+    private void setZLayer(Component component) {
+        if (component != null) {
+            if (component.getClass().toString().equals(this.zLayerType[0])) {
+                this.setComponentZOrder(component, this.zLayerLevel[0]);
+            } else if (component.getClass().toString().equals(this.zLayerType[1])) {
+                this.setComponentZOrder(component, this.zLayerLevel[1]);
+            } else if (component.getClass().toString().equals(this.zLayerType[2])) {
+                this.setComponentZOrder(component, this.zLayerLevel[2]);
+            } else if (component.getClass().toString().equals(this.zLayerType[3])) {
+                this.setComponentZOrder(component, this.zLayerLevel[3]);
+            } else {
+                if (component.getClass().toString().equals("View")) {
+                    System.out.println();
+                }
+                if (!component.getClass().toString().equals("class View")) {
+                    this.setComponentZOrder(component, 0);
+                }
+            }
+
+            if (component.getClass().equals("JPanel")) {
+                for (Component nextComponent : ((JPanel)component).getComponents()) {
+                    setZLayer((JComponent) nextComponent);
+                }
+            }
+        }
+    }
+
+    private void loadGamePictures() {
+        setZLayer((Component)this);
+
+        drawImage(this.menuItemGrid.getGraphics(), this.menuPanelPicturePath, this.menuPanelPictureSettings);
+        drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
+    }
+
+    private void drawImage(Graphics graphic, String imagePath, int[] settings) {
+        Image menuPanelBackground = getImage(imagePath).getImage();
+        graphic.drawImage(menuPanelBackground, settings[0],
+                settings[1],
+                settings[2],
+                settings[3],
+                new ImageObserver() {
+                    @Override
+                    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+                        return false;
+                    }
+                });
+    }
+
+    private ImageIcon getImage(String path) {
+        try {
+            BufferedImage bImage = ImageIO.read(new File(path));
+            return new ImageIcon(bImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     private void printStoragePictures() {
         BufferedImage bufferedImage = null;
@@ -192,7 +302,7 @@ public class View extends JFrame{
         for (int i = 0; i < allTopOrders.length; i++) {
             JLabel panel = storagePanelCollection[i];
             if (allTopOrders[i] != null){
-                panel.setText(allTopOrders[i].toString());
+                panel.setText(allTopOrders[i].toStringWithoutCash());
             } else {
                 panel.setText("leer");
             }
