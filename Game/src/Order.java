@@ -107,4 +107,9 @@ public class Order {
                 this.productName + ", " + this.attribute1 + ", " + this.attribute2,
                 this.cash};
     }
+
+    public String toStringWithoutCash() {
+        return new String(  this.productName +
+                ", " + this.attribute1 + ", " + this.attribute2);
+    }
 }
