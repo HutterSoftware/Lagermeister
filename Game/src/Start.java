@@ -6,6 +6,10 @@ public class Start {
     public static AccountManager accountManager;
     public static View view;
 
+    /**
+     * This method starts the game
+     * @param args One parameter is needed. This parameters contains a path to CSV file.
+     */
     public static void main(String[] args) {
         // Create a list of orders to manage the game main task
         Order[]orderList = Order.createOrderListFromFile(args[0]);
