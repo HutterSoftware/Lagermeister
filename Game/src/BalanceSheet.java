@@ -1,7 +1,9 @@
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
+import java.util.ArrayList;
 
 public class BalanceSheet extends JFrame {
 
@@ -23,7 +25,6 @@ public class BalanceSheet extends JFrame {
         for (String name : columnNames) {
             model.addColumn(name);
         }
-
     }
 
     private DefaultTableModel getDefaultModel() {
@@ -40,23 +41,10 @@ public class BalanceSheet extends JFrame {
         updateConclusion(order);
     }
 
-
-
     private void updateConclusion(Order order) {
-        if (order.getOrderType().equals(Order.INCOMING_ORDER_STRING) ||
-                order.getOrderType().equals(Order.OUTGOING_ORDER_STRING)) {
-
-            this.profitLabel.setText(
-                    Integer.toString(Integer.parseInt(this.turnoverLabel.getText()) + order.getCash()));
-        } else if (order.getOrderType().equals(Order.MOVING_ORDER_STRING) ||
-                order.getOrderType().equals(Order.DESTROY_ORDER_STRING)) {
-
-            this.costLabel.setText(
-                    Integer.toString(Integer.parseInt(this.turnoverLabel.getText()) + order.getCash()));
-        }
-
-        this.turnoverLabel.setText(
-                Integer.toString(Integer.parseInt(this.turnoverLabel.getText()) + order.getCash()));
+        this.costLabel.setText(Integer.toString(Start.accountManager.getCosts()));
+        this.profitLabel.setText(Integer.toString(Start.accountManager.getWin()));
+        this.turnoverLabel.setText(Integer.toString(Start.accountManager.getTurnover()));
     }
 
     public void showBalanceSheet() {
@@ -68,13 +56,11 @@ public class BalanceSheet extends JFrame {
         this.costLabel.setText(Integer.toString(currentCost + Math.abs(newCosts)));
     }
 
-    public void addNewMoveBill() {
-        addNewBill(Start.accountManager.getMoveOrder());
-        updateCostLabel(Start.accountManager.getMoveOrder().getCash());
-    }
+    public void updateTable(ArrayList<Order> transactionList) {
+        DefaultTableModel table = getDefaultModel();
 
-    public void addDestroyBill() {
-        addNewBill(Start.accountManager.getDestroyOrder());
-        updateCostLabel(Start.accountManager.getDestroyOrder().getCash());
+        for (Order order : transactionList) {
+            addNewBill(order);
+        }
     }
 }
