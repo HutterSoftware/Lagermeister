@@ -42,19 +42,23 @@ public class StorageHandler extends MouseAdapter {
         }
 
         if (Start.view.getSelectedMoveId() == -1) {
+            if (view.getStorageHouse().storageFields[this.storageId].getStorageSize() == 0) {
+                JOptionPane.showMessageDialog(null, Messages.MOVE_SELECT_STORAGE_WITH_CONTENT);
+                return;
+            }
             Start.view.setSelectedMoveId(this.storageId);
             Start.view.markAvailableMovingTargets();
         } else {
             Start.storageHouse.moveElement(Start.view.getSelectedMoveId(), this.storageId);
             Start.view.resetSelectedMoveI();
-            Start.view.disselectMoveToggleButton();
+            Start.view.disSelectMoveToggleButton();
             Start.view.visualizeStorage();
-            Start.accountManager.accountMoveOrder();
+            Start.accountManager.accountOrder(AccountManager.MOVE_ORDER);
             if (Start.view.getBalanceSheet() != null) {
-                Start.view.getBalanceSheet().addNewMoveBill();
+                Start.view.getBalanceSheet().addNewBill(AccountManager.MOVE_ORDER);
             }
 
-            view.updateCash(Start.accountManager.getMoveOrder().getCash());
+            view.updateCash(AccountManager.MOVE_ORDER.getCash());
             this.view.updateAll();
         }
     }
@@ -69,14 +73,19 @@ public class StorageHandler extends MouseAdapter {
             }
         }
 
-        Start.storageHouse.destroyOrder(
-                containsSource);
+        if (Start.storageHouse.storageFields[containsSource].getStorageSize() == 0) {
+            JOptionPane.showMessageDialog(null, Messages.CANNOT_DESTROY_ITS_EMPTY);
+            return;
+        }
+
+        Start.storageHouse.destroyOrder(containsSource);
 
         if (view.getBalanceSheet() != null) {
-            view.getBalanceSheet().addDestroyBill();
+            view.getBalanceSheet().addNewBill(AccountManager.DESTROY_ORDER);
         }
-        view.updateCash(Start.accountManager.getDestroyOrder().getCash());
-        Start.accountManager.accountDestroyOrder();
+        Start.accountManager.accountOrder(AccountManager.DESTROY_ORDER);
+
+        view.updateCash(accountManager.getAccount());
         this.view.updateAll();
     }
 
