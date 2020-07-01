@@ -308,13 +308,14 @@ public class View extends JFrame{
         drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
 
         // Creating of focus Timer
-        Timer timer = new Timer(10, new ActionListener() {
+        Timer timer = new Timer(200, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Focusing of all elements in JPanel to set it in foreground
                 for (Component component : menuItemGrid.getComponents()) {
                     component.requestFocus();
                 }
+                focusInformationGridElements();
             }
 
         });
@@ -322,9 +323,11 @@ public class View extends JFrame{
         // Setting one shot timer. Starting of Timer
         timer.setRepeats(false);
         timer.start();
-        focusInformationGridElements();
     }
 
+    /**
+     * Focusing of todoLabel and cashLabel (preventing of overdrawing)
+     */
     private void focusInformationGridElements() {
         todoLabel.requestFocus();
         cashLabel.requestFocus();
@@ -533,19 +536,9 @@ public class View extends JFrame{
             }
 
         } else if (order.getOrderType() == Order.OUTGOING_ORDER_STRING) {
-            int resultCounter = 0;
-            ArrayList<Integer> results = Start.storageHouse.findProduct(order);
+            StorageHouse.SearchResult[] results = Start.storageHouse.findProduct(order);
             for (int i = 0; i < this.storagePanelCollection.length; i++) {
-                if (resultCounter < results.size()) {
-                    if (results.get(resultCounter) == i) {
-                        storagePanelCollection[i].setBorder(getStandardBorder(Color.BLUE));
-                        resultCounter++;
-                    } else {
-                        storagePanelCollection[i].setBorder(getStandardBorder(Color.RED));
-                    }
-                } else {
-                    storagePanelCollection[i].setBorder(getStandardBorder(Color.RED));
-                }
+                storagePanelCollection[i].setBorder(getStandardBorder(results[i].getStatus()));
             }
         } else {
             for (JLabel panel : storagePanelCollection) {
@@ -566,12 +559,14 @@ public class View extends JFrame{
     }
 
     /**
-     *
+     *  Updating order view in the header area of the game
      */
     private void updateOrderViewItems() {
         if (this.orderManager.hasOrders()) {
+            // Load current order
             Order order = orderManager.getCurrentOrder();
 
+            // Updating order Information
             this.product.setText(order.getProductName() + " " + order.getAttribute1() + " " + order.getAttribute2());
             this.orderType.setText(order.getOrderType());
             this.money.setText(Integer.toString(order.getCash()) + "€");
@@ -581,16 +576,19 @@ public class View extends JFrame{
             } else {
                 this.todoLabel.setText(Messages.SELECT_STORAGE_TO_DELIVER);
             }
-
-
         } else {
             this.product.setText("");
             this.orderType.setText("");
             this.money.setText("0€");
         }
+
+        // Set new enable status
         setEnableControlOfViewButtons();
     }
 
+    /**
+     * Setting enable status of order buttons
+     */
     private void setEnableControlOfViewButtons() {
         if (this.orderManager.isSelectedOrderFirst()) {
             orderLeftView.setEnabled(false);
@@ -604,18 +602,34 @@ public class View extends JFrame{
         }
     }
 
+    /**
+     * Returning of storageHouse
+     * @return
+     */
     public StorageHouse getStorageHouse() {
         return this.storageHouse;
     }
 
+    /**
+     * Returning of balancesheet
+     * @return
+     */
     public BalanceSheet getBalanceSheet() {
         return this.balanceSheet;
     }
 
+    /**
+     * Returning of destroyButton pressed status
+     * @return
+     */
     public boolean isDestroyButtonPressed() {
         return this.destroyButton.isSelected();
     }
 
+    /**
+     * Returning of storage array
+     * @return
+     */
     public JLabel[] getStoragePanels() {
         return this.storagePanelCollection;
     }
