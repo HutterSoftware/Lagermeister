@@ -73,7 +73,7 @@ public class StorageHandler extends MouseAdapter {
             // Mark available target storage
             Start.view.markAvailableMovingTargets();
         } else {
-            // Movinng the element from source to target
+            // Moving the element from source to target
             Start.storageHouse.moveElement(Start.view.getSelectedMoveId(), this.storageId);
             Start.view.resetSelectedMoveI();
             Start.view.disSelectMoveToggleButton();
@@ -174,10 +174,15 @@ public class StorageHandler extends MouseAdapter {
                 successful = Start.storageHouse.storeOrder(storageId, order);
             }
         } else {
-            successful = Start.storageHouse.deliverOrder(storageId, order);
+            if (Start.storageHouse.deliverOrder(storageId, order) == StorageHouse.IS_AT_TOP) {
+                successful = true;
+            }
         }
 
         if (!successful) {
+            if (Start.storageHouse.deliverOrder(storageId, order) == StorageHouse.STORAGE_CONTAINS_ORDER) {
+                JOptionPane.showMessageDialog(null, Messages.OBJECT_IS_COVERED);
+            }
             return;
         }
 
@@ -211,7 +216,7 @@ public class StorageHandler extends MouseAdapter {
 
         int orderFailCounter = 0;
         for (Order order : Start.orderManager.getActiveOrders()) {
-            orderFailCounter += Start.storageHouse.findProduct(order).size();
+            //orderFailCounter += Start.storageHouse.findProduct(order).size();
         }
         // orderFailcounter == 0 means cannot deliver order
 
