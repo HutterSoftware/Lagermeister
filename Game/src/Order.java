@@ -5,19 +5,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Order {
+
+    // Creating required attributes
     private String productName;
     private String attribute1;
     private String attribute2;
     private int cash;
     private boolean outgoingOrder = false;
 
+    // Creating standard orders
     public static String OUTGOING_ORDER_STRING = "Auslagerung";
     public static String INCOMING_ORDER_STRING = "Einlagerung";
     public static String MOVING_ORDER_STRING = "Umlagerung";
     public static String DESTROY_ORDER_STRING = "Objektzerstörung";
     private static String ORDER_PARAMETER_DELIMITER = ";";
 
+    /**
+     * This constructor initialize all attributes
+     * @param productName
+     * @param attribute1
+     * @param attribute2
+     * @param orderType
+     * @param cash
+     */
     public Order(String productName, String attribute1, String attribute2, String orderType, String cash) {
+        // Setting parameter to attribute
         this.productName = productName;
         this.attribute1 = attribute1;
         this.attribute2 = attribute2;
@@ -32,11 +44,17 @@ public class Order {
         }
     }
 
+    /**
+     * Load orders from Leistungsnachweis.csv and save it into Order array
+     * @param fileName
+     * @return
+     */
     public static Order[] createOrderListFromFile(String fileName) {
         File orderFile = new File(fileName);
         ArrayList<Order> orders = new ArrayList<>();
         String line = "";
 
+        // Checking file requirements
         if (!orderFile.exists()) {
             return orders.toArray(new Order[0]);
         }
@@ -45,6 +63,7 @@ public class Order {
             return orders.toArray(new Order[0]);
         }
 
+        // Reading file and create Order array
         try {
             BufferedReader reader = new BufferedReader(new FileReader(orderFile));
 
@@ -63,22 +82,42 @@ public class Order {
         return orders.toArray(new Order[0]);
     }
 
+    /**
+     * Returns product name
+     * @return
+     */
     public String getProductName() {
         return productName;
     }
 
+    /**
+     * Returns the first attribute
+     * @return
+     */
     public String getAttribute1() {
         return attribute1;
     }
 
+    /**
+     * Returns the second attribte
+     * @return
+     */
     public String getAttribute2() {
         return attribute2;
     }
 
+    /**
+     * Returns cash of order
+     * @return
+     */
     public int getCash() {
         return cash;
     }
 
+    /**
+     * Returns the order type (incoming or out coming)
+     * @return
+     */
     public String getOrderType() {
         if (this.outgoingOrder == true) {
             return Order.OUTGOING_ORDER_STRING;
@@ -87,6 +126,10 @@ public class Order {
         }
     }
 
+    /**
+     * Converting object to string
+     * @return
+     */
     @Override
     public String toString() {
         String orderTypeString;
@@ -100,6 +143,10 @@ public class Order {
                 Integer.toString(this.cash);
     }
 
+    /**
+     * Returns the standard attributes to an Object array
+     * @return
+     */
     public Object[] toArray() {
 
         return new Object[]{ 0,
@@ -108,6 +155,10 @@ public class Order {
                 this.cash};
     }
 
+    /**
+     * Its like the method toaArray. The differ is the lost cash value
+     * @return
+     */
     public String toStringWithoutCash() {
         return new String(  this.productName +
                 ", " + this.attribute1 + ", " + this.attribute2);
