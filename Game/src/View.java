@@ -13,16 +13,13 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class View extends JFrame{
+public class View extends JFrame implements KeyListener {
 
     // Setting of picture paths and settings
     private static final int STORAGE_FONT_SIZE = 12;
@@ -63,6 +60,7 @@ public class View extends JFrame{
     private JPanel informationGrid;
     private JPanel storageRootPanel;
     private JPanel orderInformationRootPanel;
+    private JPanel storageGrid;
 
     // Setting id's to all storage panels
     private static int storage0Id = 0;
@@ -89,6 +87,7 @@ public class View extends JFrame{
     private BalanceSheet balanceSheet;
     private HelpDesk helpDesk;
     private int selectedMoveId = -1;
+    private ShortCutFun shortCutFun;
 
     /**
      * This constructor initialize all important variables and assin them values
@@ -150,6 +149,8 @@ public class View extends JFrame{
         // Show JFrame before draw images
         this.setVisible(true);
         loadGamePictures();
+
+        this.shortCutFun = new ShortCutFun(this);
     }
 
     /**
@@ -293,6 +294,34 @@ public class View extends JFrame{
         });
         timer.setRepeats(false);
         timer.start();
+    }
+
+    /**
+     * This method set selected status to destroy button
+     */
+    public void setSelectDestroyButton() {
+        destroyButton.setSelected(true);
+    }
+
+    /**
+     * This method set deselected status to destroy button
+     */
+    public void setDeSelectedDestroyButton() {
+        destroyButton.setSelected(false);
+    }
+
+    /**
+     * This method set selected status to move button
+     */
+    public void setSelectedMoveButton() {
+        moveStorageButton.setSelected(true);
+    }
+
+    /**
+     * This method set deselected status to move button
+     */
+    public void setDeselectedMoveButton() {
+        moveStorageButton.setSelected(false);
     }
 
     /**
@@ -632,5 +661,20 @@ public class View extends JFrame{
      */
     public JLabel[] getStoragePanels() {
         return this.storagePanelCollection;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("wfe");
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("wafwfawefaw");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+System.out.println(e.getKeyChar());
     }
 }

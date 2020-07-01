@@ -61,7 +61,7 @@
           </component>
         </children>
       </grid>
-      <grid id="92ad6" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="92ad6" binding="storageGrid" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties>
           <background color="-12697023"/>
