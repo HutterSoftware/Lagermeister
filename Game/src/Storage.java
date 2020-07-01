@@ -39,29 +39,20 @@ public class Storage {
     }
 
     private boolean equal(Order order) {
-        this.storage.contains(order);
+        for (int i = 0; i < this.storage.size(); i++) {
+            Order checkObject = (Order)this.storage.elementAt(i);
+            if (checkObject.getProductName().equals(order.getProductName()) &&
+                checkObject.getAttribute1().equals(order.getAttribute1()) &&
+                checkObject.getAttribute2().equals(order.getAttribute2())) {
 
-        boolean result = false;
-        Stack btStack = new Stack<>();
-        while (!this.storage.empty()) {
-            Order btOrder = (Order) this.storage.peek();
-            if (btOrder.getProductName() == order.getProductName()
-                    && btOrder.getAttribute1() == order.getAttribute1()
-                    && btOrder.getAttribute2() == order.getAttribute2()) {
-                result = true;
+                return true;
             }
-            btStack.push(this.storage.peek());
-            this.storage.pop();
         }
-
-        while(!btStack.empty()) {
-            this.storage.push(btStack.peek());
-            btStack.pop();
-        }
-        return result;
+        return false;
     }
 
     public boolean containsProduct(Order order) {
+
         if (equal(order)) {
             return true;
         } else {
@@ -86,14 +77,6 @@ public class Storage {
         }
     }
 
-    public int getFieldPositionY() {
-        return fieldPositionY;
-    }
-
-    public int getFieldPositionX() {
-        return fieldPositionX;
-    }
-
     public int getStorageSize() {
         if (this.storage.empty()) {
             return 0;
@@ -103,7 +86,7 @@ public class Storage {
         if (topOrder == null) {
             return 0;
         }
-        if (topOrder.getAttribute2().equals(OrderExceptionCheck.TIMBER_ATTRIBUTE_STRING)) {
+        if (topOrder.getAttribute2().equals(StorageHandler.TIMBER_ATTRIBUTE_STRING)) {
             return 3;
         } else {
             return this.storage.size();
