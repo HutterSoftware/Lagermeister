@@ -1,5 +1,6 @@
 public class Messages {
 
+    // Defining of message constants
     public static final String CANNOT_DESTROY_ITS_EMPTY = "Lagerplatz ist schon leer";
     public static final String CANNOT_GET_MORE_ORDER_MESSAGE = "Es können keine weiteren Auträge gezogen werden.";
     public static final String STORAGE_FIELD_FULL_MESSAGE = "Dieses Feld ist bereits voll";
