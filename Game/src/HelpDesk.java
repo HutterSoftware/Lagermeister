@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class HelpDesk extends JFrame {
-
+//TODO:  Updating help desk gui
     private JPanel contentPane;
     private JPanel hasElementPanel;
     private JPanel containsOneElementPanel;
