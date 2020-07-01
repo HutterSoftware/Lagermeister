@@ -17,33 +17,30 @@ public class StorageHouse {
     public static Color FIELD_TWO = Color.yellow;
     public static Color FIELD_THREE = Color.red;
 
-    /**
-     * Getting status of all storages
-     * @return
-     */
-    public Color[] getStorageStatus() {
-        Color[] status = new Color[9];
+    public static int IS_AT_TOP = 0;
+    public static int STORAGE_CONTAINS_ORDER = 1;
+    public static int STORAGE_HAS_NO_OBJECT_LIKE_REQUIRED = -1;
 
-        for (int i = 0; i < 9; i++) {
-            switch (storageFields[i].getStorageSize()) {
-                case 0:
-                    status[i] = FIELD_EMPTY;
-                    break;
+    public static Color FIELD_CONTAINS_ORDER_BUT_IS_NOT_AT_TOP = Color.CYAN;
+    public static Color FIELD_CONTAINS_ORDER_IS_ON_TOP = Color.BLUE;
+    public static Color FIELD_HAS_NOT_THE_REQUIRED_ORDER = Color.RED;
 
-                case 1:
-                    status[i] = FIELD_ONE;
-                    break;
+    public class SearchResult  {
+        private int index;
+        private Color status;
 
-                case 2:
-                    status[i] = FIELD_TWO;
-                    break;
-
-                case 3:
-                    status[i] = FIELD_THREE;
-            }
+        public SearchResult(int index, Color status) {
+            this.index = index;
+            this.status = status;
         }
 
-        return status;
+        public int getIndex() {
+            return this.index;
+        }
+
+        public Color getStatus() {
+            return this.status;
+        }
     }
 
     /*
@@ -79,17 +76,50 @@ public class StorageHouse {
     }
 
     /**
+     * Getting status of all storages
+     * @return
+     */
+    public Color[] getStorageStatus() {
+        Color[] status = new Color[9];
+
+        for (int i = 0; i < 9; i++) {
+            switch (storageFields[i].getStorageSize()) {
+                case 0:
+                    status[i] = FIELD_EMPTY;
+                    break;
+
+                case 1:
+                    status[i] = FIELD_ONE;
+                    break;
+
+                case 2:
+                    status[i] = FIELD_TWO;
+                    break;
+
+                case 3:
+                    status[i] = FIELD_THREE;
+            }
+        }
+
+        return status;
+    }
+
+    /**
      * This method is searching for needed products
      * @param orderObject
      * @return
      */
-    public ArrayList<Integer> findProduct(Order orderObject) {
-        ArrayList<Integer> resultList = new ArrayList<>();
+    public SearchResult[] findProduct(Order orderObject) {
+        SearchResult[] resultList = new SearchResult[9];
 
-        // Getting status of all stoarges
+        // Getting status of all storage elements
         for (int i = 0; i < this.storageFields.length; i++) {
             if (this.storageFields[i].isOrderAtTop(orderObject)) {
-                resultList.add(i);
+                resultList[i] = new SearchResult(i, StorageHouse.FIELD_CONTAINS_ORDER_IS_ON_TOP);
+            } else if (this.storageFields[i].containsProduct(orderObject)) {
+                resultList[i] = new SearchResult(i, StorageHouse.FIELD_CONTAINS_ORDER_BUT_IS_NOT_AT_TOP);
+            } else {
+                resultList[i] = new SearchResult(i, StorageHouse.FIELD_HAS_NOT_THE_REQUIRED_ORDER);
             }
         }
 
@@ -120,13 +150,15 @@ public class StorageHouse {
      * @param order
      * @return
      */
-    public boolean deliverOrder(int storageId, Order order) {
+    public int deliverOrder(int storageId, Order order) {
         if (this.storageFields[storageId].isOrderAtTop(order)) {
             storageFields[storageId].removeTopElement();
             deincrementUsedSpace();
-            return true;
+            return StorageHouse.IS_AT_TOP; // is at top
+        } else if (this.storageFields[storageId].containsProduct(order)) {
+            return StorageHouse.STORAGE_CONTAINS_ORDER; // Is in object but not on top
         } else {
-            return false;
+            return StorageHouse.STORAGE_HAS_NO_OBJECT_LIKE_REQUIRED; // Storage hasn't this order
         }
     }
 
