@@ -5,8 +5,7 @@ import java.awt.event.KeyListener;
 
 public class ShortCutFun implements KeyListener {
 
-    private View view;
-
+    // ShortCutFun constants
     public static final char TOP_ARROW_CHAR_LOWER = 'w';
     public static final char TOP_ARROW_CHAR_UPPER = 'W';
 
@@ -18,7 +17,6 @@ public class ShortCutFun implements KeyListener {
 
     public static final char LEFT_ARROW_CHAR_LOWER = 'a';
     public static final char LEFT_ARROW_CHAR_UPPER = 'A';
-
 
     public static final char ORDER_VIEW_RIGHT_ARROW_CHAR_LOWER = 'e';
     public static final char ORDER_VIEW_RIGHT_ARROW_CHAR_UPPER = 'E';
@@ -44,6 +42,8 @@ public class ShortCutFun implements KeyListener {
     public static final char ACTION_CHAR_1 = ' ';
     public static final char ACTION_CHAR_2 = '\n';
 
+    // Needed attributes
+    private View view;
     public static final int START_POSITION = 4;
     public static final int UNSET_POSITION = -1;
     private int keySelectedStorage = -1;
@@ -139,40 +139,51 @@ public class ShortCutFun implements KeyListener {
     public void keyPressed(KeyEvent e) {
     }
 
+    /**
+     * This method process every key release action
+     * @param e KeyEvent
+     */
     @Override
     public void keyReleased(KeyEvent e) {
+        // Validate JComponent object
         if (!e.getSource().getClass().toString().equals(PREFERRED_OBJECT_TYPE)) {
             return;
         }
 
         JLabel sourceLabel = (JLabel) e.getSource();
 
-        for (String labelText : this.LABEL_TEXT_BLACKLIST) {
+        // Search for words in blacklist
+        for (String labelText : LABEL_TEXT_BLACKLIST) {
             if (sourceLabel.getText().equals(labelText)) {
                 return;
             }
         }
 
+        // Process key char
         switch (e.getKeyChar()) {
 
+            // Load new orders from order list
             case ShortCutFun.GET_NEW_ORDER_CHAR_UPPER:
             case ShortCutFun.GET_NEW_ORDER_CHAR_LOWER:
                 Start.orderManager.loadNewOrder();
                 view.updateAll();
                 break;
 
+            // Focus the neighbour on the right site
             case ShortCutFun.ORDER_VIEW_RIGHT_ARROW_CHAR_UPPER:
             case ShortCutFun.ORDER_VIEW_RIGHT_ARROW_CHAR_LOWER:
                 view.orderViewButtonAction(View.NEXT_ORDER);
                 view.updateAll();
                 break;
 
+            // Focus the neighbour on the left site
             case ShortCutFun.ORDER_VIEW_LEFT_ARROW_CHAR_UPPER:
             case ShortCutFun.ORDER_VIEW_LEFT_ARROW_CHAR_LOWER:
                 view.orderViewButtonAction(View.PREVIOUS_ORDER);
                 view.updateAll();
                 break;
 
+            // Toggle destroy button
             case ShortCutFun.DESTROY_TOGGLE_CHAR_UPPER:
             case ShortCutFun.DESTROY_TOGGLE_CHAR_LOWER:
                 if (view.isDestroyButtonPressed()) {
@@ -181,10 +192,9 @@ public class ShortCutFun implements KeyListener {
                     view.setSelectDestroyButton();
                     view.setDeselectedMoveButton();
                 }
-
-
                 break;
 
+            // Process move procedure
             case ShortCutFun.MOVE_TOGGLE_BUTTON_UPPER:
             case ShortCutFun.MOVE_TOGGLE_BUTTON_LOWER:
                 if (view.isMoveButtonToggled()) {
@@ -198,31 +208,40 @@ public class ShortCutFun implements KeyListener {
                 System.out.println(view.getMoveStorageButton().getMouseListeners().length);
                 break;
 
+            // // Focus the neighbour on the upper site
             case ShortCutFun.TOP_ARROW_CHAR_LOWER:
             case ShortCutFun.TOP_ARROW_CHAR_UPPER:
                 moveKeyFocusTop();
                 break;
 
+            // Focus the neighbour on the right site
             case ShortCutFun.RIGHT_ARROW_CHAR_LOWER:
             case ShortCutFun.RIGHT_ARROW_CHAR_UPPER:
                 moveKeyFocusRight();
                 break;
 
+            // Focus the neighbour on the lower site
             case ShortCutFun.BOTTOM_ARROW_CHAR_LOWER:
             case ShortCutFun.BOTTOM_ARROW_CHAR_UPPER:
                 moveKeyFocusBottom();
                 break;
 
+            // Focus the neighbour on the left site
             case ShortCutFun.LEFT_ARROW_CHAR_LOWER:
             case ShortCutFun.LEFT_ARROW_CHAR_UPPER:
                 moveKeyFocusLeft();
                 break;
 
+            // Makes the same like a mouse click on a storage label
             case ShortCutFun.ACTION_CHAR_1:
             case ShortCutFun.ACTION_CHAR_2:
+                if (this.keySelectedStorage == ShortCutFun.UNSET_POSITION) {
+                    return;
+                }
                 view.getStoragePanels()[this.keySelectedStorage].getMouseListeners()[0].mouseClicked(null);
                 break;
 
+            // Show help window
             case ShortCutFun.HELP_BUTTON_LOWER:
             case ShortCutFun.HELP_BUTTON_UPPER:
                 if (view.getHelpDesk() == null) {
@@ -231,6 +250,7 @@ public class ShortCutFun implements KeyListener {
                 view.getHelpDesk().setVisible(true);
                 break;
 
+            // Show balance sheet
             case ShortCutFun.BALANCE_SHEET_BUTTON_LOWER:
             case ShortCutFun.BALANCE_SHEET_BUTTON_UPPER:
                 if (view.getBalanceSheet() == null) {
