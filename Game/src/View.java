@@ -154,7 +154,8 @@ public class View extends JFrame {
         this.setVisible(true);
         loadGamePictures();
 
-        // Adding ShortCutFun Listener
+        this.helpDesk = new HelpDesk();
+        this.balanceSheet = new BalanceSheet();
     }
 
     /**
