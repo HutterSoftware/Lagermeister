@@ -12,4 +12,5 @@ public class Messages {
     public static final String SELECT_STORAGE_TARGET_OF_MOVE = "Wählen sie einen neuen Lagerplatz aus";
     public static final String MOVE_SELECT_STORAGE_WITH_CONTENT = "Wählen sie bitte einen Lagerplatz mit Inhalt aus";
     public static final String OBJECT_IS_COVERED = "Das Produkt ist noch verdeckt";
+    public static final String SELECT_ONE_OF_THE_DEEPEST_FIELDS = "Wählen sie eines der untersten Fächer";
 }
