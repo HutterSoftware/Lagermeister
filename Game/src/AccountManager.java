@@ -28,6 +28,8 @@ public class AccountManager {
      * @param order
      */
     public void accountOrder(Order order) {
+        //TODO: Check calculation
+
         // Sum the new order
         this.account += order.getCash();
         this.turnover += Math.abs(order.getCash());
