@@ -13,13 +13,16 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Objects;
 
-public class View extends JFrame implements KeyListener {
+public class View extends JFrame {
 
     // Setting of picture paths and settings
     private static final int STORAGE_FONT_SIZE = 12;
@@ -63,15 +66,15 @@ public class View extends JFrame implements KeyListener {
     private JPanel storageGrid;
 
     // Setting id's to all storage panels
-    private static int storage0Id = 0;
-    private static int storage1Id = 1;
-    private static int storage2Id = 2;
-    private static int storage3Id = 3;
-    private static int storage4Id = 4;
-    private static int storage5Id = 5;
-    private static int storage6Id = 6;
-    private static int storage7Id = 7;
-    private static int storage8Id = 8;
+    private static final int storage0Id = 0;
+    private static final int storage1Id = 1;
+    private static final int storage2Id = 2;
+    private static final int storage3Id = 3;
+    private static final int storage4Id = 4;
+    private static final int storage5Id = 5;
+    private static final int storage6Id = 6;
+    private static final int storage7Id = 7;
+    private static final int storage8Id = 8;
 
     // Initializing of view constants (Order view management)
     public static int PREVIOUS_ORDER = -1;
@@ -79,15 +82,15 @@ public class View extends JFrame implements KeyListener {
     public static int NEXT_ORDER = 1;
 
     // Creating of
-    private int borderThickness = 15;
-    private JLabel[] storagePanelCollection;
-    private OrderManager orderManager;
-    private AccountManager accountManager;
-    private StorageHouse storageHouse;
+    private final int borderThickness = 15;
+    private final JLabel[] storagePanelCollection;
+    private final OrderManager orderManager;
+    private final AccountManager accountManager;
+    private final StorageHouse storageHouse;
     private BalanceSheet balanceSheet;
     private HelpDesk helpDesk;
     private int selectedMoveId = -1;
-    private ShortCutFun shortCutFun;
+    private final ShortCutFun shortCutFun;
 
     /**
      * This constructor initialize all important variables and assin them values
@@ -141,6 +144,7 @@ public class View extends JFrame implements KeyListener {
         }
 
         // Setting effects to elements and draw many pictures to the specific elements
+        this.shortCutFun = new ShortCutFun(this);
         visualizeStorage();
         printStoragePictures();
         orderLeftView.setIcon(getImage(this.leftArrowPicturePath));
@@ -150,7 +154,7 @@ public class View extends JFrame implements KeyListener {
         this.setVisible(true);
         loadGamePictures();
 
-        this.shortCutFun = new ShortCutFun(this);
+        // Adding ShortCutFun Listener
     }
 
     /**
@@ -159,62 +163,45 @@ public class View extends JFrame implements KeyListener {
     private void setActionListener() {
 
         // Creating ActionListener of newButtonOrder
-        newOrderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Loading a new order from file (Leistungsnachweis.csv)
-                orderManager.loadNewOrder();
+        newOrderButton.addActionListener(e -> {
+            // Loading a new order from file (Leistungsnachweis.csv)
+            orderManager.loadNewOrder();
 
-                // Updating all GUI elements
-                updateAll();
-            }
+            // Updating all GUI elements
+            updateAll();
         });
 
         // Creating ActionListener of orderRightView
-        orderRightView.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Updating view elements
-                orderViewButtonAction(View.NEXT_ORDER);
-            }
+        orderRightView.addActionListener(e -> {
+            // Updating view elements
+            orderViewButtonAction(View.NEXT_ORDER);
         });
 
         // Creating ActionListener orderLeftView
-        orderLeftView.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Updating of view elements
-                orderViewButtonAction(View.PREVIOUS_ORDER);
-            }
+        orderLeftView.addActionListener(e -> {
+            // Updating of view elements
+            orderViewButtonAction(View.PREVIOUS_ORDER);
         });
 
         // Creating ActionListener of destroyButton
-        destroyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Checking of destroyButton status
-                if (destroyButton.isSelected()) {
-                    moveStorageButton.setSelected(false);
+        destroyButton.addActionListener(e -> {
+            // Checking of destroyButton status
+            if (destroyButton.isSelected()) {
+                moveStorageButton.setSelected(false);
 
-                    // Setting information text to label
-                    destroyButton.setText("Nicht Zerstören");
-                } else {
-                    // Setting information text to label
-                    destroyButton.setText("Zerstören");
-                }
-                // Repaint menu panel picture
-                paintPictures();
-
-                // Get over painted element
-                Timer timer = new Timer(10, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        focusInformationGridElements();
-                    }
-                });
-                timer.setRepeats(false);
-                timer.start();
+                // Setting information text to label
+                destroyButton.setText("Nicht Zerstören");
+            } else {
+                // Setting information text to label
+                destroyButton.setText("Zerstören");
             }
+            // Repaint menu panel picture
+            paintPictures();
+
+            // Get over painted element
+            Timer timer = new Timer(10, e1 -> focusInformationGridElements());
+            timer.setRepeats(false);
+            timer.start();
         });
 
         // Creating ActionListener of bilanzButton
@@ -260,21 +247,14 @@ public class View extends JFrame implements KeyListener {
                 todoLabel.setText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
 
                 // Checking toggle status of moveStorageButton
-                if (moveStorageButton.isSelected()) {
-                    // Set new border color of selectable storage
-                    markSelectableElements();
-                } else {
+                if (!moveStorageButton.isSelected()) {
                     // If its unselected than reset view
-                    resetSelectedMoveI();
-                    visualizeStorage();
+                    resetSelectedMoveId();
                 }
 
-                Timer timer = new Timer(1, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        focusInformationGridElements();
-                    }
-                });
+                visualizeStorage();
+
+                Timer timer = new Timer(1, e12 -> focusInformationGridElements());
                 timer.setRepeats(false);
                 timer.start();
             }
@@ -282,15 +262,36 @@ public class View extends JFrame implements KeyListener {
     }
 
     /**
+     * Returns HelpDesk object
+     * @return HelpDesk
+     */
+    public HelpDesk getHelpDesk() {
+        return this.helpDesk;
+    }
+
+    /**
+     * Returns ShortCut object
+     * @return ShortCutFun
+     */
+    public ShortCutFun getShortCutFun() {
+        return this.shortCutFun;
+    }
+
+    /**
+     * Returns moveStorageButton
+     * @return JToggleButton
+     */
+    public JToggleButton getMoveStorageButton() {
+        return this.moveStorageButton;
+    }
+
+    /**
      * Repainting of JPanel pictures
      */
     private void paintPictures() {
-        Timer timer = new Timer(0, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Repainting after 0 seconds
-                loadGamePictures();
-            }
+        Timer timer = new Timer(0, e -> {
+            // Repainting after 0 seconds
+            loadGamePictures();
         });
         timer.setRepeats(false);
         timer.start();
@@ -337,16 +338,12 @@ public class View extends JFrame implements KeyListener {
         drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
 
         // Creating of focus Timer
-        Timer timer = new Timer(200, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Focusing of all elements in JPanel to set it in foreground
-                for (Component component : menuItemGrid.getComponents()) {
-                    component.requestFocus();
-                }
-                focusInformationGridElements();
+        Timer timer = new Timer(200, e -> {
+            // Focusing of all elements in JPanel to set it in foreground
+            for (Component component : menuItemGrid.getComponents()) {
+                component.requestFocus();
             }
-
+            focusInformationGridElements();
         });
 
         // Setting one shot timer. Starting of Timer
@@ -370,7 +367,7 @@ public class View extends JFrame implements KeyListener {
      */
     private void drawImage(Graphics graphic, String imagePath, int[] settings) {
         // Getting Image and paint the component
-        Image menuPanelBackground = getImage(imagePath).getImage();
+        Image menuPanelBackground = Objects.requireNonNull(getImage(imagePath)).getImage();
         paintComponents(graphic);
 
         // Drawing the image
@@ -416,7 +413,7 @@ public class View extends JFrame implements KeyListener {
                     panel.setIcon(icon);
                 }
             };
-            graphicThread.run();
+            graphicThread.start();
         }
     }
 
@@ -448,9 +445,17 @@ public class View extends JFrame implements KeyListener {
             // Printing border to storage panel
             if (status[i] == StorageHouse.FIELD_TWO || status[i] == StorageHouse.FIELD_ONE ||
                 status[i] == StorageHouse.FIELD_THREE) {
-                storagePanelCollection[i].setBorder(getStandardBorder(Color.MAGENTA));
+                if (this.shortCutFun.getKeySelectedStorage() == i) {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.MAGENTA, true));
+                } else {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.MAGENTA, false));
+                }
             } else {
-                storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE));
+                if (this.shortCutFun.getKeySelectedStorage() == i) {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE, true));
+                } else {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.MAGENTA, false));
+                }
             }
         }
     }
@@ -465,16 +470,24 @@ public class View extends JFrame implements KeyListener {
         // Setting border color
         for (int i = 0; i < status.length; i++) {
             if (status[i] != StorageHouse.FIELD_THREE) {
-                storagePanelCollection[i].setBorder(getStandardBorder(Color.CYAN));
+                if (this.shortCutFun.getKeySelectedStorage() == i) {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.CYAN, true));
+                } else {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.CYAN, false));
+                }
             } else {
-                storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE));
+                if (this.shortCutFun.getKeySelectedStorage() == i) {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE, true));
+                } else {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE, false));
+                }
             }
         }
     }
 
     /**
      * return moveButton selected state
-     * @return
+     * @return boolean
      */
     public boolean isMoveButtonToggled() {
         return this.moveStorageButton.isSelected();
@@ -482,7 +495,7 @@ public class View extends JFrame implements KeyListener {
 
     /**
      * returns the selected id of element to move
-     * @return
+     * @return boolean
      */
     public int getSelectedMoveId() {
         return this.selectedMoveId;
@@ -490,7 +503,7 @@ public class View extends JFrame implements KeyListener {
 
     /**
      * This method is the second part of the moving procedure
-     * @param id
+     * @param id int value of storage
      */
     public void setSelectedMoveId(int id) {
         this.selectedMoveId = id;
@@ -499,7 +512,7 @@ public class View extends JFrame implements KeyListener {
     /**
      * After moving this variable will be reset to -1
      */
-    public void resetSelectedMoveI() {
+    public void resetSelectedMoveId() {
         this.selectedMoveId = -1;
     }
 
@@ -540,11 +553,15 @@ public class View extends JFrame implements KeyListener {
 
     /**
      * This method create a standard border
-     * @param color
-     * @return
+     * @param color Color of border
+     * @return returns border object
      */
-    private Border getStandardBorder(Color color) {
-        return BorderFactory.createLineBorder(color, borderThickness);
+    private Border getStandardBorder(Color color, boolean dashing) {
+        if (!dashing) {
+            return BorderFactory.createLineBorder(color, borderThickness);
+        } else {
+            return BorderFactory.createDashedBorder(color, 15,2,1,true);
+        }
     }
 
     /**
@@ -559,19 +576,37 @@ public class View extends JFrame implements KeyListener {
 
 
         // Printing border
-        if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
+        if (moveStorageButton.isSelected()) {
+            if (selectedMoveId == -1 &&  moveStorageButton.isSelected()) {
+                markSelectableElements();
+            } else if (selectedMoveId != -1){
+                markAvailableMovingTargets();
+            }
+        } else if (Objects.equals(order.getOrderType(), Order.INCOMING_ORDER_STRING)) {
             for (int i = 0; i < storageStatus.length; i++) {
-                storagePanelCollection[i].setBorder(getStandardBorder(storageStatus[i]));
+                if (this.shortCutFun.getKeySelectedStorage() == i) {
+                    storagePanelCollection[i].setBorder(getStandardBorder(storageStatus[i], true));
+                } else {
+                    storagePanelCollection[i].setBorder(getStandardBorder(storageStatus[i], false));
+                }
             }
 
-        } else if (order.getOrderType() == Order.OUTGOING_ORDER_STRING) {
+        } else if (Objects.equals(order.getOrderType(), Order.OUTGOING_ORDER_STRING)) {
             StorageHouse.SearchResult[] results = Start.storageHouse.findProduct(order);
             for (int i = 0; i < this.storagePanelCollection.length; i++) {
-                storagePanelCollection[i].setBorder(getStandardBorder(results[i].getStatus()));
+                if (this.shortCutFun.getKeySelectedStorage() == i) {
+                    storagePanelCollection[i].setBorder(getStandardBorder(results[i].getStatus(), true));
+                } else {
+                    storagePanelCollection[i].setBorder(getStandardBorder(results[i].getStatus(), false));
+                }
             }
         } else {
-            for (JLabel panel : storagePanelCollection) {
-                panel.setBorder(getStandardBorder(Color.WHITE));
+            for (int i = 0; i < storagePanelCollection.length; i++) {
+                if (this.shortCutFun.getKeySelectedStorage() == i) {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE, true));
+                } else {
+                    storagePanelCollection[i].setBorder(getStandardBorder(Color.WHITE, false));
+                }
             }
         }
 
@@ -581,7 +616,7 @@ public class View extends JFrame implements KeyListener {
 
     /**
      * Updating cash label
-     * @param value
+     * @param value New accounted value
      */
     public void updateCash(int value) {
         this.cashLabel.setText(Integer.toString(value));
@@ -598,9 +633,9 @@ public class View extends JFrame implements KeyListener {
             // Updating order Information
             this.product.setText(order.getProductName() + " " + order.getAttribute1() + " " + order.getAttribute2());
             this.orderType.setText(order.getOrderType());
-            this.money.setText(Integer.toString(order.getCash()) + "€");
+            this.money.setText(order.getCash() + "€");
 
-            if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
+            if (Objects.equals(order.getOrderType(), Order.INCOMING_ORDER_STRING)) {
                 this.todoLabel.setText(Messages.SELECT_STORAGE_TO_STORE);
             } else {
                 this.todoLabel.setText(Messages.SELECT_STORAGE_TO_DELIVER);
@@ -633,15 +668,15 @@ public class View extends JFrame implements KeyListener {
 
     /**
      * Returning of storageHouse
-     * @return
+     * @return Returns the StorageHouse object
      */
     public StorageHouse getStorageHouse() {
         return this.storageHouse;
     }
 
     /**
-     * Returning of balancesheet
-     * @return
+     * Returning of balance sheet
+     * @return Returns the complete balance sheet JFrame
      */
     public BalanceSheet getBalanceSheet() {
         return this.balanceSheet;
@@ -649,7 +684,7 @@ public class View extends JFrame implements KeyListener {
 
     /**
      * Returning of destroyButton pressed status
-     * @return
+     * @return Status of destroyButton
      */
     public boolean isDestroyButtonPressed() {
         return this.destroyButton.isSelected();
@@ -657,24 +692,9 @@ public class View extends JFrame implements KeyListener {
 
     /**
      * Returning of storage array
-     * @return
+     * @return Array of all storage labels
      */
     public JLabel[] getStoragePanels() {
         return this.storagePanelCollection;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        System.out.println("wfe");
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("wafwfawefaw");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-System.out.println(e.getKeyChar());
     }
 }

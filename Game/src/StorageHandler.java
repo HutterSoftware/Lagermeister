@@ -11,7 +11,7 @@ public class StorageHandler extends MouseAdapter {
     private OrderManager orderManager;
     private AccountManager accountManager;
     private View view;
-    private Object[] gameOverButtonCollection = new Object[]{"Neustarten", "Beenden"};
+    private final Object[] gameOverButtonCollection = new Object[]{"Neustarten", "Beenden"};
 
     // Creating constants
     public static String TIMBER_ATTRIBUTE_STRING = "Balken";
@@ -41,7 +41,7 @@ public class StorageHandler extends MouseAdapter {
         Order currentOrder = this.orderManager.getCurrentOrder();
 
         if (this.view.isDestroyButtonPressed()) {
-            destroyOrder(e);
+            destroyOrder(view.getStoragePanels()[view.getShortCutFun().getKeySelectedStorage()]);
         } else if (this.view.isMoveButtonToggled()) {
             moveTask();
         } else {
@@ -53,9 +53,9 @@ public class StorageHandler extends MouseAdapter {
     }
 
     /**
-     * This method manage the move procedur
+     * This method manage the move procedure
      */
-    private void moveTask() {
+    public void moveTask() {
         // Checking enable status
         if (!Start.view.isMoveButtonToggled()){
             return;
@@ -73,9 +73,13 @@ public class StorageHandler extends MouseAdapter {
             // Mark available target storage
             Start.view.markAvailableMovingTargets();
         } else {
+            if (!getStorageValidation(view.getStorageHouse().storageFields[this.storageId].viewTopOrder(),
+                    view.getStorageHouse().storageFields[this.storageId])) {
+                return;
+            }
             // Moving the element from source to target
             Start.storageHouse.moveElement(Start.view.getSelectedMoveId(), this.storageId);
-            Start.view.resetSelectedMoveI();
+            Start.view.resetSelectedMoveId();
             Start.view.disSelectMoveToggleButton();
             Start.view.visualizeStorage();
             Start.accountManager.accountOrder(AccountManager.MOVE_ORDER);
@@ -91,11 +95,11 @@ public class StorageHandler extends MouseAdapter {
 
     /**
      * This method manage the destroy procedure
-     * @param e
+     * @param storageLabel need target to delete something
      */
-    private void destroyOrder(MouseEvent e) {
+    private void destroyOrder(JLabel storageLabel) {
         // Getting source label
-        JLabel storage = (JLabel) e.getSource();
+        JLabel storage = storageLabel;
         int containsSource = 0;
 
         // Loading of all storage labels
@@ -153,6 +157,11 @@ public class StorageHandler extends MouseAdapter {
             if (order.getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING)) {
                 return storageId < 3;
             }
+        }
+
+        if (view.getSelectedMoveId() != -1 && this.storageId >= 3) {
+            JOptionPane.showMessageDialog(null, Messages.SELECT_ONE_OF_THE_DEEPEST_FIELDS);
+            return false;
         }
 
         return true;
