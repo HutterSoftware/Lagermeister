@@ -157,11 +157,12 @@ public class StorageHandler extends MouseAdapter {
             if (order.getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING)) {
                 return storageId < 3;
             }
-        }
+            if (view.getSelectedMoveId() != -1 && this.storageId >= 3 &&
+                    order.getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING)) {
 
-        if (view.getSelectedMoveId() != -1 && this.storageId >= 3) {
-            JOptionPane.showMessageDialog(null, Messages.SELECT_ONE_OF_THE_DEEPEST_FIELDS);
-            return false;
+                JOptionPane.showMessageDialog(null, Messages.SELECT_ONE_OF_THE_DEEPEST_FIELDS);
+                return false;
+            }
         }
 
         return true;
