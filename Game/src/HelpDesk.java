@@ -21,7 +21,5 @@ public class HelpDesk extends JFrame {
         this.containsTwoElementsPanel.setBackground(Color.YELLOW);
         this.containsThreeElementsPanel.setBackground(Color.RED);
         this.hasNotElementPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
-
-        this.setVisible(true);
     }
 }
