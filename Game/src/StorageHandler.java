@@ -2,15 +2,20 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import static java.lang.System.exit;
 
 public class StorageHandler extends MouseAdapter {
-    // Creating of required attributes
-    private int storageId;
-    private OrderManager orderManager;
-    private AccountManager accountManager;
-    private View view;
+    // Constants of StorageHandler
+    public static int MAX_SIZE_OF_CURRENT_ORDERS = 3;
+
+    // Required attributes
+    private final int storageId;
+    private final OrderManager orderManager;
+    private final AccountManager accountManager;
+    private final View view;
     private final Object[] gameOverButtonCollection = new Object[]{"Neustarten", "Beenden"};
 
     // Creating constants
@@ -19,10 +24,10 @@ public class StorageHandler extends MouseAdapter {
 
     /**
      * This storage assign parameter to attributes
-     * @param storageId
-     * @param orderManager
-     * @param accountManager
-     * @param view
+     * @param storageId storage ID
+     * @param orderManager OrderManager
+     * @param accountManager AccountManager
+     * @param view View
      */
     public StorageHandler(int storageId, OrderManager orderManager, AccountManager accountManager, View view) {
         this.storageId = storageId;
@@ -33,7 +38,7 @@ public class StorageHandler extends MouseAdapter {
 
     /**
      * This method handle the storage action
-     * @param e
+     * @param e MouseEvent
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -41,14 +46,27 @@ public class StorageHandler extends MouseAdapter {
         Order currentOrder = this.orderManager.getCurrentOrder();
 
         if (this.view.isDestroyButtonPressed()) {
-            destroyOrder(view.getStoragePanels()[view.getShortCutFun().getKeySelectedStorage()]);
+            destroyOrder();
         } else if (this.view.isMoveButtonToggled()) {
             moveTask();
         } else {
             storeAndDeliver(currentOrder);
         }
 
-        gameOverCheck();
+        if (gameOverCheck()) {
+            int answer = JOptionPane.showConfirmDialog(null,
+                    "Game over! Neues Spiel mit \"Ja\". Spiel beenden mit \"Nein\"","Game Over",
+                    JOptionPane.YES_NO_OPTION);
+
+            System.out.println(answer);
+            if (answer == 1) { // Yes
+                System.exit(0);
+            } else {
+                // TODO: Write reset method
+                System.out.println("Reset");
+            }
+        }
+
         this.view.printPanelString();
     }
 
@@ -95,11 +113,10 @@ public class StorageHandler extends MouseAdapter {
 
     /**
      * This method manage the destroy procedure
-     * @param storageLabel need target to delete something
      */
-    private void destroyOrder(JLabel storageLabel) {
+    private void destroyOrder() {
         // Getting source label
-        JLabel storage = storageLabel;
+        JLabel storage = view.getStoragePanels()[this.storageId];
         int containsSource = 0;
 
         // Loading of all storage labels
@@ -134,9 +151,9 @@ public class StorageHandler extends MouseAdapter {
 
     /**
      * This method check storage validation
-     * @param order
-     * @param storage
-     * @return
+     * @param order Order
+     * @param storage Storage
+     * @return Validation result
      */
     private boolean getStorageValidation(Order order, Storage storage) {
 
@@ -170,7 +187,7 @@ public class StorageHandler extends MouseAdapter {
 
     /**
      * This method manage the store and deliver procedure
-     * @param order
+     * @param order Order
      */
     private void storeAndDeliver(Order order) {
         if (order == OrderManager.NULL_DUMMY) {
@@ -178,7 +195,7 @@ public class StorageHandler extends MouseAdapter {
         }
 
         boolean successful = false;
-        if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
+        if (Objects.equals(order.getOrderType(), Order.INCOMING_ORDER_STRING)) {
             Storage storage = Start.storageHouse.storageFields[storageId];
             if (getStorageValidation(order, storage)) {
                 successful = Start.storageHouse.storeOrder(storageId, order);
@@ -212,48 +229,35 @@ public class StorageHandler extends MouseAdapter {
 
     /**
      * Checking game over requirement
-     * @return
+     * @return game over status
      */
     private boolean gameOverCheck() {
 
-        //TODO: Writing game over requirement
-        int fullStatusCounter = 0;
-        for (Color status : this.view.getStorageHouse().getStorageStatus()) {
-            if (status == Color.red) {
-                fullStatusCounter++;
+        // Checking for maximum open order
+        if (Start.orderManager.getActiveOrders().size() < StorageHandler.MAX_SIZE_OF_CURRENT_ORDERS) {
+            return false;
+        }
+
+        // Checking status of each order with StorageHouse
+        int orderGameOverCounter = 0;
+        ArrayList<Order> orderList = Start.orderManager.getActiveOrders();
+        for (Order order : orderList) {
+            if (order.getOrderType().equals(Order.INCOMING_ORDER_STRING)) {
+                for (Color color : Start.storageHouse.getStorageStatus()) {
+                    if (color == StorageHouse.FIELD_THREE) {
+                        orderGameOverCounter++;
+                    }
+                }
+            } else {
+                for (StorageHouse.SearchResult result : Start.storageHouse.findProduct(order)) {
+                    if (result.getStatus() == StorageHouse.FIELD_HAS_NOT_THE_REQUIRED_ORDER) {
+                        orderGameOverCounter++;
+                    }
+                }
             }
         }
 
-        int orderFailCounter = 0;
-        for (Order order : Start.orderManager.getActiveOrders()) {
-            //orderFailCounter += Start.storageHouse.findProduct(order).size();
-        }
-        // orderFailcounter == 0 means cannot deliver order
-
-        if (this.orderManager.onlyStoreOrders() && fullStatusCounter == OrderManager.MAXIMUM_STORAGE_SIZE &&
-                this.orderManager.hasOrders() && orderFailCounter == 0) {
-
-            int answer = JOptionPane.showOptionDialog(null,
-                    Messages.GAME_OVER_MESSAGE,
-                    "GAME OVER",
-                    JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,
-                    null,
-                    this.gameOverButtonCollection,
-                    this.gameOverButtonCollection[0]);
-            switch (answer) {
-
-                case 0: // Restart game
-                    Start.resetGame();
-                    break;
-
-                case 1: // Exit game
-                    exit(0);
-                    break;
-
-                default:
-                    JOptionPane.showMessageDialog(null, Messages.UNDEFINED_ANSWER);
-            }
-        }
-        return true;
+        // Checking counter value
+        return orderGameOverCounter == 27;
     }
 }
