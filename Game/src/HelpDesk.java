@@ -2,24 +2,43 @@ import javax.swing.*;
 import java.awt.*;
 
 public class HelpDesk extends JFrame {
-//TODO:  Updating help desk gui
-    private JPanel contentPane;
-    private JPanel hasElementPanel;
-    private JPanel containsOneElementPanel;
-    private JPanel containsTwoElementsPanel;
-    private JPanel hasNotElementPanel;
-    private JPanel containsThreeElementsPanel;
 
+    // Important constants
+    private static final int HEADLINE_FONT_SIZE = 20;
+    //TODO:  Updating help desk gui
+
+    // GUI elements
+    private JScrollPane scrollPane1;
+    private JPanel fullStorage;
+    private JPanel containsTwoElements;
+    private JPanel containsOneElement;
+    private JLabel storageColorCodeHeadline;
+    private JPanel containsNoElements;
+    private JPanel selectAvailableMoveElement;
+    private JPanel moveTargetElement;
+    private JLabel keyboardShortcutInformationHeadline;
+
+    /**
+     * Initialize attributes
+     */
     public HelpDesk() {
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setTitle("Hilfe");
-        this.setContentPane(contentPane);
+        this.setContentPane(scrollPane1);
         this.pack();
 
-        this.hasElementPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        this.containsOneElementPanel.setBackground(Color.GREEN);
-        this.containsTwoElementsPanel.setBackground(Color.YELLOW);
-        this.containsThreeElementsPanel.setBackground(Color.RED);
-        this.hasNotElementPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        this.storageColorCodeHeadline.setFont(getStandardHeadlineFont());
+        this.keyboardShortcutInformationHeadline.setFont(getStandardHeadlineFont());
+
+        this.containsOneElement.setBackground(Color.GREEN);
+        this.containsTwoElements.setBorder(View.getStandardBorder(Color.YELLOW, false));
+        this.fullStorage.setBorder(View.getStandardBorder(Color.RED, false));
+        this.containsNoElements.setBorder(View.getStandardBorder(Color.WHITE, false));
+        this.selectAvailableMoveElement.setBorder(View.getStandardBorder(Color.CYAN, false));
+        this.moveTargetElement.setBorder(View.getStandardBorder(Color.MAGENTA, false));
+    }
+
+    private Font getStandardHeadlineFont() {
+        return new Font("san-serif", Font.BOLD, HelpDesk.HEADLINE_FONT_SIZE);
     }
 }

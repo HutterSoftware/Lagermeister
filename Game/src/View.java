@@ -82,7 +82,7 @@ public class View extends JFrame {
     public static int NEXT_ORDER = 1;
 
     // Creating of
-    private final int borderThickness = 15;
+    public static final int BORDER_THICKNESS = 15;
     private final JLabel[] storagePanelCollection;
     private final OrderManager orderManager;
     private final AccountManager accountManager;
@@ -557,9 +557,9 @@ public class View extends JFrame {
      * @param color Color of border
      * @return returns border object
      */
-    private Border getStandardBorder(Color color, boolean dashing) {
+    public static Border getStandardBorder(Color color, boolean dashing) {
         if (!dashing) {
-            return BorderFactory.createLineBorder(color, borderThickness);
+            return BorderFactory.createLineBorder(color, View.BORDER_THICKNESS);
         } else {
             return BorderFactory.createDashedBorder(color, 15,2,1,true);
         }
