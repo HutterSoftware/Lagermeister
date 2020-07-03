@@ -59,10 +59,7 @@ public class ShortCutFun implements KeyListener {
      */
     public ShortCutFun(View view) {
         this.view = view;
-
         addKeyListenerToAllComponents(view.getRootPane());
-        System.out.println("Listener added");
-
     }
 
     /**
