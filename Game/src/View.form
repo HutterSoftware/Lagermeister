@@ -308,6 +308,7 @@
             <properties>
               <horizontalAlignment value="0"/>
               <horizontalTextPosition value="0"/>
+              <opaque value="true"/>
               <text value=""/>
             </properties>
           </component>
@@ -322,6 +323,8 @@
               <foreground color="-16777216"/>
               <horizontalAlignment value="0"/>
               <horizontalTextPosition value="0"/>
+              <opaque value="true"/>
+              <requestFocusEnabled value="true"/>
               <text value="0€"/>
             </properties>
           </component>

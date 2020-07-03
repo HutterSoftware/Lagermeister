@@ -90,7 +90,7 @@ public class View extends JFrame {
     private BalanceSheet balanceSheet;
     private HelpDesk helpDesk;
     private int selectedMoveId = -1;
-    private final ShortCutFun shortCutFun;
+    private ShortCutFun shortCutFun;
 
     /**
      * This constructor initialize all important variables and assin them values
@@ -144,9 +144,7 @@ public class View extends JFrame {
         }
 
         // Setting effects to elements and draw many pictures to the specific elements
-        this.shortCutFun = new ShortCutFun(this);
-        visualizeStorage();
-        printStoragePictures();
+
         orderLeftView.setIcon(getImage(this.leftArrowPicturePath));
         orderRightView.setIcon(getImage(this.rightArrowPicturePath));
 
@@ -156,6 +154,8 @@ public class View extends JFrame {
 
         this.helpDesk = new HelpDesk();
         this.balanceSheet = new BalanceSheet();
+
+
     }
 
     /**
@@ -339,12 +339,15 @@ public class View extends JFrame {
         drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
 
         // Creating of focus Timer
-        Timer timer = new Timer(200, e -> {
+        Timer timer = new Timer(1000, e -> {
             // Focusing of all elements in JPanel to set it in foreground
             for (Component component : menuItemGrid.getComponents()) {
                 component.requestFocus();
             }
+            printStoragePictures();
             focusInformationGridElements();
+            shortCutFun = new ShortCutFun(this);
+            visualizeStorage();
         });
 
         // Setting one shot timer. Starting of Timer
@@ -356,8 +359,9 @@ public class View extends JFrame {
      * Focusing of todoLabel and cashLabel (preventing of overdrawing)
      */
     private void focusInformationGridElements() {
-        todoLabel.requestFocus();
-        cashLabel.requestFocus();
+
+        todoLabel.setVisible(true);
+        cashLabel.setVisible(true);
     }
 
     /**
@@ -367,17 +371,21 @@ public class View extends JFrame {
      * @param settings Settings like x, y, width and height
      */
     private void drawImage(Graphics graphic, String imagePath, int[] settings) {
-        // Getting Image and paint the component
-        Image menuPanelBackground = Objects.requireNonNull(getImage(imagePath)).getImage();
-        paintComponents(graphic);
+        try {
+            // Getting Image and paint the component
+            Image menuPanelBackground = getImage(imagePath).getImage();
+            paintComponents(graphic);
 
-        // Drawing the image
-        graphic.drawImage(menuPanelBackground, settings[0],
-                settings[1],
-                settings[2],
-                settings[3],
-                null);
-        graphic.dispose();
+            // Drawing the image
+            graphic.drawImage(menuPanelBackground, settings[0],
+                    settings[1],
+                    settings[2],
+                    settings[3],
+                    null);
+            graphic.dispose();
+        } catch (NullPointerException ex) {
+            throw ex;
+        }
     }
 
     /**
