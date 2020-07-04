@@ -4,10 +4,15 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 
 public class GameTarget extends JFrame{
+
+    // Attributes of object
     private JTextPane gameDescription;
     private JPanel rootPane;
     private JLabel gameDescriptionHeadline;
 
+    /**
+     * Initializing attributes and JFrame object
+     */
     public GameTarget() {
         this.setTitle("Ziel");
         this.setContentPane(rootPane);
@@ -15,15 +20,8 @@ public class GameTarget extends JFrame{
         this.setResizable(true);
         this.pack();
 
+        // Setting GUI elements up
         gameDescriptionHeadline.setFont(HelpDesk.getStandardHeadlineFont());
-        this.addWindowStateListener(new WindowStateListener() {
-            @Override
-            public void windowStateChanged(WindowEvent e) {
-                System.out.print(e.getWindow().getWidth());
-                System.out.print("  ");
-                System.out.println(e.getWindow().getHeight());
-            }
-        });
         gameDescription.setEditable(false);
     }
 }
