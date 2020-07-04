@@ -5,7 +5,6 @@ public class HelpDesk extends JFrame {
 
     // Important constants
     private static final int HEADLINE_FONT_SIZE = 20;
-    //TODO:  Adding main quest description
 
     // GUI elements
     private JScrollPane scrollPane1;
