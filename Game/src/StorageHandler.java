@@ -82,6 +82,22 @@ public class StorageHandler extends MouseAdapter {
             // Mark available target storage
             Start.view.markAvailableMovingTargets();
         } else {
+            if (view.getStorageHouse().storageFields[view.getSelectedMoveId()]
+                    .viewTopOrder().getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING) &&
+                    this.storageId >= 3) {
+
+                JOptionPane.showMessageDialog(null, Messages.STORE_HEAVY_STONES_ON_THE_FLOOR);
+                return;
+            }
+
+            if (view.getStorageHouse().storageFields[view.getSelectedMoveId()]
+                .viewTopOrder().getAttribute2().equals(StorageHandler.TIMBER_ATTRIBUTE_STRING) &&
+                view.getStorageHouse().storageFields[this.storageId].getStorageSize() > 0) {
+
+                JOptionPane.showMessageDialog(null, Messages.TIMBER_NEED_COMPLETE_A_FIELD);
+                return;
+            }
+
             if (!getStorageValidation(view.getStorageHouse().storageFields[this.storageId].viewTopOrder(),
                     view.getStorageHouse().storageFields[this.storageId])) {
                 return;
@@ -179,7 +195,6 @@ public class StorageHandler extends MouseAdapter {
                 return false;
             }
         }
-
         return true;
     }
 

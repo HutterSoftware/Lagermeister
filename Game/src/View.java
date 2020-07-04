@@ -9,8 +9,6 @@ import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -61,7 +59,7 @@ public class View extends JFrame {
     private JPanel storageRootPanel;
     private JPanel orderInformationRootPanel;
     private JPanel storageGrid;
-    private JButton zielButton;
+    private JButton questButton;
 
     // Setting id's to all storage panels
     private static final int storage0Id = 0;
@@ -250,9 +248,7 @@ public class View extends JFrame {
             }
         });
 
-        zielButton.addActionListener(e13 -> {
-            this.gameTarget.setVisible(true);
-        });
+        questButton.addActionListener(e13 -> this.gameTarget.setVisible(true));
     }
 
     public void unSelectMoveButton() {
@@ -265,7 +261,7 @@ public class View extends JFrame {
 
     /**
      * Returning GameTarget object
-     * @return
+     * @return GameTarget
      */
     public GameTarget getGameTarget() {
         return this.gameTarget;
@@ -285,14 +281,6 @@ public class View extends JFrame {
      */
     public ShortCutFun getShortCutFun() {
         return this.shortCutFun;
-    }
-
-    /**
-     * Returns moveStorageButton
-     * @return JToggleButton
-     */
-    public JToggleButton getMoveStorageButton() {
-        return this.moveStorageButton;
     }
 
     /**
@@ -333,7 +321,7 @@ public class View extends JFrame {
             destroyButton.requestFocus();
             bilanzButton.requestFocus();
             helpButton.requestFocus();
-            zielButton.requestFocus();
+            questButton.requestFocus();
         });
         paintTimer.setRepeats(false);
         paintTimer.start();
@@ -376,7 +364,7 @@ public class View extends JFrame {
     private void drawImage(Graphics graphic, String imagePath, int[] settings) {
         try {
             // Getting Image and paint the component
-            Image menuPanelBackground = getImage(imagePath).getImage();
+            Image menuPanelBackground = Objects.requireNonNull(getImage(imagePath)).getImage();
             paintComponents(graphic);
 
             // Drawing the image
