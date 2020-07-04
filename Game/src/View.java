@@ -153,6 +153,7 @@ public class View extends JFrame {
 
         this.helpDesk = new HelpDesk();
         this.balanceSheet = new BalanceSheet();
+        Start.accountManager.setBalanceSheet(this.balanceSheet);
         this.gameTarget = new GameTarget();
         this.gameTarget.setSize(this.gameTargetStartDimension);
     }
@@ -184,23 +185,18 @@ public class View extends JFrame {
         });
 
         // Creating ActionListener of destroyButton
-        destroyButton.addActionListener(e -> {
-            // Checking of destroyButton status
-            if (destroyButton.isSelected()) {
-                moveStorageButton.setSelected(false);
+        destroyButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
 
-                // Setting information text to label
-                destroyButton.setText("Nicht Zerstören");
-            } else {
-                // Setting information text to label
-                destroyButton.setText("Zerstören");
+                // Checking of destroyButton status
+                if (destroyButton.isSelected()) {
+                    moveStorageButton.setSelected(false);
+                }
+
+                loadGamePictures(false);
             }
-            loadGamePictures(false);
-
-            // Get over painted element
-            Timer timer = new Timer(10, e1 -> focusInformationGridElements());
-            timer.setRepeats(false);
-            timer.start();
         });
 
         // Creating ActionListener of bilanzButton
@@ -249,6 +245,8 @@ public class View extends JFrame {
                     // If its unselected than reset view
                     resetSelectedMoveId();
                 }
+
+                visualizeStorage();
             }
         });
 
@@ -257,6 +255,18 @@ public class View extends JFrame {
         });
     }
 
+    public void unSelectMoveButton() {
+        this.moveStorageButton.setSelected(false);
+    }
+
+    public void setSelectedMoveButton() {
+        this.moveStorageButton.setSelected(true);
+    }
+
+    /**
+     * Returning GameTarget object
+     * @return
+     */
     public GameTarget getGameTarget() {
         return this.gameTarget;
     }
@@ -300,13 +310,6 @@ public class View extends JFrame {
     }
 
     /**
-     * This method set selected status to move button
-     */
-    public void setSelectedMoveButton() {
-        moveStorageButton.setSelected(true);
-    }
-
-    /**
      * This method set deselected status to move button
      */
     public void setDeselectedMoveButton() {
@@ -319,11 +322,21 @@ public class View extends JFrame {
     private void loadGamePictures(boolean all) {
         // Setting of background status
         this.menuItemGrid.setOpaque(true);
-        this.informationGrid.setOpaque(true);
+        this.informationGrid.setOpaque(false);
 
-        // Printing of images
-        drawImage(this.menuItemGrid.getGraphics(), this.menuPanelPicturePath, this.menuPanelPictureSettings);
-        drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
+        Timer paintTimer = new Timer(5, e -> {
+            // Printing of images
+            drawImage(this.menuItemGrid.getGraphics(), this.menuPanelPicturePath, this.menuPanelPictureSettings);
+            drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
+            newOrderButton.requestFocus();
+            moveStorageButton.requestFocus();
+            destroyButton.requestFocus();
+            bilanzButton.requestFocus();
+            helpButton.requestFocus();
+            zielButton.requestFocus();
+        });
+        paintTimer.setRepeats(false);
+        paintTimer.start();
 
         if (all) {
             // Creating of focus Timer
@@ -350,7 +363,6 @@ public class View extends JFrame {
      * Focusing of todoLabel and cashLabel (preventing of overdrawing)
      */
     private void focusInformationGridElements() {
-
         todoLabel.setVisible(true);
         cashLabel.setVisible(true);
     }
