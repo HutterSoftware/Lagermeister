@@ -85,7 +85,7 @@ public class StorageHandler extends MouseAdapter {
             if (view.getStorageHouse().storageFields[view.getSelectedMoveId()]
                     .viewTopOrder().getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING) &&
                     this.storageId >= 3) {
-
+                view.visualizeStorage();
                 JOptionPane.showMessageDialog(null, Messages.STORE_HEAVY_STONES_ON_THE_FLOOR);
                 return;
             }
@@ -94,6 +94,7 @@ public class StorageHandler extends MouseAdapter {
                 .viewTopOrder().getAttribute2().equals(StorageHandler.TIMBER_ATTRIBUTE_STRING) &&
                 view.getStorageHouse().storageFields[this.storageId].getStorageSize() > 0) {
 
+                view.visualizeStorage();
                 JOptionPane.showMessageDialog(null, Messages.TIMBER_NEED_COMPLETE_A_FIELD);
                 return;
             }
@@ -110,7 +111,6 @@ public class StorageHandler extends MouseAdapter {
             Start.accountManager.accountOrder(AccountManager.MOVE_ORDER);
 
             // Account the move procedure
-            view.updateCash(AccountManager.MOVE_ORDER.getCash());
             this.view.updateAll();
         }
     }
@@ -146,9 +146,7 @@ public class StorageHandler extends MouseAdapter {
         Start.accountManager.accountOrder(AccountManager.DESTROY_ORDER);
 
         // Updating view elements
-        view.updateCash(accountManager.getAccount());
         this.view.updateAll();
-
         this.view.unSelectMoveButton();
     }
 
