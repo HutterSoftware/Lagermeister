@@ -65,6 +65,9 @@ public class BalanceSheet extends JFrame {
         DefaultTableModel model = getDefaultModel();
         Object[] orderValues = order.toArray();
         orderValues[0] = ++this.positionCounter;
+        if (orderValues[1].equals("Einlagerung") || orderValues[1].equals("Auslagerung")) {
+            orderValues[1] += "auftrag";
+        }
         model.addRow(orderValues);
     }
 
