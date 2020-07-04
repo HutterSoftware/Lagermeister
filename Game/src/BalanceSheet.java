@@ -60,7 +60,7 @@ public class BalanceSheet extends JFrame {
      * @param order Order
      */
     public void addNewBill(Order order) {
-        updateConclusion(order);
+        updateConclusion();
 
         DefaultTableModel model = getDefaultModel();
         Object[] orderValues = order.toArray();
@@ -70,9 +70,8 @@ public class BalanceSheet extends JFrame {
 
     /**
      * Updating all labels
-     * @param order Order
      */
-    private void updateConclusion(Order order) {
+    private void updateConclusion() {
         this.costLabel.setText(Integer.toString(Start.accountManager.getCosts()));
         this.profitLabel.setText(Integer.toString(Start.accountManager.getWin()));
         this.turnoverLabel.setText(Integer.toString(Start.accountManager.getTurnover()));
