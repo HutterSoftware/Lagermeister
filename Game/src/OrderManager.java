@@ -111,6 +111,10 @@ public class OrderManager {
         }
     }
 
+    public Order showNewOrder() {
+        return this.allOrders[allOrderIndex];
+    }
+
     /**
      * Selecting next order
      */
