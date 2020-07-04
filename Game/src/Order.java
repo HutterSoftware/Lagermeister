@@ -46,13 +46,13 @@ public class Order {
 
     /**
      * Load orders from Leistungsnachweis.csv and save it into Order array
-     * @param fileName
-     * @return
+     * @param fileName String
+     * @return Order[]
      */
     public static Order[] createOrderListFromFile(String fileName) {
         File orderFile = new File(fileName);
         ArrayList<Order> orders = new ArrayList<>();
-        String line = "";
+        String line;
 
         // Checking file requirements
         if (!orderFile.exists()) {
@@ -84,7 +84,7 @@ public class Order {
 
     /**
      * Returns product name
-     * @return
+     * @return String
      */
     public String getProductName() {
         return productName;
@@ -92,7 +92,7 @@ public class Order {
 
     /**
      * Returns the first attribute
-     * @return
+     * @return String
      */
     public String getAttribute1() {
         return attribute1;
@@ -100,7 +100,7 @@ public class Order {
 
     /**
      * Returns the second attribte
-     * @return
+     * @return String
      */
     public String getAttribute2() {
         return attribute2;
@@ -108,7 +108,7 @@ public class Order {
 
     /**
      * Returns cash of order
-     * @return
+     * @return int
      */
     public int getCash() {
         return cash;
@@ -116,10 +116,10 @@ public class Order {
 
     /**
      * Returns the order type (incoming or out coming)
-     * @return
+     * @return String
      */
     public String getOrderType() {
-        if (this.outgoingOrder == true) {
+        if (this.outgoingOrder) {
             return Order.OUTGOING_ORDER_STRING;
         } else {
             return Order.INCOMING_ORDER_STRING;
@@ -128,7 +128,7 @@ public class Order {
 
     /**
      * Converting object to string
-     * @return
+     * @return String
      */
     @Override
     public String toString() {
@@ -140,12 +140,12 @@ public class Order {
         }
 
         return orderTypeString + "\t" + this.productName + "\t" + this.attribute1 + "\t" + this.attribute2 + "\t" +
-                Integer.toString(this.cash);
+                this.cash;
     }
 
     /**
      * Returns the standard attributes to an Object array
-     * @return
+     * @return Object[]
      */
     public Object[] toArray() {
 
@@ -157,10 +157,10 @@ public class Order {
 
     /**
      * Its like the method toaArray. The differ is the lost cash value
-     * @return
+     * @return String
      */
     public String toStringWithoutCash() {
-        return new String(  this.productName +
-                ", " + this.attribute1 + ", " + this.attribute2);
+        return this.productName +
+                ", " + this.attribute1 + ", " + this.attribute2;
     }
 }
