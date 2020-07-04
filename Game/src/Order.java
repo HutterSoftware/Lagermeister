@@ -22,11 +22,11 @@ public class Order {
 
     /**
      * This constructor initialize all attributes
-     * @param productName
-     * @param attribute1
-     * @param attribute2
-     * @param orderType
-     * @param cash
+     * @param productName String
+     * @param attribute1 String
+     * @param attribute2 String
+     * @param orderType String
+     * @param cash String
      */
     public Order(String productName, String attribute1, String attribute2, String orderType, String cash) {
         // Setting parameter to attribute
