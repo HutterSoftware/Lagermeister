@@ -4,11 +4,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.Border;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -88,6 +94,7 @@ public class View extends JFrame {
     private GameTarget gameTarget;
     private int selectedMoveId = -1;
     private ShortCutFun shortCutFun;
+    private Order orderPunishment;
 
     /**
      * This constructor initialize all important variables and assin them values
@@ -141,7 +148,6 @@ public class View extends JFrame {
         }
 
         // Setting effects to elements and draw many pictures to the specific elements
-
         orderLeftView.setIcon(getImage(this.leftArrowPicturePath));
         orderRightView.setIcon(getImage(this.rightArrowPicturePath));
 
@@ -154,6 +160,7 @@ public class View extends JFrame {
         Start.accountManager.setBalanceSheet(this.balanceSheet);
         this.gameTarget = new GameTarget();
         this.gameTarget.setSize(this.gameTargetStartDimension);
+        // TODO: Check information label text in game
     }
 
     /**
@@ -163,11 +170,7 @@ public class View extends JFrame {
 
         // Creating ActionListener of newButtonOrder
         newOrderButton.addActionListener(e -> {
-            // Loading a new order from file (Leistungsnachweis.csv)
-            orderManager.loadNewOrder();
-
-            // Updating all GUI elements
-            updateAll();
+            loadNewOrder();
         });
 
         // Creating ActionListener of orderRightView
@@ -251,12 +254,42 @@ public class View extends JFrame {
         questButton.addActionListener(e13 -> this.gameTarget.setVisible(true));
     }
 
+    /**
+     * Deselecting move toggle button
+     */
     public void unSelectMoveButton() {
         this.moveStorageButton.setSelected(false);
     }
 
+    /**
+     * Selection move toggle button
+     */
     public void setSelectedMoveButton() {
         this.moveStorageButton.setSelected(true);
+    }
+
+    /**
+     * Loading new order
+     */
+    public void loadNewOrder() {
+        int answer = JOptionPane.showConfirmDialog(null, "Möchtest du den Auftrag " +
+                        "annehmen(Ja) oder verweigern(Nein). Bei verweigerung wird der Auftragswert als Strafe gerechnet",
+                "Auftragsannahme", JOptionPane.YES_NO_OPTION);
+
+        if (answer == 1) { // 1 == No
+            this.orderPunishment = new Order("Vertragsstrafe", "","","",
+                    Integer.toString(-1 * Start.orderManager.showNewOrder().getCash()));
+
+            accountManager.accountOrder(orderPunishment);
+            updateAll();
+            return;
+        }
+
+        // Loading a new order from file (Leistungsnachweis.csv)
+        orderManager.loadNewOrder();
+
+        // Updating all GUI elements
+        updateAll();
     }
 
     /**
@@ -312,7 +345,7 @@ public class View extends JFrame {
         this.menuItemGrid.setOpaque(true);
         this.informationGrid.setOpaque(false);
 
-        Timer paintTimer = new Timer(5, e -> {
+        Timer paintTimer = new Timer(50, e -> {
             // Printing of images
             drawImage(this.menuItemGrid.getGraphics(), this.menuPanelPicturePath, this.menuPanelPictureSettings);
             drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
@@ -528,7 +561,7 @@ public class View extends JFrame {
      */
     public void updateAll() {
         setEnableControlOfViewButtons();
-        updateCash(accountManager.getAccount());
+        updateCash();
         orderViewButtonAction(View.CURRENT_ORDER);
         visualizeStorage();
     }
@@ -616,10 +649,9 @@ public class View extends JFrame {
 
     /**
      * Updating cash label
-     * @param value New accounted value
      */
-    public void updateCash(int value) {
-        this.cashLabel.setText(Integer.toString(value));
+    public void updateCash() {
+        this.cashLabel.setText(Integer.toString(accountManager.getWin() - accountManager.getCosts()));
     }
 
     /**

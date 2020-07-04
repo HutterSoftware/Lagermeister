@@ -177,8 +177,7 @@ public class ShortCutFun implements KeyListener {
             // Load new orders from order list
             case ShortCutFun.GET_NEW_ORDER_CHAR_UPPER:
             case ShortCutFun.GET_NEW_ORDER_CHAR_LOWER:
-                Start.orderManager.loadNewOrder();
-                view.updateAll();
+                view.loadNewOrder();
                 break;
 
             // Focus the neighbour on the right site
@@ -278,5 +277,6 @@ public class ShortCutFun implements KeyListener {
 
         // Checking game over condition
         StorageHandler.startGameOverProcedure();
+        view.updateAll();
     }
 }
