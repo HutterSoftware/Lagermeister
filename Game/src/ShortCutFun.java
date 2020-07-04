@@ -266,12 +266,15 @@ public class ShortCutFun implements KeyListener {
                 view.getBalanceSheet().showBalanceSheet();
                 break;
 
+            // Show target description
             case ShortCutFun.TARGET_DESCRIPTION_LOWER:
             case ShortCutFun.TARGET_DESCRIPTION_UPPER:
                 view.getGameTarget().setVisible(true);
                 break;
         }
         view.visualizeStorage();
+
+        // Checking game over condition
         StorageHandler.startGameOverProcedure();
     }
 }
