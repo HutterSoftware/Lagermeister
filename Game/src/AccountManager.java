@@ -5,7 +5,6 @@ public class AccountManager {
      * Creating needed attributes
      */
     private int account = 0, turnover = 0, costs = 0, win = 0;
-    private OrderManager orderManager;
     private ArrayList<Order> transactionList;
     private BalanceSheet balanceSheet;
     public static Order MOVE_ORDER;
@@ -13,14 +12,13 @@ public class AccountManager {
 
     /**
      * This constructor initialize all attributes and the transaction lost
-     * @param orderManager
+     * @param orderManager OrderManager
      */
     public AccountManager(OrderManager orderManager) {
         MOVE_ORDER = new Order("Umlagerung", "","",Order.MOVING_ORDER_STRING,
                 "-100");
         DESTROY_ORDER = new Order("Zerstörung", "", "", Order.DESTROY_ORDER_STRING,
                 "-500");
-        this.orderManager = orderManager;
         this.transactionList = new ArrayList<>();
     }
 
