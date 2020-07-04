@@ -2,14 +2,16 @@ import javax.swing.*;
 import java.util.Stack;
 
 public class Storage {
-    private int fieldPositionX;
-    private int fieldPositionY;
     private Stack storage;
 
-    public Storage(int positionX, int positionY) {
-        this.fieldPositionX = positionX;
-        this.fieldPositionY = positionY;
+    public Storage() {
         this.storage = new Stack();
+    }
+
+    public void reset() {
+        while (!storage.empty()) {
+            storage.pop();
+        }
     }
 
     public Order viewTopOrder() {

@@ -53,21 +53,12 @@ public class StorageHandler extends MouseAdapter {
             storeAndDeliver(currentOrder);
         }
 
-        if (gameOverCheck()) {
-            int answer = JOptionPane.showConfirmDialog(null,
-                    "Game over! Neues Spiel mit \"Ja\". Spiel beenden mit \"Nein\"","Game Over",
-                    JOptionPane.YES_NO_OPTION);
-
-            System.out.println(answer);
-            if (answer == 1) { // Yes
-                System.exit(0);
-            } else {
-                // TODO: Write reset method
-                System.out.println("Reset");
-            }
-        }
+        startGameOverProcedure();
 
         this.view.printPanelString();
+        this.view.getStoragePanels()[this.storageId].requestFocus();
+        this.view.getShortCutFun().setKeySelectedStorage(this.storageId);
+        this.view.visualizeStorage();
     }
 
     /**
@@ -231,7 +222,7 @@ public class StorageHandler extends MouseAdapter {
      * Checking game over requirement
      * @return game over status
      */
-    private boolean gameOverCheck() {
+    private static boolean gameOverCheck() {
 
         // Checking for maximum open order
         if (Start.orderManager.getActiveOrders().size() < StorageHandler.MAX_SIZE_OF_CURRENT_ORDERS) {
@@ -259,5 +250,20 @@ public class StorageHandler extends MouseAdapter {
 
         // Checking counter value
         return orderGameOverCounter == 27;
+    }
+
+    public static void startGameOverProcedure() {
+        if (gameOverCheck()) {
+            int answer = JOptionPane.showConfirmDialog(null,
+                    "Game over! Neues Spiel mit \"Ja\". Spiel beenden mit \"Nein\"","Game Over",
+                    JOptionPane.YES_NO_OPTION);
+
+            System.out.println(answer);
+            if (answer == 1) { // Yes
+                System.exit(0);
+            } else { // No
+                Start.resetGame();
+            }
+        }
     }
 }

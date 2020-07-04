@@ -8,11 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.Border;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -33,6 +29,7 @@ public class View extends JFrame {
     private final String rightArrowPicturePath = "img/right-arrow.png";
     private final int[] menuPanelPictureSettings = {0,0,132,516};
     private final int[] infoPanelPictureSettings = {0,0,900,62};
+    private final Dimension gameTargetStartDimension = new Dimension(300,400);
 
     // Initializing of Swing components
     private JPanel panel1;
@@ -64,6 +61,7 @@ public class View extends JFrame {
     private JPanel storageRootPanel;
     private JPanel orderInformationRootPanel;
     private JPanel storageGrid;
+    private JButton zielButton;
 
     // Setting id's to all storage panels
     private static final int storage0Id = 0;
@@ -89,6 +87,7 @@ public class View extends JFrame {
     private final StorageHouse storageHouse;
     private BalanceSheet balanceSheet;
     private HelpDesk helpDesk;
+    private GameTarget gameTarget;
     private int selectedMoveId = -1;
     private ShortCutFun shortCutFun;
 
@@ -150,12 +149,12 @@ public class View extends JFrame {
 
         // Show JFrame before draw images
         this.setVisible(true);
-        loadGamePictures();
+        loadGamePictures(true);
 
         this.helpDesk = new HelpDesk();
         this.balanceSheet = new BalanceSheet();
-
-
+        this.gameTarget = new GameTarget();
+        this.gameTarget.setSize(this.gameTargetStartDimension);
     }
 
     /**
@@ -196,8 +195,7 @@ public class View extends JFrame {
                 // Setting information text to label
                 destroyButton.setText("Zerstören");
             }
-            // Repaint menu panel picture
-            paintPictures();
+            loadGamePictures(false);
 
             // Get over painted element
             Timer timer = new Timer(10, e1 -> focusInformationGridElements());
@@ -242,7 +240,6 @@ public class View extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 destroyButton.setSelected(false);
                 destroyButton.setText("Zerstören");
-                paintPictures();
 
                 // Set information text to label
                 todoLabel.setText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
@@ -252,14 +249,16 @@ public class View extends JFrame {
                     // If its unselected than reset view
                     resetSelectedMoveId();
                 }
-
-                visualizeStorage();
-
-                Timer timer = new Timer(1, e12 -> focusInformationGridElements());
-                timer.setRepeats(false);
-                timer.start();
             }
         });
+
+        zielButton.addActionListener(e13 -> {
+            this.gameTarget.setVisible(true);
+        });
+    }
+
+    public GameTarget getGameTarget() {
+        return this.gameTarget;
     }
 
     /**
@@ -284,18 +283,6 @@ public class View extends JFrame {
      */
     public JToggleButton getMoveStorageButton() {
         return this.moveStorageButton;
-    }
-
-    /**
-     * Repainting of JPanel pictures
-     */
-    private void paintPictures() {
-        Timer timer = new Timer(0, e -> {
-            // Repainting after 0 seconds
-            loadGamePictures();
-        });
-        timer.setRepeats(false);
-        timer.start();
     }
 
     /**
@@ -329,7 +316,7 @@ public class View extends JFrame {
     /**
      * This method will paint all needed pictures to JPanels delayed
      */
-    private void loadGamePictures() {
+    private void loadGamePictures(boolean all) {
         // Setting of background status
         this.menuItemGrid.setOpaque(true);
         this.informationGrid.setOpaque(true);
@@ -338,21 +325,25 @@ public class View extends JFrame {
         drawImage(this.menuItemGrid.getGraphics(), this.menuPanelPicturePath, this.menuPanelPictureSettings);
         drawImage(this.informationGrid.getGraphics(), this.infoPanelPicturePath, this.infoPanelPictureSettings);
 
-        // Creating of focus Timer
-        Timer timer = new Timer(1000, e -> {
-            // Focusing of all elements in JPanel to set it in foreground
-            for (Component component : menuItemGrid.getComponents()) {
-                component.requestFocus();
-            }
-            printStoragePictures();
-            focusInformationGridElements();
-            shortCutFun = new ShortCutFun(this);
-            visualizeStorage();
-        });
+        if (all) {
+            // Creating of focus Timer
+            Timer timer = new Timer(1000, e -> {
+                // Focusing of all elements in JPanel to set it in foreground
+                for (Component component : menuItemGrid.getComponents()) {
+                    component.requestFocus();
+                }
 
-        // Setting one shot timer. Starting of Timer
-        timer.setRepeats(false);
-        timer.start();
+                printStoragePictures();
+                focusInformationGridElements();
+                shortCutFun = new ShortCutFun(this);
+                visualizeStorage();
+
+            });
+
+            // Setting one shot timer. Starting of Timer
+            timer.setRepeats(false);
+            timer.start();
+        }
     }
 
     /**
@@ -705,5 +696,15 @@ public class View extends JFrame {
      */
     public JLabel[] getStoragePanels() {
         return this.storagePanelCollection;
+    }
+
+    /**
+     * Resetting attributes
+     */
+    public void reset() {
+        this.moveStorageButton.setSelected(false);
+        this.destroyButton.setSelected(false);
+        updateAll();
+        this.balanceSheet.reset();
     }
 }

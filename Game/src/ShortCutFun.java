@@ -41,6 +41,9 @@ public class ShortCutFun implements KeyListener {
     public static final char BALANCE_SHEET_BUTTON_LOWER = 'b';
     public static final char BALANCE_SHEET_BUTTON_UPPER = 'B';
 
+    public static final char TARGET_DESCRIPTION_LOWER = 'z';
+    public static final char TARGET_DESCRIPTION_UPPER = 'Z';
+
     public static final char ACTION_CHAR_1 = ' ';
     public static final char ACTION_CHAR_2 = '\n';
 
@@ -132,6 +135,10 @@ public class ShortCutFun implements KeyListener {
         return this.keySelectedStorage;
     }
 
+    public void setKeySelectedStorage(int storageId) {
+        this.keySelectedStorage = storageId;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -146,12 +153,16 @@ public class ShortCutFun implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
+        JLabel sourceLabel = null;
+
         // Validate JComponent object
         if (!e.getSource().getClass().toString().equals(PREFERRED_OBJECT_TYPE)) {
-            return;
+            this.keySelectedStorage = ShortCutFun.START_POSITION;
+            sourceLabel = view.getStoragePanels()[this.keySelectedStorage];
+            sourceLabel.requestFocus();
+        } else {
+            sourceLabel = (JLabel) e.getSource();
         }
-
-        JLabel sourceLabel = (JLabel) e.getSource();
 
         // Search for words in blacklist
         for (String labelText : LABEL_TEXT_BLACKLIST) {
@@ -200,13 +211,8 @@ public class ShortCutFun implements KeyListener {
             case ShortCutFun.MOVE_TOGGLE_BUTTON_LOWER:
                 if (view.isMoveButtonToggled()) {
                     view.setDeselectedMoveButton();
-                } else {
-                    view.setSelectedMoveButton();
-                    view.setDeSelectedDestroyButton();
-                    view.markAvailableMovingTargets();
                 }
                 view.getMoveStorageButton().getMouseListeners()[0].mouseClicked(null);
-                System.out.println(view.getMoveStorageButton().getMouseListeners().length);
                 break;
 
             // // Focus the neighbour on the upper site
@@ -259,7 +265,13 @@ public class ShortCutFun implements KeyListener {
                 }
                 view.getBalanceSheet().showBalanceSheet();
                 break;
+
+            case ShortCutFun.TARGET_DESCRIPTION_LOWER:
+            case ShortCutFun.TARGET_DESCRIPTION_UPPER:
+                view.getGameTarget().setVisible(true);
+                break;
         }
         view.visualizeStorage();
+        StorageHandler.startGameOverProcedure();
     }
 }

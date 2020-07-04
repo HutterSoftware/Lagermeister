@@ -47,7 +47,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Hilfe"/>
+              <text value="Steuerung"/>
             </properties>
           </component>
           <component id="d425e" class="javax.swing.JToggleButton" binding="destroyButton">
@@ -57,6 +57,15 @@
             </constraints>
             <properties>
               <text value="Zerstören"/>
+            </properties>
+          </component>
+          <component id="27c74" class="javax.swing.JButton" binding="zielButton" default-binding="true">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Ziel"/>
             </properties>
           </component>
         </children>
@@ -303,31 +312,46 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="cfbbb" class="javax.swing.JLabel" binding="todoLabel">
+          <grid id="87c0a" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
             <constraints/>
-            <properties>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <opaque value="true"/>
-              <text value=""/>
-            </properties>
-          </component>
-          <hspacer id="c11b3">
-            <constraints/>
-          </hspacer>
-          <component id="989c1" class="javax.swing.JLabel" binding="cashLabel">
-            <constraints/>
-            <properties>
-              <background color="-1"/>
-              <font size="18"/>
-              <foreground color="-16777216"/>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <opaque value="true"/>
-              <requestFocusEnabled value="true"/>
-              <text value="0€"/>
-            </properties>
-          </component>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="cfbbb" class="javax.swing.JLabel" binding="todoLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font size="18"/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <opaque value="true"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <hspacer id="8b4b">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="989c1" class="javax.swing.JLabel" binding="cashLabel">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="10" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <font size="18"/>
+                  <foreground color="-16777216"/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <opaque value="true"/>
+                  <requestFocusEnabled value="true"/>
+                  <text value="0€"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>
