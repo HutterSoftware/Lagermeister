@@ -24,6 +24,17 @@ public class AccountManager {
     }
 
     /**
+     * This method reset all unreferenced attributes
+     */
+    public void reset() {
+        this.account = 0;
+        this.turnover = 0;
+        this.costs = 0;
+        this.win = 0;
+        this.transactionList.clear();
+    }
+
+    /**
      * This method will manage incoming transactions
      * @param order
      */

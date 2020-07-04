@@ -26,7 +26,13 @@ public class Start {
         view = new View("Lagermeister", orderManager, accountManager, storageHouse);
     }
 
+    /**
+     * Resetting all game objects to start a new game
+     */
     public static void resetGame() {
-
+        Start.orderManager.reset();
+        Start.accountManager.reset();
+        Start.storageHouse.reset();
+        Start.view.reset();
     }
 }

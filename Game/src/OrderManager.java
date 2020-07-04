@@ -13,6 +13,13 @@ public class OrderManager {
         this.activeOrders = new ArrayList<>();
     }
 
+    public void reset() {
+        this.activeOrders.clear();
+        this.selectedOrderIndex = 0;
+        this.activeOrderCounter = 0;
+        allOrderIndex = 0;
+    }
+
     public boolean addOrder(Order order) {
         if (this.selectedOrderIndex < allOrders.length - 1) {
             this.activeOrders.add(order);

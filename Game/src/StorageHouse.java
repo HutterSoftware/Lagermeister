@@ -71,8 +71,20 @@ public class StorageHouse {
 
         int level = 0;
         for (int i = 0; i < 9; i++) {
-            storageFields[i] = new Storage(i%3,i/3);
+            storageFields[i] = new Storage();
         }
+    }
+
+    /**
+     * Resetting attributes and remove rows from table
+     */
+    public void reset() {
+        for (int i = 0; i < this.storageFields.length; i++) {
+            this.storageFields[i].reset();
+        }
+        this.usedStorage = 0;
+        this.maxStorage = 27;
+        this.storageHouseFull = false;
     }
 
     /**
