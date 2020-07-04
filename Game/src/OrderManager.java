@@ -2,17 +2,28 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class OrderManager {
+
+    // Attributes of class
     private Order[] allOrders;
     private ArrayList<Order> activeOrders;
     private int selectedOrderIndex = 0, activeOrderCounter = 0, allOrderIndex = 0;
+
+    // Class constants
     public static Order NULL_DUMMY = new Order("", "","","","");
     public static int MAXIMUM_STORAGE_SIZE = 9;
 
+    /**
+     * Initialize attributes
+     * @param allOrders Order[]
+     */
     public OrderManager(Order[] allOrders) {
         this.allOrders = allOrders;
         this.activeOrders = new ArrayList<>();
     }
 
+    /**
+     * Resetting all attributes
+     */
     public void reset() {
         this.activeOrders.clear();
         this.selectedOrderIndex = 0;
@@ -20,16 +31,11 @@ public class OrderManager {
         allOrderIndex = 0;
     }
 
-    public boolean addOrder(Order order) {
-        if (this.selectedOrderIndex < allOrders.length - 1) {
-            this.activeOrders.add(order);
-            this.selectedOrderIndex++;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    /**
+     * Removing specific order
+     * @param order Order
+     * @return boolean
+     */
     public boolean removeOrder(Order order) {
         if (!this.activeOrders.isEmpty()) {
             this.activeOrders.remove(order);
@@ -39,31 +45,34 @@ public class OrderManager {
         }
     }
 
+    /**
+     * Decreasing order count
+     */
     public void decreaseOrder() {
         this.activeOrderCounter--;
         this.selectedOrderIndex = 0;
     }
 
-    public Order getLastOrder() {
-        return this.activeOrders.get(this.activeOrderCounter - 1);
-    }
-
+    /**
+     * Check index of selected order
+     * @return boolean
+     */
     public boolean isSelectedOrderFirst() {
-        if (this.selectedOrderIndex == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.selectedOrderIndex == 0;
     }
 
+    /**
+     * Check index of selected order
+     * @return boolean
+      */
     public boolean isSelectedOrderLast() {
-        if (this.selectedOrderIndex == 2) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.selectedOrderIndex == 2;
     }
 
+    /**
+     * Returning current order
+     * @return Order
+     */
     public Order getCurrentOrder() {
         if (this.activeOrderCounter == 0) {
             return NULL_DUMMY;
@@ -76,14 +85,17 @@ public class OrderManager {
         }
     }
 
+    /**
+     * Checking empty status
+     * @return boolean
+     */
     public boolean hasOrders() {
-        if (this.activeOrders.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.activeOrders.size() > 0;
     }
 
+    /**
+     * Loading new order
+     */
     public void loadNewOrder() {
         if (this.activeOrders.size() < 3) {
             if (this.allOrderIndex >= this.allOrders.length) {
@@ -99,6 +111,9 @@ public class OrderManager {
         }
     }
 
+    /**
+     * Selecting next order
+     */
     public void selectNextOrder() {
         if (this.selectedOrderIndex < 3) {
             this.selectedOrderIndex++;
@@ -107,6 +122,9 @@ public class OrderManager {
         }
     }
 
+    /**
+     * Selecting previous order
+     */
     public void selectPrevOrder() {
         if (this.selectedOrderIndex > 0) {
             this.selectedOrderIndex--;
@@ -115,20 +133,10 @@ public class OrderManager {
         }
     }
 
-    public boolean onlyStoreOrders() {
-        int counter = 0;
-        for (Order order : this.activeOrders) {
-            if (order.getOrderType() == Order.INCOMING_ORDER_STRING) {
-                counter++;
-            }
-        }
-        if (counter == this.activeOrders.size()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    /**
+     * Returning list of current orders
+     * @return ArrayList<Order>
+     */
     public ArrayList<Order> getActiveOrders() {
         return this.activeOrders;
     }
