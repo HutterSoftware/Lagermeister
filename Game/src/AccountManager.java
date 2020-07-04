@@ -7,6 +7,7 @@ public class AccountManager {
     private int account = 0, turnover = 0, costs = 0, win = 0;
     private OrderManager orderManager;
     private ArrayList<Order> transactionList;
+    private BalanceSheet balanceSheet;
     public static Order MOVE_ORDER;
     public static Order DESTROY_ORDER;
 
@@ -35,11 +36,18 @@ public class AccountManager {
     }
 
     /**
+     * Setting balance sheet to object
+     * @param balanceSheet BalanceSheet
+     */
+    public void setBalanceSheet(BalanceSheet balanceSheet) {
+        this.balanceSheet = balanceSheet;
+    }
+
+    /**
      * This method will manage incoming transactions
-     * @param order
+     * @param order Order
      */
     public void accountOrder(Order order) {
-        //TODO: Check calculation
 
         // Sum the new order
         this.account += order.getCash();
@@ -47,17 +55,19 @@ public class AccountManager {
 
         if (order.getCash() < 0) {
             this.costs += Math.abs(order.getCash());
-            this.win = this.turnover - this.costs;
-            this.turnover += Math.abs(order.getCash());
+        } else {
+            this.win += order.getCash();
         }
 
         // Adding to transaction list
         this.transactionList.add(order);
+
+        this.balanceSheet.addNewBill(order);
     }
 
     /**
      * Retuns the account
-     * @return
+     * @return int
      */
     public int getAccount() {
         return this.account;
@@ -65,7 +75,7 @@ public class AccountManager {
 
     /**
      * Returns the transaction list
-     * @return
+     * @return ArrayList<Order>
      */
     public ArrayList<Order> getAllTransactions() {
         return this.transactionList;
@@ -73,7 +83,7 @@ public class AccountManager {
 
     /**
      * Returns the turnover
-     * @return
+     * @return int
      */
     public int getTurnover() {
         return turnover;
@@ -81,7 +91,7 @@ public class AccountManager {
 
     /**
      * Returns the costs
-     * @return
+     * @return int
      */
     public int getCosts() {
         return costs;
@@ -89,7 +99,7 @@ public class AccountManager {
 
     /**
      * Returns the win
-     * @return
+     * @return int
      */
     public int getWin() {
         return win;

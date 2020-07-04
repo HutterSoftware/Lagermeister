@@ -60,12 +60,12 @@ public class BalanceSheet extends JFrame {
      * @param order Order
      */
     public void addNewBill(Order order) {
+        updateConclusion(order);
+
         DefaultTableModel model = getDefaultModel();
         Object[] orderValues = order.toArray();
         orderValues[0] = ++this.positionCounter;
         model.addRow(orderValues);
-
-        updateConclusion(order);
     }
 
     /**

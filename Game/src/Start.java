@@ -17,13 +17,14 @@ public class Start {
         // Initialize orderManager
         orderManager = new OrderManager(orderList);
 
-        // Initialize accountManager
-        accountManager = new AccountManager(orderManager);
-
         // Initialize StorageHouse
         storageHouse = new StorageHouse();
 
+        // Initialize accountManager
+        accountManager = new AccountManager(orderManager);
+
         view = new View("Lagermeister", orderManager, accountManager, storageHouse);
+
     }
 
     /**

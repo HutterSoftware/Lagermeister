@@ -201,8 +201,8 @@ public class ShortCutFun implements KeyListener {
                 if (view.isDestroyButtonPressed()) {
                     view.setDeSelectedDestroyButton();
                 } else {
-                    view.setSelectDestroyButton();
                     view.setDeselectedMoveButton();
+                    view.setSelectDestroyButton();
                 }
                 break;
 
@@ -211,8 +211,10 @@ public class ShortCutFun implements KeyListener {
             case ShortCutFun.MOVE_TOGGLE_BUTTON_LOWER:
                 if (view.isMoveButtonToggled()) {
                     view.setDeselectedMoveButton();
+                } else {
+                    view.setSelectedMoveButton();
+                    view.setDeSelectedDestroyButton();
                 }
-                view.getMoveStorageButton().getMouseListeners()[0].mouseClicked(null);
                 break;
 
             // // Focus the neighbour on the upper site

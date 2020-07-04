@@ -92,9 +92,6 @@ public class StorageHandler extends MouseAdapter {
             Start.view.disSelectMoveToggleButton();
             Start.view.visualizeStorage();
             Start.accountManager.accountOrder(AccountManager.MOVE_ORDER);
-            if (Start.view.getBalanceSheet() != null) {
-                Start.view.getBalanceSheet().addNewBill(AccountManager.MOVE_ORDER);
-            }
 
             // Account the move procedure
             view.updateCash(AccountManager.MOVE_ORDER.getCash());
@@ -130,14 +127,13 @@ public class StorageHandler extends MouseAdapter {
         Start.storageHouse.destroyOrder(containsSource);
 
         // Account destroy procedure
-        if (view.getBalanceSheet() != null) {
-            view.getBalanceSheet().addNewBill(AccountManager.DESTROY_ORDER);
-        }
         Start.accountManager.accountOrder(AccountManager.DESTROY_ORDER);
 
         // Updating view elements
         view.updateCash(accountManager.getAccount());
         this.view.updateAll();
+
+        this.view.unSelectMoveButton();
     }
 
     /**
@@ -151,7 +147,12 @@ public class StorageHandler extends MouseAdapter {
         if (order != null) {
             // Checking Timber exception
             if (order.getAttribute2().equals(StorageHandler.TIMBER_ATTRIBUTE_STRING)) {
-                return storage.getStorageSize() == 0;
+                if (storage.getStorageSize() == 0) {
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, Messages.TIMBER_NEED_COMPLETE_A_FIELD);
+                    return false;
+                }
             }
 
             if (storage.viewTopOrder() != null) {
@@ -163,8 +164,14 @@ public class StorageHandler extends MouseAdapter {
 
             // Checking heavy stone exception
             if (order.getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING)) {
-                return storageId < 3;
+                if (storageId < 3) {
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, Messages.STORE_HEAVY_STONES_ON_THE_FLOOR);
+                    return false;
+                }
             }
+
             if (view.getSelectedMoveId() != -1 && this.storageId >= 3 &&
                     order.getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING)) {
 
@@ -209,11 +216,6 @@ public class StorageHandler extends MouseAdapter {
         this.orderManager.removeOrder(order);
         this.orderManager.decreaseOrder();
 
-        // Update balance sheet
-        if (Start.view.getBalanceSheet() != null) {
-            Start.view.getBalanceSheet().addNewBill(order);
-        }
-
         // Updating GUI
         this.view.updateAll();
     }
@@ -232,6 +234,12 @@ public class StorageHandler extends MouseAdapter {
         // Checking status of each order with StorageHouse
         int orderGameOverCounter = 0;
         ArrayList<Order> orderList = Start.orderManager.getActiveOrders();
+        if (!orderList.get(0).getOrderType().equals(Order.OUTGOING_ORDER_STRING) ||
+            !orderList.get(1).getOrderType().equals(Order.OUTGOING_ORDER_STRING) ||
+            !orderList.get(2).getOrderType().equals(Order.OUTGOING_ORDER_STRING)) {
+
+        }
+
         for (Order order : orderList) {
             if (order.getOrderType().equals(Order.INCOMING_ORDER_STRING)) {
                 for (Color color : Start.storageHouse.getStorageStatus()) {
