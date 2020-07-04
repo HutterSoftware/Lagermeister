@@ -37,6 +37,10 @@ public class HelpDesk extends JFrame {
         this.moveTargetElement.setBorder(View.getStandardBorder(Color.MAGENTA, false));
     }
 
+    /**
+     * Creating standard headline font
+     * @return Font
+     */
     public static Font getStandardHeadlineFont() {
         return new Font("san-serif", Font.BOLD, HelpDesk.HEADLINE_FONT_SIZE);
     }
