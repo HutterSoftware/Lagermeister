@@ -11,6 +11,7 @@
         <constraints border-constraint="West"/>
         <properties>
           <background color="-1"/>
+          <opaque value="true"/>
         </properties>
         <border type="none"/>
         <children>
@@ -337,7 +338,7 @@
               </hspacer>
               <component id="989c1" class="javax.swing.JLabel" binding="cashLabel">
                 <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="10" use-parent-layout="false"/>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="4" fill="0" indent="3" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <background color="-1"/>
