@@ -153,7 +153,7 @@ public class ShortCutFun implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        JLabel sourceLabel = null;
+        JLabel sourceLabel;
 
         // Validate JComponent object
         if (!e.getSource().getClass().toString().equals(PREFERRED_OBJECT_TYPE)) {
