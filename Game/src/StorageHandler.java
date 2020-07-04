@@ -252,6 +252,9 @@ public class StorageHandler extends MouseAdapter {
         return orderGameOverCounter == 27;
     }
 
+    /**
+     * Wrapper method of gameOverCheck
+     */
     public static void startGameOverProcedure() {
         if (gameOverCheck()) {
             int answer = JOptionPane.showConfirmDialog(null,
