@@ -1,20 +1,7 @@
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.border.Border;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -31,9 +18,9 @@ public class View extends JFrame {
     private final String infoPanelPicturePath = "img/info_panel_background.png";
     private final String leftArrowPicturePath = "img/left-arrow.png";
     private final String rightArrowPicturePath = "img/right-arrow.png";
-    private final int[] menuPanelPictureSettings = {0,0,132,516};
-    private final int[] infoPanelPictureSettings = {0,0,900,62};
-    private final Dimension gameTargetStartDimension = new Dimension(300,400);
+    private final int[] menuPanelPictureSettings = {0, 0, 132, 516};
+    private final int[] infoPanelPictureSettings = {0, 0, 900, 62};
+    private final Dimension gameTargetStartDimension = new Dimension(300, 400);
 
     // Initializing of Swing components
     private JPanel panel1;
@@ -98,10 +85,11 @@ public class View extends JFrame {
 
     /**
      * This constructor initialize all important variables and assin them values
-     * @param title JFrame title
-     * @param orderManager Contains the full order management (getting new order, controlling of orders)
+     *
+     * @param title          JFrame title
+     * @param orderManager   Contains the full order management (getting new order, controlling of orders)
      * @param accountManager Save all actions of destroying, delivering, storing and moving. Contains Basic values of BalanceSheet JFrame
-     * @param storageHouse Management of all storage fields
+     * @param storageHouse   Management of all storage fields
      */
     public View(String title, OrderManager orderManager, AccountManager accountManager, StorageHouse storageHouse) {
 
@@ -114,21 +102,21 @@ public class View extends JFrame {
         this.setContentPane(panel1);
         this.pack();
 
-        this.setSize(900,600);
+        this.setSize(900, 600);
         this.setResizable(false);
 
         setActionListener();
 
         // Creating handlers to storage element
-        storage0.addMouseListener(new StorageHandler(storage0Id, this.orderManager, this.accountManager,this));
-        storage1.addMouseListener(new StorageHandler(storage1Id, this.orderManager, this.accountManager,this));
-        storage2.addMouseListener(new StorageHandler(storage2Id, this.orderManager, this.accountManager,this));
-        storage3.addMouseListener(new StorageHandler(storage3Id, this.orderManager, this.accountManager,this));
-        storage4.addMouseListener(new StorageHandler(storage4Id, this.orderManager, this.accountManager,this));
-        storage5.addMouseListener(new StorageHandler(storage5Id, this.orderManager, this.accountManager,this));
-        storage6.addMouseListener(new StorageHandler(storage6Id, this.orderManager, this.accountManager,this));
-        storage7.addMouseListener(new StorageHandler(storage7Id, this.orderManager, this.accountManager,this));
-        storage8.addMouseListener(new StorageHandler(storage8Id, this.orderManager, this.accountManager,this));
+        storage0.addMouseListener(new StorageHandler(storage0Id, this.orderManager, this.accountManager, this));
+        storage1.addMouseListener(new StorageHandler(storage1Id, this.orderManager, this.accountManager, this));
+        storage2.addMouseListener(new StorageHandler(storage2Id, this.orderManager, this.accountManager, this));
+        storage3.addMouseListener(new StorageHandler(storage3Id, this.orderManager, this.accountManager, this));
+        storage4.addMouseListener(new StorageHandler(storage4Id, this.orderManager, this.accountManager, this));
+        storage5.addMouseListener(new StorageHandler(storage5Id, this.orderManager, this.accountManager, this));
+        storage6.addMouseListener(new StorageHandler(storage6Id, this.orderManager, this.accountManager, this));
+        storage7.addMouseListener(new StorageHandler(storage7Id, this.orderManager, this.accountManager, this));
+        storage8.addMouseListener(new StorageHandler(storage8Id, this.orderManager, this.accountManager, this));
 
         // Saving all Swing storage elements into to locate the Storage element easier.
         this.storagePanelCollection = new JLabel[9];
@@ -256,6 +244,7 @@ public class View extends JFrame {
 
     /**
      * Setting user assignment text to todoLabel
+     *
      * @param text
      */
     public void setTodoLabelText(String text) {
@@ -285,7 +274,7 @@ public class View extends JFrame {
                 "Auftragsannahme", JOptionPane.YES_NO_OPTION);
 
         if (answer == 1) { // 1 == No
-            this.orderPunishment = new Order("Vertragsstrafe", "","","",
+            this.orderPunishment = new Order("Vertragsstrafe", "", "", "",
                     Integer.toString(-1 * Start.orderManager.showNewOrder().getCash()));
 
             accountManager.accountOrder(orderPunishment);
@@ -302,6 +291,7 @@ public class View extends JFrame {
 
     /**
      * Returning GameTarget object
+     *
      * @return GameTarget
      */
     public GameTarget getGameTarget() {
@@ -310,6 +300,7 @@ public class View extends JFrame {
 
     /**
      * Returns HelpDesk object
+     *
      * @return HelpDesk
      */
     public HelpDesk getHelpDesk() {
@@ -318,6 +309,7 @@ public class View extends JFrame {
 
     /**
      * Returns ShortCut object
+     *
      * @return ShortCutFun
      */
     public ShortCutFun getShortCutFun() {
@@ -398,9 +390,10 @@ public class View extends JFrame {
 
     /**
      * Basic method to draw pictures to graphic
-     * @param graphic Graphic of the Swing element
+     *
+     * @param graphic   Graphic of the Swing element
      * @param imagePath Path of image
-     * @param settings Settings like x, y, width and height
+     * @param settings  Settings like x, y, width and height
      */
     private void drawImage(Graphics graphic, String imagePath, int[] settings) {
         try {
@@ -422,6 +415,7 @@ public class View extends JFrame {
 
     /**
      * This method will only returns an ImageIcon based on the path parameter
+     *
      * @param path Path of the image
      * @return Returns an ImageIcon to use it later
      */
@@ -450,7 +444,7 @@ public class View extends JFrame {
                 public void run() {
                     super.run();
                     panel.setLayout(null);
-                    panel.setSize(500,500);
+                    panel.setSize(500, 500);
                     panel.setIcon(icon);
                 }
             };
@@ -467,7 +461,7 @@ public class View extends JFrame {
         for (int i = 0; i < allTopOrders.length; i++) {
             JLabel panel = storagePanelCollection[i];
             // Setting text to panel
-            if (allTopOrders[i] != null){
+            if (allTopOrders[i] != null) {
                 panel.setText(allTopOrders[i].toStringWithoutCash());
             } else {
                 panel.setText("leer");
@@ -485,7 +479,7 @@ public class View extends JFrame {
         for (int i = 0; i < status.length; i++) {
             // Printing border to storage panel
             if (status[i] == StorageHouse.FIELD_TWO || status[i] == StorageHouse.FIELD_ONE ||
-                status[i] == StorageHouse.FIELD_THREE) {
+                    status[i] == StorageHouse.FIELD_THREE) {
                 if (this.shortCutFun.getKeySelectedStorage() == i) {
                     storagePanelCollection[i].setBorder(getStandardBorder(Color.MAGENTA, true));
                 } else {
@@ -528,6 +522,7 @@ public class View extends JFrame {
 
     /**
      * return moveButton selected state
+     *
      * @return boolean
      */
     public boolean isMoveButtonToggled() {
@@ -536,6 +531,7 @@ public class View extends JFrame {
 
     /**
      * returns the selected id of element to move
+     *
      * @return boolean
      */
     public int getSelectedMoveId() {
@@ -544,6 +540,7 @@ public class View extends JFrame {
 
     /**
      * This method is the second part of the moving procedure
+     *
      * @param id int value of storage
      */
     public void setSelectedMoveId(int id) {
@@ -592,24 +589,27 @@ public class View extends JFrame {
 
     /**
      * Getting the previous of next order from active order list of OrderManager
+     *
      * @param prev previous active order id
      */
     public void orderViewButtonAction(int prev) {
         // Selecting the wanted order
         if (prev == View.PREVIOUS_ORDER) {
             orderManager.selectPrevOrder();
-        } else if (prev == View.NEXT_ORDER){
+        } else if (prev == View.NEXT_ORDER) {
             orderManager.selectNextOrder();
         }
 
         // Updating GUI
-        setEnableControlOfViewButtons();visualizeStorage();
+        setEnableControlOfViewButtons();
+        visualizeStorage();
         updateOrderViewItems();
         visualizeStorage();
     }
 
     /**
      * This method create a standard border
+     *
      * @param color Color of border
      * @return returns border object
      */
@@ -617,7 +617,7 @@ public class View extends JFrame {
         if (!dashing) {
             return BorderFactory.createLineBorder(color, View.BORDER_THICKNESS);
         } else {
-            return BorderFactory.createDashedBorder(color, 15,2,1,true);
+            return BorderFactory.createDashedBorder(color, 15, 2, 1, true);
         }
     }
 
@@ -634,9 +634,9 @@ public class View extends JFrame {
 
         // Printing border
         if (moveStorageButton.isSelected()) {
-            if (selectedMoveId == -1 &&  moveStorageButton.isSelected()) {
+            if (selectedMoveId == -1 && moveStorageButton.isSelected()) {
                 markSelectableElements();
-            } else if (selectedMoveId != -1){
+            } else if (selectedMoveId != -1) {
                 markAvailableMovingTargets();
             }
         } else if (Objects.equals(order.getOrderType(), Order.INCOMING_ORDER_STRING)) {
@@ -679,7 +679,7 @@ public class View extends JFrame {
     }
 
     /**
-     *  Updating order view in the header area of the game
+     * Updating order view in the header area of the game
      */
     private void updateOrderViewItems() {
         if (this.orderManager.hasOrders()) {
@@ -724,6 +724,7 @@ public class View extends JFrame {
 
     /**
      * Returning of storageHouse
+     *
      * @return Returns the StorageHouse object
      */
     public StorageHouse getStorageHouse() {
@@ -732,6 +733,7 @@ public class View extends JFrame {
 
     /**
      * Returning of balance sheet
+     *
      * @return Returns the complete balance sheet JFrame
      */
     public BalanceSheet getBalanceSheet() {
@@ -740,6 +742,7 @@ public class View extends JFrame {
 
     /**
      * Returning of destroyButton pressed status
+     *
      * @return Status of destroyButton
      */
     public boolean isDestroyButtonPressed() {
@@ -748,6 +751,7 @@ public class View extends JFrame {
 
     /**
      * Returning of storage array
+     *
      * @return Array of all storage labels
      */
     public JLabel[] getStoragePanels() {
@@ -762,5 +766,338 @@ public class View extends JFrame {
         this.destroyButton.setSelected(false);
         updateAll();
         this.balanceSheet.reset();
+    }
+
+    {
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
+        $$$setupUI$$$();
+    }
+
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        panel1 = new JPanel();
+        panel1.setLayout(new BorderLayout(0, 0));
+        menuItemGrid = new JPanel();
+        menuItemGrid.setLayout(new GridBagLayout());
+        menuItemGrid.setBackground(new Color(-1));
+        menuItemGrid.setOpaque(true);
+        panel1.add(menuItemGrid, BorderLayout.WEST);
+        moveStorageButton = new JToggleButton();
+        moveStorageButton.setText("Umlagern");
+        GridBagConstraints gbc;
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        menuItemGrid.add(moveStorageButton, gbc);
+        newOrderButton = new JButton();
+        newOrderButton.setText("Neuer Auftrag");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        menuItemGrid.add(newOrderButton, gbc);
+        bilanzButton = new JButton();
+        bilanzButton.setText("Bilanz");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        menuItemGrid.add(bilanzButton, gbc);
+        helpButton = new JButton();
+        helpButton.setText("Steuerung");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        menuItemGrid.add(helpButton, gbc);
+        destroyButton = new JToggleButton();
+        destroyButton.setText("Zerstören");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.BOTH;
+        menuItemGrid.add(destroyButton, gbc);
+        questButton = new JButton();
+        questButton.setText("Ziel");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        menuItemGrid.add(questButton, gbc);
+        storageGrid = new JPanel();
+        storageGrid.setLayout(new BorderLayout(0, 0));
+        storageGrid.setBackground(new Color(-12697023));
+        storageGrid.setForeground(new Color(-12697023));
+        panel1.add(storageGrid, BorderLayout.CENTER);
+        orderInformationRootPanel = new JPanel();
+        orderInformationRootPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        storageGrid.add(orderInformationRootPanel, BorderLayout.NORTH);
+        orderLeftView = new JButton();
+        orderLeftView.setHorizontalAlignment(0);
+        orderLeftView.setText("");
+        orderInformationRootPanel.add(orderLeftView);
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridBagLayout());
+        orderInformationRootPanel.add(panel2);
+        product = new JLabel();
+        product.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 60, 0, 60);
+        panel2.add(product, gbc);
+        orderType = new JLabel();
+        orderType.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 60, 0, 60);
+        panel2.add(orderType, gbc);
+        money = new JLabel();
+        money.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 60, 0, 60);
+        panel2.add(money, gbc);
+        orderRightView = new JButton();
+        orderRightView.setText("");
+        orderInformationRootPanel.add(orderRightView);
+        storageRootPanel = new JPanel();
+        storageRootPanel.setLayout(new GridBagLayout());
+        storageGrid.add(storageRootPanel, BorderLayout.CENTER);
+        final JPanel spacer1 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipadx = 10;
+        storageRootPanel.add(spacer1, gbc);
+        final JPanel spacer2 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipadx = 10;
+        storageRootPanel.add(spacer2, gbc);
+        final JPanel spacer3 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.ipady = 10;
+        storageRootPanel.add(spacer3, gbc);
+        final JPanel spacer4 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.ipady = 10;
+        storageRootPanel.add(spacer4, gbc);
+        final JPanel spacer5 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.ipady = 10;
+        storageRootPanel.add(spacer5, gbc);
+        final JPanel spacer6 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.ipady = 10;
+        storageRootPanel.add(spacer6, gbc);
+        final JPanel spacer7 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.ipadx = 10;
+        storageRootPanel.add(spacer7, gbc);
+        final JPanel spacer8 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.ipady = 10;
+        storageRootPanel.add(spacer8, gbc);
+        final JPanel spacer9 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipadx = 10;
+        storageRootPanel.add(spacer9, gbc);
+        final JPanel spacer10 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipadx = 10;
+        storageRootPanel.add(spacer10, gbc);
+        final JPanel spacer11 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipadx = 10;
+        storageRootPanel.add(spacer11, gbc);
+        final JPanel spacer12 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.ipadx = 10;
+        storageRootPanel.add(spacer12, gbc);
+        storage6 = new JLabel();
+        storage6.setHorizontalTextPosition(0);
+        storage6.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage6, gbc);
+        storage7 = new JLabel();
+        storage7.setHorizontalTextPosition(0);
+        storage7.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage7, gbc);
+        storage8 = new JLabel();
+        storage8.setHorizontalTextPosition(0);
+        storage8.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 0;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage8, gbc);
+        storage3 = new JLabel();
+        storage3.setHorizontalTextPosition(0);
+        storage3.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage3, gbc);
+        storage4 = new JLabel();
+        storage4.setHorizontalTextPosition(0);
+        storage4.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage4, gbc);
+        storage5 = new JLabel();
+        storage5.setHorizontalTextPosition(0);
+        storage5.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 2;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage5, gbc);
+        storage0 = new JLabel();
+        storage0.setHorizontalTextPosition(0);
+        storage0.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage0, gbc);
+        storage1 = new JLabel();
+        storage1.setHorizontalTextPosition(0);
+        storage1.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage1, gbc);
+        storage2 = new JLabel();
+        storage2.setHorizontalAlignment(10);
+        storage2.setHorizontalTextPosition(0);
+        storage2.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 4;
+        gbc.weightx = 100.0;
+        gbc.weighty = 100.0;
+        storageRootPanel.add(storage2, gbc);
+        informationGrid = new JPanel();
+        informationGrid.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 20));
+        informationGrid.setBackground(new Color(-1));
+        informationGrid.setEnabled(true);
+        panel1.add(informationGrid, BorderLayout.SOUTH);
+        final JPanel panel3 = new JPanel();
+        panel3.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        informationGrid.add(panel3);
+        todoLabel = new JLabel();
+        Font todoLabelFont = this.$$$getFont$$$(null, -1, 18, todoLabel.getFont());
+        if (todoLabelFont != null) todoLabel.setFont(todoLabelFont);
+        todoLabel.setHorizontalAlignment(0);
+        todoLabel.setHorizontalTextPosition(0);
+        todoLabel.setOpaque(true);
+        todoLabel.setText("");
+        panel3.add(todoLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final com.intellij.uiDesigner.core.Spacer spacer13 = new com.intellij.uiDesigner.core.Spacer();
+        panel3.add(spacer13, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        cashLabel = new JLabel();
+        cashLabel.setBackground(new Color(-1));
+        Font cashLabelFont = this.$$$getFont$$$(null, -1, 18, cashLabel.getFont());
+        if (cashLabelFont != null) cashLabel.setFont(cashLabelFont);
+        cashLabel.setForeground(new Color(-16777216));
+        cashLabel.setHorizontalAlignment(0);
+        cashLabel.setHorizontalTextPosition(0);
+        cashLabel.setOpaque(true);
+        cashLabel.setRequestFocusEnabled(true);
+        cashLabel.setText("0€");
+        panel3.add(cashLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 3, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return panel1;
     }
 }
