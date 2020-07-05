@@ -81,6 +81,8 @@ public class StorageHandler extends MouseAdapter {
 
             // Mark available target storage
             Start.view.markAvailableMovingTargets();
+
+            Start.view.setTodoLabelText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
         } else {
             if (view.getStorageHouse().storageFields[view.getSelectedMoveId()]
                     .viewTopOrder().getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING) &&
@@ -111,7 +113,8 @@ public class StorageHandler extends MouseAdapter {
             Start.accountManager.accountOrder(AccountManager.MOVE_ORDER);
 
             // Account the move procedure
-            this.view.updateAll();
+            Start.view.updateAll();
+            Start.view.setTodoLabelText(Messages.SELECT_STORAGE_TARGET_OF_MOVE);
         }
     }
 

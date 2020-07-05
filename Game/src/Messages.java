@@ -8,6 +8,7 @@ public class Messages {
     public static final String UNDEFINED_ANSWER = "Status undefined";
     public static final String SELECT_STORAGE_TO_STORE = "Wählen sie einen Lagerplatz aus";
     public static final String SELECT_STORAGE_TO_DELIVER = "Wählen sie das zu versendende Objekt aus";
+    public static final String SELECT_STORAGE_TO_DESTROY = "Wählen sie ein Produkt zum verschrotten aus";
     public static final String SELECT_STORAGE_OBJECT_TO_MOVE = "Wählen sie das Objekt aus das umgelagert werden soll";
     public static final String SELECT_STORAGE_TARGET_OF_MOVE = "Wählen sie einen neuen Lagerplatz aus";
     public static final String MOVE_SELECT_STORAGE_WITH_CONTENT = "Wählen sie bitte einen Lagerplatz mit Inhalt aus";

@@ -160,7 +160,6 @@ public class View extends JFrame {
         Start.accountManager.setBalanceSheet(this.balanceSheet);
         this.gameTarget = new GameTarget();
         this.gameTarget.setSize(this.gameTargetStartDimension);
-        // TODO: Check information label text in game
     }
 
     /**
@@ -233,6 +232,7 @@ public class View extends JFrame {
 
         // Creating ActionListener of moveStorageButton
         moveStorageButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 destroyButton.setSelected(false);
@@ -252,6 +252,14 @@ public class View extends JFrame {
         });
 
         questButton.addActionListener(e13 -> this.gameTarget.setVisible(true));
+    }
+
+    /**
+     * Setting user assignment text to todoLabel
+     * @param text
+     */
+    public void setTodoLabelText(String text) {
+        this.todoLabel.setText(text);
     }
 
     /**
@@ -564,6 +572,22 @@ public class View extends JFrame {
         updateCash();
         orderViewButtonAction(View.CURRENT_ORDER);
         visualizeStorage();
+
+        if (moveStorageButton.isSelected()) {
+            if (getSelectedMoveId() == -1) {
+                setTodoLabelText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
+            } else {
+                setTodoLabelText(Messages.SELECT_STORAGE_TARGET_OF_MOVE);
+            }
+        } else if (destroyButton.isSelected()) {
+            setTodoLabelText(Messages.SELECT_STORAGE_TO_DESTROY);
+        } else {
+            if (orderManager.getCurrentOrder().getOrderType().equals(Order.INCOMING_ORDER_STRING)) {
+                setTodoLabelText(Messages.SELECT_STORAGE_TO_STORE);
+            } else {
+                setTodoLabelText(Messages.SELECT_STORAGE_TO_DELIVER);
+            }
+        }
     }
 
     /**
