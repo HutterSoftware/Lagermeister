@@ -56,6 +56,7 @@ public class View extends JFrame {
     private JPanel storageRootPanel;
     private JPanel orderInformationRootPanel;
     private JPanel storageGrid;
+    private JPanel orderInfoGrid;
     private JButton questButton;
 
     // Setting id's to all storage panels
@@ -108,6 +109,7 @@ public class View extends JFrame {
         initializeGui();
         this.storagePanelCollection = new JLabel[9];
         setVisible(true);
+        // TODO: Uncomment the following
         /*
         setActionListener();
         this.setContentPane(panel1);
@@ -198,9 +200,42 @@ public class View extends JFrame {
         informationConstrains.gridx = 2;
         informationGrid.add(cashLabel, informationConstrains);
 
+        storageGrid = new JPanel(new BorderLayout(0,0));
+        orderInformationRootPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,3,3));
+        orderLeftView = new JButton(getImage(this.leftArrowPicturePath));
+        orderInformationRootPanel.add(orderLeftView);
+
+        GridBagConstraints orderInfoConstrains = new GridBagConstraints();
+        orderInfoConstrains.insets = new Insets(0,40,0,40);
+        orderInfoConstrains.fill = GridBagConstraints.BOTH;
+        orderInfoConstrains.gridx = 0;
+        orderInfoConstrains.gridy = 0;
+        orderInfoGrid = new JPanel(new GridBagLayout());
+        product = new JLabel("e");
+        orderInfoGrid.add(product, orderInfoConstrains);
+        orderType = new JLabel("e");
+        orderInfoConstrains.gridy = 1;
+        orderInfoGrid.add(orderType, orderInfoConstrains);
+        money = new JLabel("E");
+        orderInfoConstrains.gridy = 2;
+        orderInfoGrid.add(money, orderInfoConstrains);
+        orderInformationRootPanel.add(orderInfoGrid);
+
+        orderRightView = new JButton(getImage(this.rightArrowPicturePath));
+        orderInformationRootPanel.add(orderRightView);
+
+
+        storageRootPanel = new JPanel(new GridBagLayout());
+        // TODO: Create storage labels and handlers
+
+        storageGrid.add(orderInformationRootPanel, BorderLayout.NORTH);
+        storageGrid.add(storageRootPanel, BorderLayout.CENTER);
+
         panel1.add(menuItemGrid, BorderLayout.WEST);
         panel1.add(informationGrid, BorderLayout.SOUTH);
+        panel1.add(storageGrid, BorderLayout.CENTER);
         setContentPane(panel1);
+        // TODO: Uncomment the following line
         //setActionListener();
     }
 
