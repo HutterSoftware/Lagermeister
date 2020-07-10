@@ -106,45 +106,9 @@ public class View extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.setSize(900, 600);
-        initializeGui();
         this.storagePanelCollection = new JLabel[9];
+        initializeGui();
         setVisible(true);
-        // TODO: Uncomment the following
-        /*
-        setActionListener();
-        this.setContentPane(panel1);
-
-        // Creating handlers to storage element
-        storage0.addMouseListener(new StorageHandler(storage0Id, this.orderManager, this.accountManager, this));
-        storage1.addMouseListener(new StorageHandler(storage1Id, this.orderManager, this.accountManager, this));
-        storage2.addMouseListener(new StorageHandler(storage2Id, this.orderManager, this.accountManager, this));
-        storage3.addMouseListener(new StorageHandler(storage3Id, this.orderManager, this.accountManager, this));
-        storage4.addMouseListener(new StorageHandler(storage4Id, this.orderManager, this.accountManager, this));
-        storage5.addMouseListener(new StorageHandler(storage5Id, this.orderManager, this.accountManager, this));
-        storage6.addMouseListener(new StorageHandler(storage6Id, this.orderManager, this.accountManager, this));
-        storage7.addMouseListener(new StorageHandler(storage7Id, this.orderManager, this.accountManager, this));
-        storage8.addMouseListener(new StorageHandler(storage8Id, this.orderManager, this.accountManager, this));
-
-        // Saving all Swing storage elements into to locate the Storage element easier.
-
-        this.storagePanelCollection[0] = storage0;
-        this.storagePanelCollection[1] = storage1;
-        this.storagePanelCollection[2] = storage2;
-        this.storagePanelCollection[3] = storage3;
-        this.storagePanelCollection[4] = storage4;
-        this.storagePanelCollection[5] = storage5;
-        this.storagePanelCollection[6] = storage6;
-        this.storagePanelCollection[7] = storage7;
-        this.storagePanelCollection[8] = storage8;
-
-        // Setting font size of all storage panels
-        for (JLabel storageLabel : storagePanelCollection) {
-            storageLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, STORAGE_FONT_SIZE));
-        }
-
-        // Setting effects to elements and draw many pictures to the specific elements
-        orderLeftView.setIcon(getImage(this.leftArrowPicturePath));
-        orderRightView.setIcon(getImage(this.rightArrowPicturePath));
 
         // Show JFrame before draw images
         this.setVisible(true);
@@ -154,13 +118,17 @@ public class View extends JFrame {
         this.balanceSheet = new BalanceSheet();
         Start.accountManager.setBalanceSheet(this.balanceSheet);
         this.gameTarget = new GameTarget();
-        this.gameTarget.setSize(this.gameTargetStartDimension);*/
+        this.gameTarget.setSize(this.gameTargetStartDimension);
     }
 
+    /**
+     * Initialize components and add them to JFrame object
+     */
     private void initializeGui() {
         panel1 = new JPanel();
         panel1.setLayout(new BorderLayout(0,0));
 
+        // Adding buttons to menu JPanel
         menuItemGrid = new JPanel(new GridBagLayout());
         newOrderButton = new JButton("Neuer Auftrag");
         moveStorageButton = new JToggleButton("Umalgern");
@@ -186,6 +154,7 @@ public class View extends JFrame {
         menuConstraints.gridy = 5;
         menuItemGrid.add(questButton, menuConstraints);
 
+        // Adding information labels to informationGrid
         informationGrid = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 20));
         todoLabel = new JLabel("fe");
         todoLabel.setFont(HelpDesk.getStandardHeadlineFont());
@@ -200,6 +169,7 @@ public class View extends JFrame {
         informationConstrains.gridx = 2;
         informationGrid.add(cashLabel, informationConstrains);
 
+        // Adding order information elements to grid
         storageGrid = new JPanel(new BorderLayout(0,0));
         orderInformationRootPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,3,3));
         orderLeftView = new JButton(getImage(this.leftArrowPicturePath));
@@ -211,12 +181,12 @@ public class View extends JFrame {
         orderInfoConstrains.gridx = 0;
         orderInfoConstrains.gridy = 0;
         orderInfoGrid = new JPanel(new GridBagLayout());
-        product = new JLabel("e");
+        product = new JLabel();
         orderInfoGrid.add(product, orderInfoConstrains);
-        orderType = new JLabel("e");
+        orderType = new JLabel();
         orderInfoConstrains.gridy = 1;
         orderInfoGrid.add(orderType, orderInfoConstrains);
-        money = new JLabel("E");
+        money = new JLabel();
         orderInfoConstrains.gridy = 2;
         orderInfoGrid.add(money, orderInfoConstrains);
         orderInformationRootPanel.add(orderInfoGrid);
@@ -224,9 +194,17 @@ public class View extends JFrame {
         orderRightView = new JButton(getImage(this.rightArrowPicturePath));
         orderInformationRootPanel.add(orderRightView);
 
-
+        // Adding storage labels to grid
         storageRootPanel = new JPanel(new GridBagLayout());
-        // TODO: Create storage labels and handlers
+        initializeStorageLabel(storage0,0,2, storageRootPanel, storage0Id);
+        initializeStorageLabel(storage1,1,2, storageRootPanel, storage1Id);
+        initializeStorageLabel(storage2,2,2, storageRootPanel, storage2Id);
+        initializeStorageLabel(storage3,0,1, storageRootPanel, storage3Id);
+        initializeStorageLabel(storage4,1,1, storageRootPanel, storage4Id);
+        initializeStorageLabel(storage5,2,1, storageRootPanel, storage5Id);
+        initializeStorageLabel(storage6,0,0, storageRootPanel, storage6Id);
+        initializeStorageLabel(storage7,1,0, storageRootPanel, storage7Id);
+        initializeStorageLabel(storage8,2,0, storageRootPanel, storage8Id);
 
         storageGrid.add(orderInformationRootPanel, BorderLayout.NORTH);
         storageGrid.add(storageRootPanel, BorderLayout.CENTER);
@@ -235,8 +213,34 @@ public class View extends JFrame {
         panel1.add(informationGrid, BorderLayout.SOUTH);
         panel1.add(storageGrid, BorderLayout.CENTER);
         setContentPane(panel1);
-        // TODO: Uncomment the following line
-        //setActionListener();
+
+        // Add action listener to GUI elements
+        setActionListener();
+    }
+
+    /**
+     * This method will initialize storage labels
+     * @param label JLabel
+     * @param xLocation int
+     * @param yLocation int
+     * @param grid JPanel
+     * @param storageArrayIndex in
+     * @return JLabel
+     */
+    private JLabel initializeStorageLabel(JLabel label, int xLocation, int yLocation, JPanel grid, int storageArrayIndex) {
+        label = new JLabel();
+        label.setHorizontalTextPosition(JLabel.CENTER);
+
+        GridBagConstraints storageLabelConstraints = new GridBagConstraints();
+        storageLabelConstraints.gridy = yLocation;
+        storageLabelConstraints.gridx = xLocation;
+        storageLabelConstraints.insets = new Insets(1,1,1,1);
+        grid.add(label, storageLabelConstraints);
+        this.storagePanelCollection[storageArrayIndex] = label;
+        label.addMouseListener(new StorageHandler(storageArrayIndex, this.orderManager, this.accountManager, this));
+        label.setFont(new Font("Arial", Font.CENTER_BASELINE, STORAGE_FONT_SIZE));
+
+        return label;
     }
 
     /**
@@ -856,673 +860,4 @@ public class View extends JFrame {
         updateAll();
         this.balanceSheet.reset();
     }
-
-
-/*
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
-
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     *
-    private void $$$setupUI$$$() {
-        panel1 = new JPanel();
-        panel1.setLayout(new BorderLayout(0, 0));
-        menuItemGrid = new JPanel();
-        menuItemGrid.setLayout(new GridBagLayout());
-        menuItemGrid.setBackground(new Color(-1));
-        menuItemGrid.setOpaque(true);
-        panel1.add(menuItemGrid, BorderLayout.WEST);
-        moveStorageButton = new JToggleButton();
-        moveStorageButton.setText("Umlagern");
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        menuItemGrid.add(moveStorageButton, gbc);
-        newOrderButton = new JButton();
-        newOrderButton.setText("Neuer Auftrag");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.BOTH;
-        menuItemGrid.add(newOrderButton, gbc);
-        bilanzButton = new JButton();
-        bilanzButton.setText("Bilanz");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        menuItemGrid.add(bilanzButton, gbc);
-        helpButton = new JButton();
-        helpButton.setText("Steuerung");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        menuItemGrid.add(helpButton, gbc);
-        destroyButton = new JToggleButton();
-        destroyButton.setText("Zerstören");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.BOTH;
-        menuItemGrid.add(destroyButton, gbc);
-        questButton = new JButton();
-        questButton.setText("Ziel");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        menuItemGrid.add(questButton, gbc);
-        storageGrid = new JPanel();
-        storageGrid.setLayout(new BorderLayout(0, 0));
-        storageGrid.setBackground(new Color(-12697023));
-        storageGrid.setForeground(new Color(-12697023));
-        panel1.add(storageGrid, BorderLayout.CENTER);
-        orderInformationRootPanel = new JPanel();
-        orderInformationRootPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        storageGrid.add(orderInformationRootPanel, BorderLayout.NORTH);
-        orderLeftView = new JButton();
-        orderLeftView.setHorizontalAlignment(0);
-        orderLeftView.setText("");
-        orderInformationRootPanel.add(orderLeftView);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridBagLayout());
-        orderInformationRootPanel.add(panel2);
-        product = new JLabel();
-        product.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 60, 0, 60);
-        panel2.add(product, gbc);
-        orderType = new JLabel();
-        orderType.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 60, 0, 60);
-        panel2.add(orderType, gbc);
-        money = new JLabel();
-        money.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 60, 0, 60);
-        panel2.add(money, gbc);
-        orderRightView = new JButton();
-        orderRightView.setText("");
-        orderInformationRootPanel.add(orderRightView);
-        storageRootPanel = new JPanel();
-        storageRootPanel.setLayout(new GridBagLayout());
-        storageGrid.add(storageRootPanel, BorderLayout.CENTER);
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer2, gbc);
-        final JPanel spacer3 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer3, gbc);
-        final JPanel spacer4 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer4, gbc);
-        final JPanel spacer5 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer5, gbc);
-        final JPanel spacer6 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer6, gbc);
-        final JPanel spacer7 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer7, gbc);
-        final JPanel spacer8 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer8, gbc);
-        final JPanel spacer9 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer9, gbc);
-        final JPanel spacer10 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer10, gbc);
-        final JPanel spacer11 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer11, gbc);
-        final JPanel spacer12 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer12, gbc);
-        storage6 = new JLabel();
-        storage6.setHorizontalTextPosition(0);
-        storage6.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage6, gbc);
-        storage7 = new JLabel();
-        storage7.setHorizontalTextPosition(0);
-        storage7.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage7, gbc);
-        storage8 = new JLabel();
-        storage8.setHorizontalTextPosition(0);
-        storage8.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 0;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage8, gbc);
-        storage3 = new JLabel();
-        storage3.setHorizontalTextPosition(0);
-        storage3.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage3, gbc);
-        storage4 = new JLabel();
-        storage4.setHorizontalTextPosition(0);
-        storage4.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 2;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage4, gbc);
-        storage5 = new JLabel();
-        storage5.setHorizontalTextPosition(0);
-        storage5.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 2;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage5, gbc);
-        storage0 = new JLabel();
-        storage0.setHorizontalTextPosition(0);
-        storage0.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage0, gbc);
-        storage1 = new JLabel();
-        storage1.setHorizontalTextPosition(0);
-        storage1.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 4;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage1, gbc);
-        storage2 = new JLabel();
-        storage2.setHorizontalAlignment(10);
-        storage2.setHorizontalTextPosition(0);
-        storage2.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 4;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage2, gbc);
-        informationGrid = new JPanel();
-        informationGrid.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 20));
-        informationGrid.setBackground(new Color(-1));
-        informationGrid.setEnabled(true);
-        panel1.add(informationGrid, BorderLayout.SOUTH);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
-        informationGrid.add(panel3);
-        todoLabel = new JLabel();
-        Font todoLabelFont = this.$$$getFont$$$(null, -1, 18, todoLabel.getFont());
-        if (todoLabelFont != null) todoLabel.setFont(todoLabelFont);
-        todoLabel.setHorizontalAlignment(0);
-        todoLabel.setHorizontalTextPosition(0);
-        todoLabel.setOpaque(true);
-        todoLabel.setText("");
-        panel3.add(todoLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final Spacer spacer13 = new Spacer();
-        panel3.add(spacer13, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        cashLabel = new JLabel();
-        cashLabel.setBackground(new Color(-1));
-        Font cashLabelFont = this.$$$getFont$$$(null, -1, 18, cashLabel.getFont());
-        if (cashLabelFont != null) cashLabel.setFont(cashLabelFont);
-        cashLabel.setForeground(new Color(-16777216));
-        cashLabel.setHorizontalAlignment(0);
-        cashLabel.setHorizontalTextPosition(0);
-        cashLabel.setOpaque(true);
-        cashLabel.setRequestFocusEnabled(true);
-        cashLabel.setText("0€");
-        panel3.add(cashLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 3, false));
-    }
-
-    /**
-     * @noinspection ALL
-     *
-    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
-        if (currentFont == null) return null;
-        String resultName;
-        if (fontName == null) {
-            resultName = currentFont.getName();
-        } else {
-            Font testFont = new Font(fontName, Font.PLAIN, 10);
-            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
-                resultName = fontName;
-            } else {
-                resultName = currentFont.getName();
-            }
-        }
-        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-    }
-
-    /**
-     * @noinspection ALL
-     *
-    public JComponent $$$getRootComponent$$$() {
-        return panel1;
-    }
-
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
-
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     *
-    private void $$$setupUI$$$() {
-        panel1 = new JPanel();
-        panel1.setLayout(new BorderLayout(0, 0));
-        menuItemGrid = new JPanel();
-        menuItemGrid.setLayout(new GridBagLayout());
-        menuItemGrid.setBackground(new Color(-1));
-        menuItemGrid.setOpaque(true);
-        panel1.add(menuItemGrid, BorderLayout.WEST);
-        moveStorageButton = new JToggleButton();
-        moveStorageButton.setText("Umlagern");
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        menuItemGrid.add(moveStorageButton, gbc);
-        newOrderButton = new JButton();
-        newOrderButton.setText("Neuer Auftrag");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.BOTH;
-        menuItemGrid.add(newOrderButton, gbc);
-        bilanzButton = new JButton();
-        bilanzButton.setText("Bilanz");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        menuItemGrid.add(bilanzButton, gbc);
-        helpButton = new JButton();
-        helpButton.setText("Steuerung");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        menuItemGrid.add(helpButton, gbc);
-        destroyButton = new JToggleButton();
-        destroyButton.setText("Zerstören");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.BOTH;
-        menuItemGrid.add(destroyButton, gbc);
-        questButton = new JButton();
-        questButton.setText("Ziel");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        menuItemGrid.add(questButton, gbc);
-        storageGrid = new JPanel();
-        storageGrid.setLayout(new BorderLayout(0, 0));
-        storageGrid.setBackground(new Color(-12697023));
-        storageGrid.setForeground(new Color(-12697023));
-        panel1.add(storageGrid, BorderLayout.CENTER);
-        orderInformationRootPanel = new JPanel();
-        orderInformationRootPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        storageGrid.add(orderInformationRootPanel, BorderLayout.NORTH);
-        orderLeftView = new JButton();
-        orderLeftView.setHorizontalAlignment(0);
-        orderLeftView.setText("");
-        orderInformationRootPanel.add(orderLeftView);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridBagLayout());
-        orderInformationRootPanel.add(panel2);
-        product = new JLabel();
-        product.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 60, 0, 60);
-        panel2.add(product, gbc);
-        orderType = new JLabel();
-        orderType.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 60, 0, 60);
-        panel2.add(orderType, gbc);
-        money = new JLabel();
-        money.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 60, 0, 60);
-        panel2.add(money, gbc);
-        orderRightView = new JButton();
-        orderRightView.setText("");
-        orderInformationRootPanel.add(orderRightView);
-        storageRootPanel = new JPanel();
-        storageRootPanel.setLayout(new GridBagLayout());
-        storageGrid.add(storageRootPanel, BorderLayout.CENTER);
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer1, gbc);
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer2, gbc);
-        final JPanel spacer3 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer3, gbc);
-        final JPanel spacer4 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer4, gbc);
-        final JPanel spacer5 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer5, gbc);
-        final JPanel spacer6 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer6, gbc);
-        final JPanel spacer7 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer7, gbc);
-        final JPanel spacer8 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 3;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.ipady = 10;
-        storageRootPanel.add(spacer8, gbc);
-        final JPanel spacer9 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer9, gbc);
-        final JPanel spacer10 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer10, gbc);
-        final JPanel spacer11 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer11, gbc);
-        final JPanel spacer12 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipadx = 10;
-        storageRootPanel.add(spacer12, gbc);
-        storage6 = new JLabel();
-        storage6.setHorizontalTextPosition(0);
-        storage6.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage6, gbc);
-        storage7 = new JLabel();
-        storage7.setHorizontalTextPosition(0);
-        storage7.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage7, gbc);
-        storage8 = new JLabel();
-        storage8.setHorizontalTextPosition(0);
-        storage8.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 0;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage8, gbc);
-        storage3 = new JLabel();
-        storage3.setHorizontalTextPosition(0);
-        storage3.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage3, gbc);
-        storage4 = new JLabel();
-        storage4.setHorizontalTextPosition(0);
-        storage4.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 2;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage4, gbc);
-        storage5 = new JLabel();
-        storage5.setHorizontalTextPosition(0);
-        storage5.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 2;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage5, gbc);
-        storage0 = new JLabel();
-        storage0.setHorizontalTextPosition(0);
-        storage0.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage0, gbc);
-        storage1 = new JLabel();
-        storage1.setHorizontalTextPosition(0);
-        storage1.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 4;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage1, gbc);
-        storage2 = new JLabel();
-        storage2.setHorizontalAlignment(10);
-        storage2.setHorizontalTextPosition(0);
-        storage2.setText("");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4;
-        gbc.gridy = 4;
-        gbc.weightx = 100.0;
-        gbc.weighty = 100.0;
-        storageRootPanel.add(storage2, gbc);
-        informationGrid = new JPanel();
-        informationGrid.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 20));
-        informationGrid.setBackground(new Color(-1));
-        informationGrid.setEnabled(true);
-        panel1.add(informationGrid, BorderLayout.SOUTH);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
-        informationGrid.add(panel3);
-        todoLabel = new JLabel();
-        Font todoLabelFont = this.$$$getFont$$$(null, -1, 18, todoLabel.getFont());
-        if (todoLabelFont != null) todoLabel.setFont(todoLabelFont);
-        todoLabel.setHorizontalAlignment(0);
-        todoLabel.setHorizontalTextPosition(0);
-        todoLabel.setOpaque(true);
-        todoLabel.setText("");
-        panel3.add(todoLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final Spacer spacer13 = new Spacer();
-        panel3.add(spacer13, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        cashLabel = new JLabel();
-        cashLabel.setBackground(new Color(-1));
-        Font cashLabelFont = this.$$$getFont$$$(null, -1, 18, cashLabel.getFont());
-        if (cashLabelFont != null) cashLabel.setFont(cashLabelFont);
-        cashLabel.setForeground(new Color(-16777216));
-        cashLabel.setHorizontalAlignment(0);
-        cashLabel.setHorizontalTextPosition(0);
-        cashLabel.setOpaque(true);
-        cashLabel.setRequestFocusEnabled(true);
-        cashLabel.setText("0€");
-        panel3.add(cashLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 3, false));
-    }
-
-    /**
-     * @noinspection ALL
-     *
-    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
-        if (currentFont == null) return null;
-        String resultName;
-        if (fontName == null) {
-            resultName = currentFont.getName();
-        } else {
-            Font testFont = new Font(fontName, Font.PLAIN, 10);
-            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
-                resultName = fontName;
-            } else {
-                resultName = currentFont.getName();
-            }
-        }
-        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-    }
-
-    /**
-     * @noinspection ALL
-     *
-    public JComponent $$$getRootComponent$$$() {
-        return panel1;
-    }
-*/
 }
