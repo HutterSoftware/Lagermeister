@@ -1,11 +1,5 @@
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 
 public class GameTarget extends JFrame {
 
@@ -23,10 +17,6 @@ public class GameTarget extends JFrame {
         this.setContentPane(rootPane);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(true);
-
-        // Setting GUI elements up
-        gameDescriptionHeadline.setFont(HelpDesk.getStandardHeadlineFont());
-        gameDescription.setEditable(false);
     }
 
     private void initializeGUI() {
