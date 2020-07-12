@@ -1,3 +1,7 @@
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -15,14 +19,44 @@ public class GameTarget extends JFrame {
      */
     public GameTarget() {
         this.setTitle("Ziel");
+        initializeGUI();
         this.setContentPane(rootPane);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(true);
-        this.pack();
 
         // Setting GUI elements up
         gameDescriptionHeadline.setFont(HelpDesk.getStandardHeadlineFont());
         gameDescription.setEditable(false);
+    }
+
+    private void initializeGUI() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridheight = 1;
+        constraints.gridwidth = 5;
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+
+        rootPane = new JPanel(new GridBagLayout());
+        JLabel headline = new JLabel("Spielziel");
+        headline.setFont(HelpDesk.getStandardHeadlineFont());
+        rootPane.add(headline, constraints);
+
+        constraints.gridy++;
+        constraints.insets = new Insets(20,0,0,0);
+        constraints.gridheight = 10;
+        constraints.weightx = 1;
+
+        JTextPane content = new JTextPane();
+        content.setEditable(false);
+        content.setText("In diesem Spiel schlüpfen sie in die Haut eines Lageristen. Hier bekommen sie immer Aufträge " +
+                "die sie entweder liefern sollen also auslagern oder müssen neue Produkte einlagern. Falls sie " +
+                "Platzprobleme bekommen, können sie Produkte umlagern oder zerstören. Diese Funktionen kosten sie " +
+                "allerdings Geld. Für eine Umlagerung müssen sie 100€ bezahlen und für die Zerstörung 500€. Während " +
+                "des Spielverlaufes kann auch ein negativer Gesamtbetrag enstehen. Das Spiel ist vorbei, wenn sie " +
+                "keine Objekte liefern können, weil die Produkte nicht im Lager sind und keine neuen Aufträge " +
+                "beziehen können.");
+        rootPane.add(content, constraints);
     }
 
     {
@@ -42,19 +76,19 @@ public class GameTarget extends JFrame {
     private void $$$setupUI$$$() {
         final JScrollPane scrollPane1 = new JScrollPane();
         rootPane = new JPanel();
-        rootPane.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
+        rootPane.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
         scrollPane1.setViewportView(rootPane);
         gameDescriptionHeadline = new JLabel();
         gameDescriptionHeadline.setText("Spielziel");
-        rootPane.add(gameDescriptionHeadline, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        rootPane.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer2 = new com.intellij.uiDesigner.core.Spacer();
-        rootPane.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        rootPane.add(gameDescriptionHeadline, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        rootPane.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        rootPane.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         gameDescription = new JTextPane();
         gameDescription.setText("In diesem Spiel schlüpfen sie in die Haut eines Lageristen. Hier bekommen sie immer Aufträge die sie entweder liefern sollen also auslagern oder müssen neue Produkte einlagern. Falls sie Platzprobleme bekommen, können sie Produkte umlagern oder zerstören. Diese Funktionen kosten sie allerdings Geld. Für eine Umlagerung müssen sie 100€ bezahlen und für die Zerstörung 500€. Während des Spielverlaufes kann auch ein negativer Gesamtbetrag enstehen. Das Spiel ist vorbei, wenn sie keine Objekte liefern können, weil die Produkte nicht im Lager sind und keine neuen Aufträge beziehen können.");
-        rootPane.add(gameDescription, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer3 = new com.intellij.uiDesigner.core.Spacer();
-        rootPane.add(spacer3, new com.intellij.uiDesigner.core.GridConstraints(4, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        rootPane.add(gameDescription, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        rootPane.add(spacer3, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     }
 }

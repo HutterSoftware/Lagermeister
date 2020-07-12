@@ -109,6 +109,7 @@ public class View extends JFrame {
         this.storagePanelCollection = new JLabel[9];
         initializeGui();
         setVisible(true);
+        setResizable(false);
 
         // Show JFrame before draw images
         this.setVisible(true);
