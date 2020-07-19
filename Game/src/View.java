@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Objects;
 
 public class View extends JFrame {
@@ -213,6 +214,9 @@ public class View extends JFrame {
 
         // Add action listener to GUI elements
         setActionListener();
+
+        updateOrderViewItems();
+        System.out.println(Charset.defaultCharset().toString());
     }
 
     /**
@@ -359,14 +363,23 @@ public class View extends JFrame {
      * Loading new order
      */
     public void loadNewOrder() {
-        int answer = JOptionPane.showConfirmDialog(null, "Möchtest du den Auftrag " +
-                        "annehmen(Ja) oder verweigern(Nein). Bei verweigerung wird der Auftragswert als Strafe gerechnet",
+        if (orderManager.getActiveOrders().size() >= 3) {
+            JOptionPane.showMessageDialog(null,"Es können keine weiteren Aufträge gezogen werden");
+            return;
+        }
+
+        int answer = JOptionPane.showConfirmDialog(null, "<html>Möchtest du den Auftrag " +
+                        "annehmen(Ja) oder Verweigern(Nein). <br>Bei verweigerung wird der Auftragswert als Strafe " +
+                        "gerechnet.<br>Der nächste Auftrag geinhaltet dieses Produkt: " +
+                        orderManager.showNewOrder().getProductName() + " und bringt " +
+                        orderManager.showNewOrder().getCash() + "€</html>",
                 "Auftragsannahme", JOptionPane.YES_NO_OPTION);
 
         if (answer == 1) { // 1 == No
             this.orderPunishment = new Order("Vertragsstrafe", "", "", "",
                     Integer.toString(-1 * Start.orderManager.showNewOrder().getCash()));
 
+            orderManager.increaseGlobalOrderIndex();
             accountManager.accountOrder(orderPunishment);
             updateAll();
             return;
@@ -655,9 +668,9 @@ public class View extends JFrame {
      * This method will be update all Swing components
      */
     public void updateAll() {
+        orderViewButtonAction(View.CURRENT_ORDER);
         setEnableControlOfViewButtons();
         updateCash();
-        orderViewButtonAction(View.CURRENT_ORDER);
         visualizeStorage();
 
         if (moveStorageButton.isSelected()) {
@@ -685,16 +698,18 @@ public class View extends JFrame {
     public void orderViewButtonAction(int prev) {
         // Selecting the wanted order
         if (prev == View.PREVIOUS_ORDER) {
-            orderManager.selectPrevOrder();
+            if (orderManager.getCurrentOrderIndex() > 0) {
+                orderManager.selectPrevOrder();
+            }
         } else if (prev == View.NEXT_ORDER) {
-            orderManager.selectNextOrder();
+            if (orderManager.getCurrentOrderIndex() < orderManager.getCountOfCurrentOrders() - 1) {
+                orderManager.selectNextOrder();
+            }
         }
 
         // Updating GUI
-        setEnableControlOfViewButtons();
         visualizeStorage();
         updateOrderViewItems();
-        visualizeStorage();
     }
 
     /**
@@ -788,8 +803,8 @@ public class View extends JFrame {
             }
         } else {
             this.product.setText("");
-            this.orderType.setText("");
-            this.money.setText("0€");
+            this.orderType.setText("Kein Auftrag");
+            this.money.setText("");
         }
 
         // Set new enable status
@@ -800,15 +815,28 @@ public class View extends JFrame {
      * Setting enable status of order buttons
      */
     private void setEnableControlOfViewButtons() {
-        if (this.orderManager.isSelectedOrderFirst()) {
+        if (!orderManager.hasOrders()) {
             orderLeftView.setEnabled(false);
-            orderRightView.setEnabled(true);
-        } else if (this.orderManager.isSelectedOrderLast()) {
-            orderLeftView.setEnabled(true);
             orderRightView.setEnabled(false);
         } else {
-            orderLeftView.setEnabled(true);
-            orderRightView.setEnabled(true);
+            if (orderManager.getCurrentOrderIndex() == 0) {
+                orderLeftView.setEnabled(false);
+                if (orderManager.getCountOfCurrentOrders() > 1) {
+                    orderRightView.setEnabled(true);
+                } else {
+                    orderRightView.setEnabled(false);
+                }
+            } else if (orderManager.getCurrentOrderIndex() == orderManager.getCountOfCurrentOrders() - 1) {
+                orderRightView.setEnabled(false);
+                if (orderManager.getCountOfCurrentOrders() > 1) {
+                    orderLeftView.setEnabled(true);
+                } else {
+                    orderLeftView.setEnabled(false);
+                }
+            } else {
+                orderRightView.setEnabled(true);
+                orderLeftView.setEnabled(true);
+            }
         }
     }
 

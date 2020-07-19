@@ -84,12 +84,14 @@ public class StorageHandler extends MouseAdapter {
 
             Start.view.setTodoLabelText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
         } else {
-            if (view.getStorageHouse().storageFields[view.getSelectedMoveId()]
-                    .viewTopOrder().getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING) &&
-                    this.storageId >= 3) {
-                view.visualizeStorage();
-                JOptionPane.showMessageDialog(null, Messages.STORE_HEAVY_STONES_ON_THE_FLOOR);
-                return;
+            if (view.getStorageHouse().storageFields[view.getSelectedMoveId()] != null) {
+                if (view.getStorageHouse().storageFields[view.getSelectedMoveId()]
+                        .viewTopOrder().getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING) &&
+                        this.storageId >= 3) {
+                    view.visualizeStorage();
+                    JOptionPane.showMessageDialog(null, Messages.STORE_HEAVY_STONES_ON_THE_FLOOR);
+                    return;
+                }
             }
 
             if (view.getStorageHouse().storageFields[view.getSelectedMoveId()]

@@ -115,6 +115,7 @@ public class OrderManager {
         return this.allOrders[allOrderIndex];
     }
 
+
     /**
      * Selecting next order
      */
@@ -143,5 +144,18 @@ public class OrderManager {
      */
     public ArrayList<Order> getActiveOrders() {
         return this.activeOrders;
+    }
+
+    public int getCurrentOrderIndex() {
+        return this.selectedOrderIndex;
+    }
+
+    public int getCountOfCurrentOrders() {
+        return this.activeOrders.size();
+    }
+
+    public void increaseGlobalOrderIndex() {
+        this.allOrderIndex++;
+        this.allOrderIndex %= this.allOrders.length;
     }
 }
