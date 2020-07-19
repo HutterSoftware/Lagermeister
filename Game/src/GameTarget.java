@@ -39,13 +39,13 @@ public class GameTarget extends JFrame {
 
         JTextPane content = new JTextPane();
         content.setEditable(false);
-        content.setText("In diesem Spiel schlüpfen sie in die Haut eines Lageristen. Hier bekommen sie immer Aufträge " +
+        content.setText(Start.toUtf8("In diesem Spiel schlüpfen sie in die Haut eines Lageristen. Hier bekommen sie immer Aufträge " +
                 "die sie entweder liefern sollen also auslagern oder müssen neue Produkte einlagern. Falls sie " +
                 "Platzprobleme bekommen, können sie Produkte umlagern oder zerstören. Diese Funktionen kosten sie " +
                 "allerdings Geld. Für eine Umlagerung müssen sie 100€ bezahlen und für die Zerstörung 500€. Während " +
                 "des Spielverlaufes kann auch ein negativer Gesamtbetrag enstehen. Das Spiel ist vorbei, wenn sie " +
                 "keine Objekte liefern können, weil die Produkte nicht im Lager sind und keine neuen Aufträge " +
-                "beziehen können.");
+                "beziehen können."));
         rootPane.add(content, constraints);
     }
 }

@@ -7,7 +7,11 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class View extends JFrame {
@@ -84,6 +88,7 @@ public class View extends JFrame {
     private int selectedMoveId = -1;
     private ShortCutFun shortCutFun;
     private Order orderPunishment;
+    public CharsetDecoder utf8Decoder;
 
     /**
      * This constructor initialize all important variables and assin them values
@@ -94,6 +99,8 @@ public class View extends JFrame {
      * @param storageHouse   Management of all storage fields
      */
     public View(String title, OrderManager orderManager, AccountManager accountManager, StorageHouse storageHouse) {
+
+        utf8Decoder = StandardCharsets.UTF_8.newDecoder();
 
         this.orderManager = orderManager;
         this.accountManager = accountManager;
@@ -128,12 +135,12 @@ public class View extends JFrame {
 
         // Adding buttons to menu JPanel
         menuItemGrid = new JPanel(new GridBagLayout());
-        newOrderButton = new JButton("Neuer Auftrag");
-        moveStorageButton = new JToggleButton("Umalgern");
-        destroyButton = new JToggleButton("Zerstören");
-        bilanzButton = new JButton("Bilanz");
-        helpButton = new JButton("Steuerung");
-        questButton = new JButton("Ziel");
+        newOrderButton = new JButton(Start.toUtf8("Neuer Auftrag"));
+        moveStorageButton = new JToggleButton(Start.toUtf8("Umalgern"));
+        destroyButton = new JToggleButton(Start.toUtf8("Zerstören"));
+        bilanzButton = new JButton(Start.toUtf8("Bilanz"));
+        helpButton = new JButton(Start.toUtf8("Steuerung"));
+        questButton = new JButton(Start.toUtf8("Ziel"));
 
         GridBagConstraints menuConstraints = new GridBagConstraints();
         menuConstraints.fill = GridBagConstraints.BOTH;
@@ -154,9 +161,9 @@ public class View extends JFrame {
 
         // Adding information labels to informationGrid
         informationGrid = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 20));
-        todoLabel = new JLabel("fe");
+        todoLabel = new JLabel(Start.toUtf8(""));
         todoLabel.setFont(HelpDesk.getStandardHeadlineFont());
-        cashLabel = new JLabel("0€");
+        cashLabel = new JLabel(Start.toUtf8("0€"));
         cashLabel.setFont(HelpDesk.getStandardHeadlineFont());
 
         GridBagConstraints informationConstrains = new GridBagConstraints();
@@ -318,10 +325,10 @@ public class View extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 destroyButton.setSelected(false);
-                destroyButton.setText("Zerstören");
+                destroyButton.setText(Start.toUtf8("Zerstören"));
 
                 // Set information text to label
-                todoLabel.setText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
+                todoLabel.setText(Start.toUtf8(Messages.SELECT_STORAGE_OBJECT_TO_MOVE));
 
                 // Checking toggle status of moveStorageButton
                 if (!moveStorageButton.isSelected()) {
@@ -342,7 +349,7 @@ public class View extends JFrame {
      * @param text
      */
     public void setTodoLabelText(String text) {
-        this.todoLabel.setText(text);
+        this.todoLabel.setText(Start.toUtf8(text));
     }
 
     /**
@@ -364,20 +371,21 @@ public class View extends JFrame {
      */
     public void loadNewOrder() {
         if (orderManager.getActiveOrders().size() >= 3) {
-            JOptionPane.showMessageDialog(null,"Es können keine weiteren Aufträge gezogen werden");
+            JOptionPane.showMessageDialog(null,Start.toUtf8("Es können keine weiteren Aufträge gezogen werden"));
             return;
         }
 
-        int answer = JOptionPane.showConfirmDialog(null, "<html>Möchtest du den Auftrag " +
+        int answer = JOptionPane.showConfirmDialog(null, Start.toUtf8("<html>Möchtest du den Auftrag " +
                         "annehmen(Ja) oder Verweigern(Nein). <br>Bei verweigerung wird der Auftragswert als Strafe " +
                         "gerechnet.<br>Der nächste Auftrag geinhaltet dieses Produkt: " +
                         orderManager.showNewOrder().getProductName() + " und bringt " +
-                        orderManager.showNewOrder().getCash() + "€</html>",
+                        orderManager.showNewOrder().getCash() + " Euro</html>"),
                 "Auftragsannahme", JOptionPane.YES_NO_OPTION);
 
         if (answer == 1) { // 1 == No
-            this.orderPunishment = new Order("Vertragsstrafe", "", "", "",
-                    Integer.toString(-1 * Start.orderManager.showNewOrder().getCash()));
+            this.orderPunishment = new Order(Start.toUtf8("Vertragsstrafe"), Start.toUtf8(""),
+                                             Start.toUtf8(""), Start.toUtf8(""),
+                    Start.toUtf8(Integer.toString(-1 * Start.orderManager.showNewOrder().getCash())));
 
             orderManager.increaseGlobalOrderIndex();
             accountManager.accountOrder(orderPunishment);
@@ -565,9 +573,9 @@ public class View extends JFrame {
             JLabel panel = storagePanelCollection[i];
             // Setting text to panel
             if (allTopOrders[i] != null) {
-                panel.setText(allTopOrders[i].toStringWithoutCash());
+                panel.setText(Start.toUtf8(allTopOrders[i].toStringWithoutCash()));
             } else {
-                panel.setText("leer");
+                panel.setText(Start.toUtf8("leer"));
             }
         }
     }
@@ -780,7 +788,7 @@ public class View extends JFrame {
      * Updating cash label
      */
     public void updateCash() {
-        this.cashLabel.setText(Integer.toString(accountManager.getWin() - accountManager.getCosts()));
+        this.cashLabel.setText(Start.toUtf8(Integer.toString(accountManager.getWin() - accountManager.getCosts())));
     }
 
     /**
@@ -792,19 +800,19 @@ public class View extends JFrame {
             Order order = orderManager.getCurrentOrder();
 
             // Updating order Information
-            this.product.setText(order.getProductName() + " " + order.getAttribute1() + " " + order.getAttribute2());
-            this.orderType.setText(order.getOrderType());
-            this.money.setText(order.getCash() + "€");
+            this.product.setText(Start.toUtf8(order.getProductName() + " " + order.getAttribute1() + " " + order.getAttribute2()));
+            this.orderType.setText(Start.toUtf8(order.getOrderType()));
+            this.money.setText(Start.toUtf8(order.getCash() + " Euro"));
 
             if (Objects.equals(order.getOrderType(), Order.INCOMING_ORDER_STRING)) {
-                this.todoLabel.setText(Messages.SELECT_STORAGE_TO_STORE);
+                 this.todoLabel.setText(Start.toUtf8(Messages.SELECT_STORAGE_TO_STORE));
             } else {
-                this.todoLabel.setText(Messages.SELECT_STORAGE_TO_DELIVER);
+                this.todoLabel.setText(Start.toUtf8(Messages.SELECT_STORAGE_TO_DELIVER));
             }
         } else {
-            this.product.setText("");
-            this.orderType.setText("Kein Auftrag");
-            this.money.setText("");
+            this.product.setText(Start.toUtf8(""));
+            this.orderType.setText(Start.toUtf8("Kein Auftrag"));
+            this.money.setText(Start.toUtf8(""));
         }
 
         // Set new enable status

@@ -1,3 +1,4 @@
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 public class Start {
@@ -23,7 +24,7 @@ public class Start {
         // Initialize accountManager
         accountManager = new AccountManager(orderManager);
 
-        view = new View("Lagermeister", orderManager, accountManager, storageHouse);
+        view = new View(toUtf8("Lagermeister"), orderManager, accountManager, storageHouse);
 
     }
 
@@ -35,5 +36,14 @@ public class Start {
         Start.accountManager.reset();
         Start.storageHouse.reset();
         Start.view.reset();
+    }
+
+    public static String toUtf8 (String string) {
+        try {
+            return new String(string.getBytes("8859_1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

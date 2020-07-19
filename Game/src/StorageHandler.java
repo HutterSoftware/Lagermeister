@@ -89,7 +89,7 @@ public class StorageHandler extends MouseAdapter {
                         .viewTopOrder().getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING) &&
                         this.storageId >= 3) {
                     view.visualizeStorage();
-                    JOptionPane.showMessageDialog(null, Messages.STORE_HEAVY_STONES_ON_THE_FLOOR);
+                    JOptionPane.showMessageDialog(null, Start.toUtf8(Messages.STORE_HEAVY_STONES_ON_THE_FLOOR));
                     return;
                 }
             }
@@ -99,7 +99,7 @@ public class StorageHandler extends MouseAdapter {
                 view.getStorageHouse().storageFields[this.storageId].getStorageSize() > 0) {
 
                 view.visualizeStorage();
-                JOptionPane.showMessageDialog(null, Messages.TIMBER_NEED_COMPLETE_A_FIELD);
+                JOptionPane.showMessageDialog(null, Start.toUtf8(Messages.TIMBER_NEED_COMPLETE_A_FIELD));
                 return;
             }
 
@@ -140,7 +140,7 @@ public class StorageHandler extends MouseAdapter {
 
         // Checking of destroy requirements
         if (Start.storageHouse.storageFields[containsSource].getStorageSize() == 0) {
-            JOptionPane.showMessageDialog(null, Messages.CANNOT_DESTROY_ITS_EMPTY);
+            JOptionPane.showMessageDialog(null, Start.toUtf8(Messages.CANNOT_DESTROY_ITS_EMPTY));
             return;
         }
 
@@ -169,14 +169,14 @@ public class StorageHandler extends MouseAdapter {
                 if (storage.getStorageSize() == 0) {
                     return true;
                 } else {
-                    JOptionPane.showMessageDialog(null, Messages.TIMBER_NEED_COMPLETE_A_FIELD);
+                    JOptionPane.showMessageDialog(null, Start.toUtf8(Messages.TIMBER_NEED_COMPLETE_A_FIELD));
                     return false;
                 }
             }
 
             if (storage.viewTopOrder() != null) {
                 if (storage.viewTopOrder().getAttribute2().equals(StorageHandler.TIMBER_ATTRIBUTE_STRING)) {
-                    JOptionPane.showMessageDialog(null, Messages.STORAGE_FIELD_FULL_MESSAGE);
+                    JOptionPane.showMessageDialog(null, Start.toUtf8(Messages.STORAGE_FIELD_FULL_MESSAGE));
                     return false;
                 }
             }
@@ -186,7 +186,7 @@ public class StorageHandler extends MouseAdapter {
                 if (storageId < 3) {
                     return true;
                 } else {
-                    JOptionPane.showMessageDialog(null, Messages.STORE_HEAVY_STONES_ON_THE_FLOOR);
+                    JOptionPane.showMessageDialog(null, Start.toUtf8(Messages.STORE_HEAVY_STONES_ON_THE_FLOOR));
                     return false;
                 }
             }
@@ -194,7 +194,7 @@ public class StorageHandler extends MouseAdapter {
             if (view.getSelectedMoveId() != -1 && this.storageId >= 3 &&
                     order.getAttribute2().equals(StorageHandler.HEAVY_STONE_ATTRIBUTE_STRING)) {
 
-                JOptionPane.showMessageDialog(null, Messages.SELECT_ONE_OF_THE_DEEPEST_FIELDS);
+                JOptionPane.showMessageDialog(null, Start.toUtf8(Messages.SELECT_ONE_OF_THE_DEEPEST_FIELDS));
                 return false;
             }
         }

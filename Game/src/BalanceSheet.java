@@ -96,9 +96,9 @@ public class BalanceSheet extends JFrame {
      * Resetting all object attributes
      */
     public void reset() {
-        turnoverLabel.setText("0€");
-        costLabel.setText("0€");
-        profitLabel.setText("0€");
+        turnoverLabel.setText(Start.toUtf8("0 Euro"));
+        costLabel.setText(Start.toUtf8("0 Euro"));
+        profitLabel.setText(Start.toUtf8("0 Euro"));
         positionCounter = 0;
 
         // Deleting all rows
@@ -129,9 +129,9 @@ public class BalanceSheet extends JFrame {
      * Updating all labels
      */
     private void updateConclusion() {
-        this.costLabel.setText(Integer.toString(Start.accountManager.getCosts()));
-        this.profitLabel.setText(Integer.toString(Start.accountManager.getWin()));
-        this.turnoverLabel.setText(Integer.toString(Start.accountManager.getTurnover()));
+        this.costLabel.setText(Start.toUtf8(Integer.toString(Start.accountManager.getCosts())));
+        this.profitLabel.setText(Start.toUtf8(Integer.toString(Start.accountManager.getWin())));
+        this.turnoverLabel.setText(Start.toUtf8(Integer.toString(Start.accountManager.getTurnover())));
     }
 
     /**

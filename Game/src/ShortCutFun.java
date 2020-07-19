@@ -52,7 +52,8 @@ public class ShortCutFun implements KeyListener {
     public static final int START_POSITION = 4;
     public static final int UNSET_POSITION = -1;
     private int keySelectedStorage = -1;
-    private static final String[] LABEL_TEXT_BLACKLIST = {"Neuer Auftrag", "Umagern", "Zerstören", "Bilanz", "Hilfe", ""};
+    private static final String[] LABEL_TEXT_BLACKLIST = {"Neuer Auftrag", "Umagern", Start.toUtf8("Zerstören"),
+            "Bilanz", "Hilfe", ""};
     private static String PREFERRED_OBJECT_TYPE = "class javax.swing.JLabel";
     private Timer timer;
 

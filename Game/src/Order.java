@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Order {
@@ -30,9 +27,9 @@ public class Order {
      */
     public Order(String productName, String attribute1, String attribute2, String orderType, String cash) {
         // Setting parameter to attribute
-        this.productName = productName;
-        this.attribute1 = attribute1;
-        this.attribute2 = attribute2;
+        this.productName = Start.toUtf8(productName);
+        this.attribute1 = Start.toUtf8(attribute1);
+        this.attribute2 = Start.toUtf8(attribute2);
         if (orderType.equals(OUTGOING_ORDER_STRING)) {
             this.outgoingOrder = true;
         }
@@ -65,14 +62,18 @@ public class Order {
 
         // Reading file and create Order array
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(orderFile));
+            //BufferedReader reader = new BufferedReader(new InputStreamReader(orderFile));
+            BufferedReader reader = new BufferedReader(
+                                        new InputStreamReader(new FileInputStream(orderFile),"UTF-8"));
 
             // Skip first line
             reader.readLine();
 
             while ((line = reader.readLine()) != null) {
                 String[] orderSplit = line.split(ORDER_PARAMETER_DELIMITER);
-                orders.add(new Order(orderSplit[2], orderSplit[3], orderSplit[4], orderSplit[1], orderSplit[5]));
+                orders.add(new Order(Start.toUtf8(orderSplit[2]), Start.toUtf8(orderSplit[3]),
+                                     Start.toUtf8(orderSplit[4]), Start.toUtf8(orderSplit[1]),
+                                     Start.toUtf8(orderSplit[5])));
             }
 
         } catch(IOException ex) {
@@ -87,7 +88,7 @@ public class Order {
      * @return String
      */
     public String getProductName() {
-        return productName;
+        return Start.toUtf8(productName);
     }
 
     /**
@@ -95,7 +96,7 @@ public class Order {
      * @return String
      */
     public String getAttribute1() {
-        return attribute1;
+        return Start.toUtf8(attribute1);
     }
 
     /**
@@ -103,7 +104,7 @@ public class Order {
      * @return String
      */
     public String getAttribute2() {
-        return attribute2;
+        return Start.toUtf8(attribute2);
     }
 
     /**
@@ -120,9 +121,9 @@ public class Order {
      */
     public String getOrderType() {
         if (this.outgoingOrder) {
-            return Order.OUTGOING_ORDER_STRING;
+            return Start.toUtf8(Order.OUTGOING_ORDER_STRING);
         } else {
-            return Order.INCOMING_ORDER_STRING;
+            return Start.toUtf8(Order.INCOMING_ORDER_STRING);
         }
     }
 
@@ -139,8 +140,8 @@ public class Order {
             orderTypeString = INCOMING_ORDER_STRING;
         }
 
-        return orderTypeString + "\t" + this.productName + "\t" + this.attribute1 + "\t" + this.attribute2 + "\t" +
-                this.cash;
+        return Start.toUtf8(orderTypeString + "\t" + this.productName + "\t" + this.attribute1 + "\t" + this.attribute2 + "\t" +
+                this.cash);
     }
 
     /**
@@ -150,8 +151,8 @@ public class Order {
     public Object[] toArray() {
 
         return new Object[]{ 0,
-                this.getOrderType(),
-                this.productName + ", " + this.attribute1 + ", " + this.attribute2,
+                Start.toUtf8(this.getOrderType()),
+                Start.toUtf8(this.productName + ", " + this.attribute1 + ", " + this.attribute2),
                 this.cash};
     }
 
@@ -160,7 +161,7 @@ public class Order {
      * @return String
      */
     public String toStringWithoutCash() {
-        return this.productName +
-                ", " + this.attribute1 + ", " + this.attribute2;
+        return Start.toUtf8(this.productName +
+                ", " + this.attribute1 + ", " + this.attribute2);
     }
 }
