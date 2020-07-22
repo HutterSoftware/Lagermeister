@@ -38,11 +38,6 @@ public class Start {
         Start.view.reset();
     }
 
-    /**
-     * Converting string to UTF-8
-     * @param string text
-     * @return String
-     */
     public static String toUtf8 (String string) {
         try {
             return new String(string.getBytes("UTF-8"));

@@ -40,9 +40,6 @@ public class HelpDesk extends JFrame {
         this.keyboardSelectedElement.setBorder(View.getStandardBorder(Color.GREEN, true));
     }
 
-    /**
-     * Initializing GUI components
-     */
     private void initializeGUI() {
         JPanel rootElement = new JPanel(new GridBagLayout());
         scrollPane1 = new JScrollPane();
@@ -145,12 +142,6 @@ public class HelpDesk extends JFrame {
         rowNumber++;
     }
 
-    /**
-     * Adding new components
-     * @param label component
-     * @param descriptionText text
-     * @param panel parent element
-     */
     private void addElementToPanel(JLabel label, String descriptionText, JPanel panel) {
         Insets insets = new Insets(5,5,5,5);
         GridBagConstraints constraints = new GridBagConstraints();

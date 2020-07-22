@@ -89,7 +89,7 @@ public class StorageHouse {
 
     /**
      * Getting status of all storages
-     * @return
+     * @return Color array
      */
     public Color[] getStorageStatus() {
         Color[] status = new Color[9];
@@ -118,8 +118,8 @@ public class StorageHouse {
 
     /**
      * This method is searching for needed products
-     * @param orderObject
-     * @return
+     * @param orderObject Search order
+     * @return Results
      */
     public SearchResult[] findProduct(Order orderObject) {
         SearchResult[] resultList = new SearchResult[9];
@@ -140,9 +140,9 @@ public class StorageHouse {
 
     /**
      * Storing order in storage by id
-     * @param storageId
-     * @param order
-     * @return
+     * @param storageId Storage id
+     * @param order Order
+     * @return boolean
      */
     public boolean storeOrder(int storageId, Order order) {
         // Storing orders if its possible
@@ -158,9 +158,9 @@ public class StorageHouse {
 
     /**
      * This method is delivering products out of the storage house
-     * @param storageId
-     * @param order
-     * @return
+     * @param storageId Storage id
+     * @param order Order
+     * @return int
      */
     public int deliverOrder(int storageId, Order order) {
         if (this.storageFields[storageId].isOrderAtTop(order)) {
@@ -176,7 +176,7 @@ public class StorageHouse {
 
     /**
      * This method will return the top of all stack storage
-     * @return
+     * @return Order array
      */
     public Order[] getAllTopOrders() {
         Order[] orderList = new Order[9];
@@ -188,7 +188,7 @@ public class StorageHouse {
 
     /**
      * This method destroy products in stack if destroyButton is selected
-     * @param storageId
+     * @param storageId Storage id
      */
     public void destroyOrder(int storageId) {
         if (storageId >= 0 && storageId < storageFields.length) {
@@ -198,8 +198,8 @@ public class StorageHouse {
 
     /**
      * This methid will move objects from one storage to another
-     * @param from
-     * @param to
+     * @param from Storage id
+     * @param to Storage id
      */
     public void moveElement(int from, int to) {
         Order moveOrder = this.storageFields[from].viewTopOrder();

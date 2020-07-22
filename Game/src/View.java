@@ -384,7 +384,7 @@ public class View extends JFrame {
         if (answer == 1) { // 1 == No
             this.orderPunishment = new Order(Start.toUtf8("Vertragsstrafe"), Start.toUtf8(""),
                                              Start.toUtf8(""), Start.toUtf8(""),
-                    Start.toUtf8(Integer.toString(-1 * orderManager.showNewOrder().getCash())));
+                    Start.toUtf8(Integer.toString(-1 * Start.orderManager.showNewOrder().getCash())));
 
             accountManager.accountOrder(orderPunishment);
             orderManager.increaseGlobalOrderIndex();
