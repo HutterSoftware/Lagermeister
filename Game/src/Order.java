@@ -64,7 +64,7 @@ public class Order {
         try {
             //BufferedReader reader = new BufferedReader(new InputStreamReader(orderFile));
             BufferedReader reader = new BufferedReader(
-                                        new InputStreamReader(new FileInputStream(orderFile),"UTF-8"));
+                                        new InputStreamReader(new FileInputStream(orderFile),"iso-8859-1"));
 
             // Skip first line
             reader.readLine();
@@ -149,10 +149,15 @@ public class Order {
      * @return Object[]
      */
     public Object[] toArray() {
-
+        String description = "";
+        if (this.attribute1.length() == 0 && this.attribute2.length() == 0) {
+            description = Start.toUtf8(this.productName);
+        } else {
+            description = Start.toUtf8(this.productName + ", " + this.attribute1 + ", " + this.attribute2);
+        }
         return new Object[]{ 0,
                 Start.toUtf8(this.getOrderType()),
-                Start.toUtf8(this.productName + ", " + this.attribute1 + ", " + this.attribute2),
+                description,
                 this.cash};
     }
 

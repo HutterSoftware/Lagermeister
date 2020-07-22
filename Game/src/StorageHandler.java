@@ -287,7 +287,6 @@ public class StorageHandler extends MouseAdapter {
                     "Game over! Neues Spiel mit \"Ja\". Spiel beenden mit \"Nein\"","Game Over",
                     JOptionPane.YES_NO_OPTION);
 
-            System.out.println(answer);
             if (answer == 1) { // Yes
                 System.exit(0);
             } else { // No

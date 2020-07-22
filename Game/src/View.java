@@ -137,7 +137,7 @@ public class View extends JFrame {
         menuItemGrid = new JPanel(new GridBagLayout());
         newOrderButton = new JButton(Start.toUtf8("Neuer Auftrag"));
         moveStorageButton = new JToggleButton(Start.toUtf8("Umalgern"));
-        destroyButton = new JToggleButton(Start.toUtf8("Zerstören"));
+        destroyButton = new JToggleButton(Start.toUtf8("Verschrotten"));
         bilanzButton = new JButton(Start.toUtf8("Bilanz"));
         helpButton = new JButton(Start.toUtf8("Steuerung"));
         questButton = new JButton(Start.toUtf8("Ziel"));
@@ -223,7 +223,6 @@ public class View extends JFrame {
         setActionListener();
 
         updateOrderViewItems();
-        System.out.println(Charset.defaultCharset().toString());
     }
 
     /**
@@ -325,7 +324,7 @@ public class View extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 destroyButton.setSelected(false);
-                destroyButton.setText(Start.toUtf8("Zerstören"));
+                destroyButton.setText(Start.toUtf8("Verschrotten"));
 
                 // Set information text to label
                 todoLabel.setText(Start.toUtf8(Messages.SELECT_STORAGE_OBJECT_TO_MOVE));
@@ -683,17 +682,17 @@ public class View extends JFrame {
 
         if (moveStorageButton.isSelected()) {
             if (getSelectedMoveId() == -1) {
-                setTodoLabelText(Messages.SELECT_STORAGE_OBJECT_TO_MOVE);
+                setTodoLabelText(Start.toUtf8(Messages.SELECT_STORAGE_OBJECT_TO_MOVE));
             } else {
-                setTodoLabelText(Messages.SELECT_STORAGE_TARGET_OF_MOVE);
+                setTodoLabelText(Start.toUtf8(Messages.SELECT_STORAGE_TARGET_OF_MOVE));
             }
         } else if (destroyButton.isSelected()) {
-            setTodoLabelText(Messages.SELECT_STORAGE_TO_DESTROY);
+            setTodoLabelText(Start.toUtf8(Messages.SELECT_STORAGE_TO_DESTROY));
         } else {
             if (orderManager.getCurrentOrder().getOrderType().equals(Order.INCOMING_ORDER_STRING)) {
-                setTodoLabelText(Messages.SELECT_STORAGE_TO_STORE);
+                setTodoLabelText(Start.toUtf8(Messages.SELECT_STORAGE_TO_STORE));
             } else {
-                setTodoLabelText(Messages.SELECT_STORAGE_TO_DELIVER);
+                setTodoLabelText(Start.toUtf8(Messages.SELECT_STORAGE_TO_DELIVER));
             }
         }
     }

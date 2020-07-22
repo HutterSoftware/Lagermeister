@@ -17,7 +17,7 @@ public class AccountManager {
     public AccountManager(OrderManager orderManager) {
         MOVE_ORDER = new Order("Umlagerung", "","",Order.MOVING_ORDER_STRING,
                 "-100");
-        DESTROY_ORDER = new Order("Zerstörung", "", "", Order.DESTROY_ORDER_STRING,
+        DESTROY_ORDER = new Order("Verschrottung", "", "", Order.DESTROY_ORDER_STRING,
                 "-500");
         this.transactionList = new ArrayList<>();
     }

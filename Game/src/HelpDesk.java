@@ -57,21 +57,21 @@ public class HelpDesk extends JFrame {
         addElementToPanel(fullStorage, "Lagerplatz ist bereits voll", panel);
 
         containsTwoElements = new JLabel("Produkt");
-        addElementToPanel(containsTwoElements, Start.toUtf8("Lagerplatz enthält 2 Elemente"), panel);
+        addElementToPanel(containsTwoElements, Start.toUtf8("Lagerplatz hat 2 Elemente"), panel);
 
         containsOneElement = new JLabel("Produkt");
-        addElementToPanel(containsOneElement, Start.toUtf8("Lagerplatz enthölt nur 1 Element"), panel);
+        addElementToPanel(containsOneElement, Start.toUtf8("Lagerplatz hatt nur 1 Element"), panel);
 
         containsNoElements = new JLabel("Produkt");
-        addElementToPanel(containsNoElements, Start.toUtf8("Der Lagerplatz enthält kein Element"), panel);
+        addElementToPanel(containsNoElements, Start.toUtf8("Der Lagerplatz hat kein Element"), panel);
 
         selectAvailableMoveElement = new JLabel("Produkt");
         addElementToPanel(selectAvailableMoveElement,
-                Start.toUtf8("Zeigt Element an die Umgelagert werden können"),
+                Start.toUtf8("Zeigt Elemente an die man umgelagern kann"),
                 panel);
 
         moveTargetElement = new JLabel("Produkt");
-        addElementToPanel(moveTargetElement, Start.toUtf8("<html>Zeigt Plätze an, an denen das gewünschte<br>" +
+        addElementToPanel(moveTargetElement, Start.toUtf8("<html>Zeigt Plätze an, an denen das<br>" +
                 "Objekt umgelagert werden kann</html>"), panel);
 
         keyboardSelectedElement = new JLabel("Produkt");
@@ -83,13 +83,13 @@ public class HelpDesk extends JFrame {
 
         addElementToPanel("h oder H", Start.toUtf8("Zeigt dieses Hilfe-Fenster an"), panel);
         addElementToPanel("b oder B", Start.toUtf8("Zeigt die bisherige Bilanz des Spiels an"), panel);
-        addElementToPanel("n oder N", Start.toUtf8("Lädt neuen Auftrag"),panel);
-        addElementToPanel("t oder T", Start.toUtf8("<html>In gedrücktem Zusatnd wird das erste " +
-                "Element<br>Elemente des Lagerplatzes gelöscht.<br>In nicht gedrücktem Zustand bleiben<br>" +
+        addElementToPanel("n oder N", Start.toUtf8("Hole neuen Auftrag"),panel);
+        addElementToPanel("t oder T", Start.toUtf8("<html>Im angeklickten Zusatnd wird das erste " +
+                "Element<br> des Lagerplatzes entfernt.<br>Im ausgeklickten Zustand bleiben<br>" +
                 "angeklickte Elemente erhalten</html>"), panel);
 
-        addElementToPanel("m oder M", Start.toUtf8("<html>Nach dem anklicken des Buttons können<br>" +
-                "Elemente angeklickt oder mit der<br>Tastatur ausgewählt werden, die umgelagert<br>werden sollten" +
+        addElementToPanel("m oder M", Start.toUtf8("<html>Nach erstmaligen klicken kann ein Objekt " +
+                "selektiert<br>werden. Danach kann ein neuer Lagerplatz selektiert werden" +
                 "</html>"), panel);
 
         addElementToPanel("q oder Q", Start.toUtf8("<html>Zeigt in der obigen Ansicht den linken<br>" +

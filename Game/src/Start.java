@@ -40,7 +40,7 @@ public class Start {
 
     public static String toUtf8 (String string) {
         try {
-            return new String(string.getBytes("8859_1"), "UTF-8");
+            return new String(string.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;

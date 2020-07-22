@@ -112,7 +112,11 @@ public class OrderManager {
     }
 
     public Order showNewOrder() {
-        return this.allOrders[allOrderIndex];
+        if (this.allOrderIndex == 0) {
+            return this.allOrders[0];
+        } else {
+            return this.allOrders[allOrderIndex % this.allOrderIndex];
+        }
     }
 
 
