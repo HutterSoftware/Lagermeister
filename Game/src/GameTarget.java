@@ -19,6 +19,9 @@ public class GameTarget extends JFrame {
         this.setResizable(true);
     }
 
+    /**
+     * Initializing GUI components
+     */
     private void initializeGUI() {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;

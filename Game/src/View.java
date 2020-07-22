@@ -345,7 +345,7 @@ public class View extends JFrame {
     /**
      * Setting user assignment text to todoLabel
      *
-     * @param text
+     * @param text text
      */
     public void setTodoLabelText(String text) {
         this.todoLabel.setText(Start.toUtf8(text));
@@ -370,24 +370,24 @@ public class View extends JFrame {
      */
     public void loadNewOrder() {
         if (orderManager.getActiveOrders().size() >= 3) {
-            JOptionPane.showMessageDialog(null,Start.toUtf8("Es können keine weiteren Aufträge gezogen werden"));
+            JOptionPane.showMessageDialog(null,Start.toUtf8("Arbeiten sie erst einen Auftrag ab bevor sie einen neuen ordern"));
             return;
         }
 
-        int answer = JOptionPane.showConfirmDialog(null, Start.toUtf8("<html>Möchtest du den Auftrag " +
-                        "annehmen(Ja) oder Verweigern(Nein). <br>Bei verweigerung wird der Auftragswert als Strafe " +
-                        "gerechnet.<br>Der nächste Auftrag geinhaltet dieses Produkt: " +
-                        orderManager.showNewOrder().getProductName() + " und bringt " +
-                        orderManager.showNewOrder().getCash() + " Euro</html>"),
+        int answer = JOptionPane.showConfirmDialog(null, Start.toUtf8("<html>Auftrag annhemen mit " +
+                        "(Ja) oder Verweigern(Nein). <br>Bei verweigerung wird der Auftragswert als Strafe " +
+                        "gerechnet.<br>Der kommende Auftrag geinhaltet dieses Produkt: " +
+                        orderManager.showNewOrder().getProductName() + ", " + orderManager.showNewOrder().getAttribute1() + ", " + orderManager.showNewOrder().getAttribute2() + " und bringt " +
+                        orderManager.showNewOrder().getCash() + " Euro als "+ orderManager.showNewOrder().getOrderType() +"</html>"),
                 "Auftragsannahme", JOptionPane.YES_NO_OPTION);
 
         if (answer == 1) { // 1 == No
             this.orderPunishment = new Order(Start.toUtf8("Vertragsstrafe"), Start.toUtf8(""),
                                              Start.toUtf8(""), Start.toUtf8(""),
-                    Start.toUtf8(Integer.toString(-1 * Start.orderManager.showNewOrder().getCash())));
+                    Start.toUtf8(Integer.toString(-1 * orderManager.showNewOrder().getCash())));
 
-            orderManager.increaseGlobalOrderIndex();
             accountManager.accountOrder(orderPunishment);
+            orderManager.increaseGlobalOrderIndex();
             updateAll();
             return;
         }

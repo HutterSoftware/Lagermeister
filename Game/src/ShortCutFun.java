@@ -136,6 +136,10 @@ public class ShortCutFun implements KeyListener {
         return this.keySelectedStorage;
     }
 
+    /**
+     * Setting storage id
+     * @param storageId int
+     */
     public void setKeySelectedStorage(int storageId) {
         this.keySelectedStorage = storageId;
     }

@@ -40,6 +40,9 @@ public class HelpDesk extends JFrame {
         this.keyboardSelectedElement.setBorder(View.getStandardBorder(Color.GREEN, true));
     }
 
+    /**
+     * Initializing GUI components
+     */
     private void initializeGUI() {
         JPanel rootElement = new JPanel(new GridBagLayout());
         scrollPane1 = new JScrollPane();
@@ -71,7 +74,7 @@ public class HelpDesk extends JFrame {
                 panel);
 
         moveTargetElement = new JLabel("Produkt");
-        addElementToPanel(moveTargetElement, Start.toUtf8("<html>Zeigt Plätze an, an denen das<br>" +
+        addElementToPanel(moveTargetElement, Start.toUtf8("<html>Zeigt Lagerorte an, an denen das<br>" +
                 "Objekt umgelagert werden kann</html>"), panel);
 
         keyboardSelectedElement = new JLabel("Produkt");
@@ -110,7 +113,7 @@ public class HelpDesk extends JFrame {
         addElementToPanel("a oder A", Start.toUtf8("<html>Fokussiert den Lagerplatz links<br>von der " +
                 "aktuellen Position</html>"), panel);
 
-        addElementToPanel("z oder Z", Start.toUtf8("Öffnet die Spielbeschreibung"), panel);
+        addElementToPanel("z oder Z", Start.toUtf8("Startet die Spielbeschreibung"), panel);
 
         addElementToPanel("Leertaste", Start.toUtf8("Hat die gleiche Wirkung wie ein Tastendruck"), panel);
 
@@ -142,6 +145,12 @@ public class HelpDesk extends JFrame {
         rowNumber++;
     }
 
+    /**
+     * Adding new components
+     * @param label component
+     * @param descriptionText text
+     * @param panel parent element
+     */
     private void addElementToPanel(JLabel label, String descriptionText, JPanel panel) {
         Insets insets = new Insets(5,5,5,5);
         GridBagConstraints constraints = new GridBagConstraints();

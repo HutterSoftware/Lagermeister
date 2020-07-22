@@ -111,14 +111,13 @@ public class OrderManager {
         }
     }
 
+    /**
+     * Showing next order
+     * @return Order
+     */
     public Order showNewOrder() {
-        if (this.allOrderIndex == 0) {
-            return this.allOrders[0];
-        } else {
-            return this.allOrders[allOrderIndex % this.allOrderIndex];
-        }
+        return this.allOrders[allOrderIndex % this.allOrders.length];
     }
-
 
     /**
      * Selecting next order
@@ -150,16 +149,30 @@ public class OrderManager {
         return this.activeOrders;
     }
 
+    /**
+     * Getting current index
+     * @return int
+     */
     public int getCurrentOrderIndex() {
         return this.selectedOrderIndex;
     }
 
+    /**
+     * Getting count of active orders
+     * @return int
+     */
     public int getCountOfCurrentOrders() {
         return this.activeOrders.size();
     }
 
+    /**
+     * Increasing order index
+     */
     public void increaseGlobalOrderIndex() {
-        this.allOrderIndex++;
-        this.allOrderIndex %= this.allOrders.length;
+        if (this.allOrderIndex < this.allOrders.length - 1) {
+          this.allOrderIndex++;
+        } else {
+          this.allOrderIndex = 0;
+        }
     }
 }
