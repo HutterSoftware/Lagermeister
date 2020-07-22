@@ -34,3 +34,4 @@ CSV file is needed as an argument of the game.
 ## Run and compile
 
 In the root path of repository are a run.sh and a build.sh. The scripts are build for linux and mac shell.
+For Windows Systems existing build.bat and run.bat.
